@@ -211,6 +211,42 @@ footer {
   main { padding: 19px; }
   .poster { height: 260px; }
 }
+  .weekly-carousel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  overflow: hidden;
+}
+
+#weekly-list {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  flex: 1;
+  padding: 10px 5px;
+}
+
+.weekly-card {
+  flex: 0 0 140px;
+  width: 140px;
+  text-decoration: none;
+}
+
+.weekly-card img {
+  width: 140px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+}
+
+.weekly-card h3 {
+  font-size: 14px;
+  text-align: center;
+  margin-top: 8px;
+}
 </style>
 </head>
 

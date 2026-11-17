@@ -285,9 +285,6 @@ async function loadDrama() {
   if (data.episodes) addText(info, "p", "", "Episódios: " + data.episodes);
   if (data.genre) addText(info, "p", "", "Gênero: " + data.genre);
 
-  if (data.status) {
-    addText(info, "span", "status", data.status);
-  }
 
   layout.appendChild(info);
   

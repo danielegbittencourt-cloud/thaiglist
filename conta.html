@@ -324,10 +324,12 @@ document.getElementById("login-form")
   button.disabled = false;
   button.textContent = "Entrar";
 
-  if (error) {
-   showPopup("Não foi possível entrar", error.message, "⚠️");
-    return;
-  }
+ if (error) {
+  showPopup("Ops!", "E-mail ou senha incorretos.", "⚠️");
+  return;
+}
+
+window.location.href = "index.html";
 
   showPopup("Bem-vindo ao ThaiGList!", "Login realizado com sucesso. 🌷", "🎉");
 });

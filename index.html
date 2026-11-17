@@ -601,9 +601,16 @@ footer {
     <h1>ThaiGList 🌷</h1>
 
     <nav class="user-nav">
-      <a href="conta.html">Entrar / Cadastrar</a>
-      <a href="minha-lista.html">Minha Lista</a>
-    </nav>
+  <a href="conta.html" id="login-link">Entrar / Cadastrar</a>
+
+  <a href="minha-lista.html" id="my-list-link" hidden>
+    Minha Lista
+  </a>
+
+  <a href="#" id="logout-link" hidden>
+    Sair
+  </a>
+</nav>
   </div>
 
   <p>Seu cantinho para acompanhar o universo Girls' Love tailandês.</p>
@@ -946,7 +953,53 @@ search.addEventListener("input", () => {
 
   showSeries(filtered);
 });
+// Atualiza o menu conforme o estado da conta
+function updateUserMenu(session) {
+  const loginLink = document.getElementById("login-link");
+  const myListLink = document.getElementById("my-list-link");
+  const logoutLink = document.getElementById("logout-link");
 
+  if (session) {
+    loginLink.hidden = true;
+    myListLink.hidden = false;
+    logoutLink.hidden = false;
+  } else {
+    loginLink.hidden = false;
+    myListLink.hidden = true;
+    logoutLink.hidden = true;
+  }
+}
+
+// Verifica se existe uma conta conectada
+async function checkUserSession() {
+  const { data, error } = await db.auth.getSession();
+
+  if (error) {
+    console.error("Erro ao verificar sessão:", error);
+    return;
+  }
+
+  updateUserMenu(data.session);
+}
+
+// Acompanha alterações no login e no logout
+db.auth.onAuthStateChange((_event, session) => {
+  updateUserMenu(session);
+});
+
+// Botão para sair da conta
+document.getElementById("logout-link").addEventListener("click", async (event) => {
+  event.preventDefault();
+
+  const { error } = await db.auth.signOut();
+
+  if (error) {
+    console.error("Erro ao sair:", error);
+  }
+});
+
+// Verifica a sessão ao abrir o catálogo
+checkUserSession();
 // Inicia o carregamento
 loadSeries();
 </script>

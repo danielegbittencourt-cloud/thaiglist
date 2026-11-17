@@ -1,0 +1,257 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Administração | ThaiGList</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 25px 15px;
+  background: #fff5f8;
+  color: #493744;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  max-width: 480px;
+  margin: 50px auto;
+}
+
+header {
+  text-align: center;
+  padding: 30px 15px;
+  background: linear-gradient(135deg, #f8c8dc, #e6d5f5);
+  border-radius: 20px;
+}
+
+header h1 {
+  color: #8e4774;
+  margin: 0;
+}
+
+main {
+  margin-top: 20px;
+  padding: 25px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 5px 20px #d9b8cc55;
+}
+
+h2 { color: #a45482; }
+
+label {
+  display: block;
+  margin: 15px 0 6px;
+  color: #70566a;
+  font-weight: bold;
+}
+
+input {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #ecc8dc;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+button {
+  width: 100%;
+  margin-top: 18px;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: #b76b9b;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: .6;
+  cursor: wait;
+}
+
+#logout-button {
+  background: #a99aaa;
+}
+
+#message {
+  margin-top: 15px;
+  line-height: 1.5;
+  color: #854d78;
+}
+
+#dashboard[hidden],
+#login-section[hidden] {
+  display: none;
+}
+
+a {
+  display: block;
+  margin-top: 20px;
+  text-align: center;
+  color: #a45482;
+  text-decoration: none;
+}
+
+footer {
+  text-align: center;
+  color: #987d91;
+  margin-top: 20px;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<header>
+  <h1>ThaiGList 🌷</h1>
+  <p>Área administrativa</p>
+</header>
+
+<main>
+  <section id="login-section">
+    <h2>Entrar</h2>
+    <p>Acesse sua conta de administradora.</p>
+
+    <form id="login-form">
+      <label for="email">E-mail</label>
+      <input
+        type="email"
+        id="email"
+        autocomplete="username"
+        required
+      >
+
+      <label for="password">Senha</label>
+      <input
+        type="password"
+        id="password"
+        autocomplete="current-password"
+        required
+      >
+
+      <button type="submit" id="login-button">
+        Entrar
+      </button>
+    </form>
+  </section>
+
+  <section id="dashboard" hidden>
+    <h2>Acesso autorizado! 🌷</h2>
+    <p>Você entrou na área administrativa do ThaiGList.</p>
+    <p id="user-email"></p>
+
+    <p>Na próxima etapa, vamos adicionar as ferramentas para gerenciar os dramas.</p>
+
+    <button type="button" id="logout-button">
+      Sair da conta
+    </button>
+  </section>
+
+  <p id="message" role="status"></p>
+
+  <a href="index.html">← Voltar ao catálogo</a>
+</main>
+
+<footer>ThaiGList © 2026</footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "https://jjybnidhwfimcdwygafk.supabase.co";
+const SUPABASE_KEY = "sb_publishable_DyikY0WSJJ4apDc0_ZwfOw_x6LvfqM-";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+const loginSection = document.getElementById("login-section");
+const dashboard = document.getElementById("dashboard");
+const message = document.getElementById("message");
+const loginForm = document.getElementById("login-form");
+const loginButton = document.getElementById("login-button");
+
+function showSession(session) {
+  if (session) {
+    loginSection.hidden = true;
+    dashboard.hidden = false;
+    document.getElementById("user-email").textContent =
+      "Conta: " + (session.user.email || "");
+  } else {
+    loginSection.hidden = false;
+    dashboard.hidden = true;
+  }
+}
+
+async function checkSession() {
+  const { data, error } = await db.auth.getSession();
+
+  if (error) {
+    message.textContent = "Não foi possível verificar o acesso.";
+    return;
+  }
+
+  showSession(data.session);
+}
+
+loginForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  loginButton.disabled = true;
+  loginButton.textContent = "Entrando...";
+  message.textContent = "";
+
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+
+  const { data, error } = await db.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  loginButton.disabled = false;
+  loginButton.textContent = "Entrar";
+
+  if (error) {
+    message.textContent =
+      "Não foi possível entrar. Confira seu e-mail e sua senha.";
+    return;
+  }
+
+  loginForm.reset();
+  showSession(data.session);
+  message.textContent = "Login realizado com sucesso!";
+});
+
+document.getElementById("logout-button").addEventListener("click", async () => {
+  const { error } = await db.auth.signOut();
+
+  if (error) {
+    message.textContent = "Não foi possível sair da conta.";
+    return;
+  }
+
+  showSession(null);
+  message.textContent = "Você saiu da sua conta.";
+});
+
+db.auth.onAuthStateChange((_event, session) => {
+  showSession(session);
+});
+
+checkSession();
+</script>
+
+</body>
+</html>

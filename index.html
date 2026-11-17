@@ -98,6 +98,80 @@ h2 {
   box-shadow: 0 0 0 3px #f05ba822;
 }
 
+/* BANNER PRINCIPAL */
+
+.featured-banner {
+  position: relative;
+  min-height: 350px;
+  display: flex;
+  align-items: center;
+  padding: 40px;
+  margin-bottom: 35px;
+  overflow: hidden;
+  border-radius: 20px;
+  border: 1px solid #71428c;
+  background:
+    linear-gradient(90deg, #100d18 5%, #100d18dd 45%, #100d1855 100%),
+    linear-gradient(135deg, #472052, #21132f);
+  box-shadow: 0 10px 35px #00000066;
+}
+
+.featured-content {
+  position: relative;
+  z-index: 2;
+  max-width: 550px;
+}
+
+.featured-label {
+  display: inline-block;
+  color: #ff91cb;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  margin-bottom: 15px;
+}
+
+#featured-title {
+  color: white;
+  font-size: 38px;
+  margin: 0 0 15px;
+}
+
+#featured-synopsis {
+  color: #e0d3eb;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+#featured-button {
+  margin-top: 15px;
+  padding: 13px 25px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(100deg, #f05ba8, #a875f5);
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: .2s;
+}
+
+#featured-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 20px #f05ba855;
+}
+
+@media (max-width: 520px) {
+  .featured-banner {
+    min-height: 320px;
+    padding: 25px;
+  }
+
+  #featured-title {
+    font-size: 29px;
+  }
+}
+
 /* CARROSSEL GLs DA SEMANA */
 
 .weekly-section {

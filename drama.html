@@ -290,6 +290,144 @@ async function loadDrama() {
   }
 
   layout.appendChild(info);
+  
+  // Minha Lista: controles do usuário
+  const listSection = document.createElement("section");
+  listSection.className = "my-list-controls";
+
+  addText(listSection, "h3", "", "Minha Lista 🌷");
+
+  const { data: sessionData } = await db.auth.getSession();
+  const session = sessionData.session;
+
+  if (!session) {
+    addText(
+      listSection,
+      "p",
+      "",
+      "Entre na sua conta para adicionar este drama à sua lista."
+    );
+
+    const loginLink = document.createElement("a");
+    loginLink.href = "conta.html";
+    loginLink.textContent = "Entrar / Cadastrar";
+    listSection.appendChild(loginLink);
+
+  } else {
+    const userId = session.user.id;
+
+    const statusSelect = document.createElement("select");
+
+    const statuses = [
+      { value: "want_to_watch", label: "Quero assistir" },
+      { value: "watching", label: "Estou assistindo" },
+      { value: "completed", label: "Concluído" }
+    ];
+
+    statuses.forEach(status => {
+      const option = document.createElement("option");
+      option.value = status.value;
+      option.textContent = status.label;
+      statusSelect.appendChild(option);
+    });
+
+    const ratingSelect = document.createElement("select");
+
+    const noRating = document.createElement("option");
+    noRating.value = "";
+    noRating.textContent = "Sem nota";
+    ratingSelect.appendChild(noRating);
+
+    for (let i = 1; i <= 5; i++) {
+      const option = document.createElement("option");
+      option.value = i;
+      option.textContent = "⭐".repeat(i);
+      ratingSelect.appendChild(option);
+    }
+
+    ratingSelect.hidden = true;
+
+    statusSelect.addEventListener("change", () => {
+      ratingSelect.hidden = statusSelect.value !== "completed";
+
+      if (statusSelect.value !== "completed") {
+        ratingSelect.value = "";
+      }
+    });
+
+    const saveButton = document.createElement("button");
+    saveButton.type = "button";
+    saveButton.textContent = "Salvar na Minha Lista";
+
+    const message = document.createElement("p");
+
+    // Recupera o registro existente, se houver
+    const { data: existing, error: readError } = await db
+      .from("user_drama_list")
+      .select("status, rating")
+      .eq("user_id", userId)
+      .eq("drama_id", data.id)
+      .maybeSingle();
+
+    if (readError) {
+      console.error("Erro ao consultar Minha Lista:", readError);
+      message.textContent = "Não foi possível consultar sua lista.";
+    }
+
+    if (existing) {
+      statusSelect.value = existing.status;
+      ratingSelect.hidden = existing.status !== "completed";
+      ratingSelect.value = existing.rating || "";
+      saveButton.textContent = "Atualizar Minha Lista";
+    }
+
+    saveButton.addEventListener("click", async () => {
+      saveButton.disabled = true;
+      saveButton.textContent = "Salvando...";
+
+      const selectedStatus = statusSelect.value;
+      const selectedRating =
+        selectedStatus === "completed" && ratingSelect.value
+          ? Number(ratingSelect.value)
+          : null;
+
+      const { error } = await db
+        .from("user_drama_list")
+        .upsert(
+          {
+            user_id: userId,
+            drama_id: data.id,
+            status: selectedStatus,
+            rating: selectedRating,
+            updated_at: new Date().toISOString()
+          },
+          {
+            onConflict: "user_id,drama_id"
+          }
+        );
+
+      saveButton.disabled = false;
+      saveButton.textContent = "Atualizar Minha Lista";
+
+      if (error) {
+        console.error("Erro ao salvar:", error);
+        message.textContent = "Não foi possível salvar. Tente novamente.";
+        return;
+      }
+
+      message.textContent = "Drama salvo na sua lista! 🌷";
+    });
+
+    listSection.append(
+      statusSelect,
+      ratingSelect,
+      saveButton,
+      message
+    );
+  }
+
+  info.appendChild(listSection);
+
   details.appendChild(layout);
   
   if (data.trailer_url) {

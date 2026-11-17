@@ -740,12 +740,7 @@ card.addEventListener("click", () => {
       );
     }
 
-    if (item.synopsis) {
-      content.appendChild(
-        createText("p", "synopsis", item.synopsis)
-      );
-    }
-
+    
     card.append(poster, content);
     list.appendChild(card);
   });

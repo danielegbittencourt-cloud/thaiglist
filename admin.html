@@ -105,7 +105,35 @@ button:disabled {
   padding-top: 15px;
   border-top: 1px solid #f0dce8;
 }
+.drama-item {
+  padding: 15px;
+  margin-top: 12px;
+  border: 1px solid #ecc8dc;
+  border-radius: 12px;
+  background: #fffafd;
+}
 
+.drama-item h3 {
+  color: #8e4774;
+  margin-top: 0;
+}
+
+.drama-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.drama-actions button {
+  flex: 1;
+}
+
+.edit-button {
+  background: #9875b5;
+}
+
+.delete-button {
+  background: #c76b80;
+}
 a {
   display: block;
   margin-top: 20px;
@@ -214,6 +242,11 @@ footer {
       </form>
     </div>
 
+        <div class="form-section">
+      <h2>Gerenciar dramas 🌸</h2>
+      <p>Consulte e organize os títulos do catálogo.</p>
+      <div id="drama-list">Carregando dramas...</div>
+    </div>
     <button type="button" id="logout-button">
       Sair da conta
     </button>

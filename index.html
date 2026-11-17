@@ -980,21 +980,6 @@ function updateUserMenu(session) {
     userName.hidden = true;
   }
 }
-  const loginLink = document.getElementById("login-link");
-  const myListLink = document.getElementById("my-list-link");
-  const logoutLink = document.getElementById("logout-link");
-
-  if (session) {
-    loginLink.hidden = true;
-    myListLink.hidden = false;
-    logoutLink.hidden = false;
-  } else {
-    loginLink.hidden = false;
-    myListLink.hidden = true;
-    logoutLink.hidden = true;
-  }
-}
-
 // Verifica se existe uma conta conectada
 async function checkUserSession() {
   const { data, error } = await db.auth.getSession();

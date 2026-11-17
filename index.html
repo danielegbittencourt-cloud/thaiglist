@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 30px 20px;
+  background: #fff5f8;
+  color: #493744;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  max-width: 950px;
+  margin: auto;
+}
+
+header {
+  text-align: center;
+  padding: 45px 20px;
+  background: linear-gradient(135deg, #f8c8dc, #e6d5f5);
+  border-radius: 20px;
+  margin-bottom: 30px;
+}
+
+header h1 {
+  font-size: 42px;
+  color: #8e4774;
+  margin-bottom: 12px;
+}
+
+header p {
+  font-size: 16px;
+  color: #654c60;
+}
+
+main {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 5px 20px #d9b8cc55;
+}
+
+h2 {
+  color: #a45482;
+}
+
+input {
+  width: 100%;
+  padding: 14px;
+  border: 2px solid #ecc8dc;
+  border-radius: 12px;
+  font-size: 16px;
+  outline: none;
+}
+
+input:focus {
+  border-color: #bd79a8;
+}
+
+footer {
+  text-align: center;
+  padding: 25px;
+  color: #987d91;
+}
+
+/* Cartões das séries */
+
+#series-list {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(220px, 1fr)
+  );
+  gap: 18px;
+  margin-top: 25px;
+}
+
+.series-card {
+  background: #fff7fb;
+  border: 1px solid #f0d2e3;
+  border-radius: 16px;
+  padding: 20px;
+  transition: 0.2s;
+}
+
+.series-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px #d9b8cc55;
+}
+
+.series-card h3 {
+  color: #a45482;
+  font-size: 19px;
+  margin-top: 0;
+}
+
+.series-card p {
+  color: #70566a;
+  font-size: 14px;
+}
+
+/* Botão adicionar */
+
+#add-button {
+  display: block;
+  width: 100%;
+  margin-top: 18px;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: #b76b9b;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#add-button:hover {
+  background: #984e7e;
+}
+
+/* Formulário */
+
+#series-form {
+  margin-top: 20px;
+  padding: 24px;
+  background: #fff7fb;
+  border: 1px solid #ecc8dc;
+  border-radius: 16px;
+}
+
+#series-form[hidden] {
+  display: none;
+}
+
+#series-form h3 {
+  color: #a45482;
+}
+
+#series-form label {
+  display: block;
+  margin-top: 14px;
+  margin-bottom: 6px;
+  color: #70566a;
+  font-weight: bold;
+}
+
+#series-form input,
+#series-form select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ecc8dc;
+  border-radius: 10px;
+  background: white;
+  font-size: 15px;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.form-buttons button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: #b76b9b;
+  color: white;
+  cursor: pointer;
+}
+
+#cancel-button {
+  background: #a99aaa;
+}
+</style>
+<script>
+(function(){
+  var _o={log:console.log,error:console.error,warn:console.warn};
+  ['log','error','warn'].forEach(function(m){
+    console[m]=function(){
+      var msg=[].slice.call(arguments).map(function(a){
+        try{return typeof a==='object'?JSON.stringify(a,null,0):String(a)}catch(e){return String(a)}
+      }).join(' ');
+      try{window.parent.postMessage({type:'hxlog',level:m,msg:msg},'*')}catch(e){}
+      _o[m].apply(console,arguments);
+    };
+  });
+  window.onerror=function(msg,src,line){
+    try{window.parent.postMessage({type:'hxlog',level:'error',msg:msg+' (line '+line+')'},'*')}catch(e){}
+    return false;
+  };
+}());
+</script>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>ThaiGList 🌷</h1>
+    <p>Seu cantinho para acompanhar o universo Girls' Love tailandês.</p>
+  </header>
+
+  <main>
+    <h2>Minha coleção</h2>
+
+    <input
+      type="text"
+      id="search"
+      placeholder="Pesquisar uma série..."
+    />
+
+<button type="button" id="add-button">
+  + Adicionar série 🌷
+</button>
+
+<form id="series-form" hidden>
+
+  <h3>Nova série</h3>
+
+  <label>Nome da série</label>
+  <input type="text" id="title" placeholder="Ex: Gap The Series" required />
+
+  <label>Ano de lançamento</label>
+  <input type="number" id="year" placeholder="2024" required />
+
+  <label>País</label>
+  <input type="text" id="country" placeholder="Tailândia" />
+
+  <label>Número de episódios</label>
+  <input type="number" id="episodes" placeholder="12" />
+
+  <label>Status</label>
+  <select id="status">
+    <option value="Quero assistir">Quero assistir</option>
+    <option value="Assistindo">Assistindo</option>
+    <option value="Concluída">Concluída</option>
+  </select>
+
+  <div class="form-buttons">
+    <button type="submit">Salvar série</button>
+    <button type="button" id="cancel-button">Cancelar</button>
+  </div>
+
+</form>
+
+    <div id="series-list">
+      <p>Em breve, sua coleção estará aqui!</p>
+    </div>
+  </main>
+
+  <footer>
+    <p>ThaiGList © 2026</p>
+  </footer>
+</div>
+
+<script>
+(function(){
+  try{
+
+
+let series = [
+  {
+    title: "23.5",
+    year: 2024,
+    country: "Tailândia",
+    episodes: 12,
+    status: "Concluída"
+  },
+  {
+    title: "The Secret of Us",
+    year: 2024,
+    country: "Tailândia",
+    episodes: 8,
+    status: "Assistida"
+  },
+  {
+    title: "Pluto",
+    year: 2024,
+    country: "Tailândia",
+    episodes: 12,
+    status: "Quero assistir"
+  },
+  {
+    title: "Blank",
+    year: 2024,
+    country: "Tailândia",
+    episodes: 12,
+    status: "Assistindo"
+  }
+];
+
+const list = document.getElementById("series-list");
+const search = document.getElementById("search");
+const form = document.getElementById("series-form");
+console.log("Formulário encontrado:", form);
+const addButton = document.getElementById("add-button");
+const cancelButton = document.getElementById("cancel-button");
+
+// Mostrar as séries
+function showSeries(items) {
+  list.innerHTML = "";
+
+  if (items.length === 0) {
+    list.innerHTML = "<p>Nenhuma série encontrada 🌷</p>";
+    return;
+  }
+
+  items.forEach(item => {
+    const card = document.createElement("div");
+    card.className = "series-card";
+
+    const title = document.createElement("h3");
+    title.textContent = item.title;
+
+    const year = document.createElement("p");
+    year.textContent = "Ano: " + item.year;
+
+    const country = document.createElement("p");
+    country.textContent = "País: " + (item.country || "Não informado");
+
+    const episodes = document.createElement("p");
+    episodes.textContent = "Episódios: " + (item.episodes || "Não informado");
+
+    const status = document.createElement("p");
+    status.textContent = "Status: " + item.status;
+
+    card.append(title, year, country, episodes, status);
+    list.appendChild(card);
+  });
+}
+
+// Abrir formulário
+addButton.addEventListener("click", () => {
+  form.hidden = false;
+});
+
+// Fechar formulário
+cancelButton.addEventListener("click", () => {
+  form.reset();
+  form.hidden = true;
+});
+
+// Cadastrar série
+
+function saveSeries() {
+  const newSeries = {
+    title: document.getElementById("title").value.trim(),
+    year: document.getElementById("year").value,
+    country: document.getElementById("country").value.trim(),
+    episodes: document.getElementById("episodes").value,
+    status: document.getElementById("status").value
+  };
+
+  if (!newSeries.title || !newSeries.year) {
+    alert("Preencha o nome e o ano!");
+    return;
+  }
+
+  series.push(newSeries);
+
+  showSeries(series);
+  form.reset();
+  form.hidden = true;
+  search.value = "";
+
+  alert("Série adicionada com sucesso! 🌷");
+}
+
+document.querySelector(
+  "#series-form button[type='submit']"
+).addEventListener("click", saveSeries);
+
+// Pesquisa
+search.addEventListener("input", () => {
+  const term = search.value.toLowerCase();
+
+  const filtered = series.filter(item =>
+    item.title.toLowerCase().includes(term)
+  );
+
+  showSeries(filtered);
+});
+
+// Iniciar catálogo
+showSeries(series);
+
+  }catch(e){
+    try{window.parent.postMessage({type:'hxlog',level:'error',msg:'Script error: '+e.message},'*')}catch(_){}
+  }
+}());
+</script>
+</body>
+</html>

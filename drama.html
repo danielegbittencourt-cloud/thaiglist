@@ -6,62 +6,95 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Detalhes do drama | ThaiGList</title>
 
+</head>
+
 <style>
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --background: #100d18;
+  --surface: #1b1626;
+  --surface-light: #241d32;
+  --pink: #f05ba8;
+  --purple: #a875f5;
+  --text: #f7efff;
+  --muted: #b8a9c9;
+  --border: #382b49;
+}
 
 body {
   margin: 0;
   padding: 25px 15px;
-  background: #fff5f8;
-  color: #493744;
+  background: var(--background);
+  color: var(--text);
   font-family: Arial, sans-serif;
 }
 
 .container {
-  max-width: 850px;
+  max-width: 1000px;
   margin: auto;
 }
 
+/* CABEÇALHO */
+
 header {
   text-align: center;
-  padding: 30px 15px;
-  background: linear-gradient(135deg, #f8c8dc, #e6d5f5);
+  padding: 35px 20px;
+  background: linear-gradient(120deg, #21132f, #392047);
+  border: 1px solid #71428c;
   border-radius: 20px;
+  box-shadow: 0 8px 30px #00000044;
 }
 
 header h1 {
-  color: #8e4774;
+  color: white;
   margin: 0;
+  font-size: 32px;
 }
+
+/* CONTEÚDO */
 
 main {
   margin-top: 25px;
-  padding: 25px;
-  background: white;
+  padding: 30px;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 20px;
-  box-shadow: 0 5px 20px #d9b8cc55;
+  box-shadow: 0 8px 30px #00000033;
 }
+
+/* VOLTAR */
 
 .back {
   display: inline-block;
-  margin-bottom: 20px;
-  color: #a45482;
+  margin-bottom: 25px;
+  color: var(--pink);
   font-weight: bold;
   text-decoration: none;
 }
 
+.back:hover {
+  color: var(--purple);
+}
+
+/* DETALHES */
+
 .details {
   display: flex;
-  gap: 25px;
+  gap: 30px;
   flex-wrap: wrap;
 }
 
 .poster {
-  width: 260px;
+  width: 280px;
   max-width: 100%;
   border-radius: 14px;
   object-fit: cover;
   align-self: flex-start;
+  border: 1px solid #71428c;
+  box-shadow: 0 8px 25px #00000066;
 }
 
 .information {
@@ -69,45 +102,97 @@ main {
   min-width: 220px;
 }
 
-h2 { color: #a45482; }
+h2 {
+  color: var(--pink);
+  font-size: 28px;
+}
 
 .original-title {
-  color: #987d91;
+  color: var(--muted);
+  font-style: italic;
 }
 
 p {
-  color: #70566a;
-  line-height: 1.6;
+  color: #d0c3dc;
+  line-height: 1.7;
 }
+
+/* STATUS */
 
 .status {
   display: inline-block;
   padding: 8px 13px;
   border-radius: 20px;
-  background: #f1dfed;
-  color: #854d78;
+  background: #452b52;
+  color: #f4b6dc;
   font-size: 13px;
   font-weight: bold;
 }
 
+/* SINOPSE */
+
 .synopsis {
-  margin-top: 25px;
-  padding-top: 15px;
-  border-top: 1px solid #f0d2e3;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
 }
+
+/* ELENCO E PERSONAGENS */
+
+h3 {
+  color: var(--purple);
+}
+
+/* TRAILER */
+
+iframe {
+  max-width: 100%;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+}
+
+/* RODAPÉ */
 
 footer {
   text-align: center;
   padding: 20px;
-  color: #987d91;
+  color: var(--muted);
 }
 
+/* CELULAR */
+
 @media (max-width: 600px) {
-  .details { flex-direction: column; }
-  .poster { width: 100%; max-width: 300px; }
+  body {
+    padding: 15px 10px;
+  }
+
+  main {
+    padding: 20px;
+  }
+
+  .details {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .poster {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .information {
+    width: 100%;
+  }
+
+  header h1 {
+    font-size: 26px;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
 }
 </style>
-</head>
 
 <body>
 <div class="container">

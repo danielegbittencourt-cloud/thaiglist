@@ -762,12 +762,16 @@ function showFeaturedDrama(item) {
   synopsis.textContent =
     item.synopsis || "Conheça este drama no ThaiGList!";
 
-  if (item.poster_url) {
-    banner.style.backgroundImage =
-      `linear-gradient(90deg, #100d18 5%, #100d18dd 45%, #100d1880 100%), url("${item.poster_url}")`;
-    banner.style.backgroundSize = "cover";
-    banner.style.backgroundPosition = "center 30%";
-  }
+ const poster = document.getElementById("featured-poster");
+
+if (item.poster_url) {
+  poster.src = item.poster_url;
+  poster.alt = "Pôster de " + item.title;
+  poster.style.display = "block";
+} else {
+  poster.removeAttribute("src");
+  poster.style.display = "none";
+}
 
   button.onclick = () => {
     window.location.href =

@@ -328,6 +328,7 @@ function resetForm() {
   cancelButton.hidden = true;
 }
 
+
 async function loadDramas() {
   const dramaList = document.getElementById("drama-list");
   dramaList.textContent = "Carregando dramas...";
@@ -366,6 +367,7 @@ async function loadDramas() {
     const actions = document.createElement("div");
     actions.className = "drama-actions";
 
+    // Botão Editar
     const editButton = document.createElement("button");
     editButton.type = "button";
     editButton.className = "edit-button";
@@ -373,9 +375,33 @@ async function loadDramas() {
 
     editButton.addEventListener("click", () => {
       editDrama(drama.id);
-      async function deleteDrama(id) {
+    });
+
+    // Botão Excluir
+    const deleteButton = document.createElement("button");
+    deleteButton.type = "button";
+    deleteButton.className = "delete-button";
+    deleteButton.textContent = "🗑️ Excluir";
+
+    deleteButton.addEventListener("click", () => {
+      deleteDrama(drama.id);
+    });
+
+    actions.appendChild(editButton);
+    actions.appendChild(deleteButton);
+
+    item.appendChild(title);
+    item.appendChild(info);
+    item.appendChild(actions);
+
+    dramaList.appendChild(item);
+  });
+}
+
+// Função para excluir um drama
+async function deleteDrama(id) {
   const confirmed = confirm(
-    "Tem certeza de que deseja excluir este drama? Essa ação não pode ser desfeita."
+    "Tem certeza de que deseja excluir este drama?"
   );
 
   if (!confirmed) return;
@@ -400,25 +426,8 @@ async function loadDramas() {
   alert("Drama excluído com sucesso! 🌷");
   loadDramas();
 }
-      const deleteButton = document.createElement("button");
-deleteButton.textContent = "🗑️ Excluir";
-deleteButton.className = "delete-button";
 
-deleteButton.addEventListener("click", () => deleteDrama(drama.id));
-
-actions.appendChild(deleteButton);
-    });
-
-    actions.appendChild(editButton);
-    item.appendChild(title);
-    item.appendChild(info);
-    item.appendChild(actions);
-
-    dramaList.appendChild(item);
-  });
-}
-
-async function editDrama(id) {
+  async function editDrama(id) {
   message.textContent = "Carregando informações...";
 
   const { data, error } = await db

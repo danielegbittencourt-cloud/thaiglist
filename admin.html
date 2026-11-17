@@ -6,60 +6,90 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Administração | ThaiGList</title>
 
+</head>
+
 <style>
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --background: #100d18;
+  --surface: #1b1626;
+  --surface-light: #241d32;
+  --pink: #f05ba8;
+  --purple: #a875f5;
+  --text: #f7efff;
+  --muted: #b8a9c9;
+  --border: #382b49;
+}
 
 body {
   margin: 0;
   padding: 25px 15px;
-  background: #fff5f8;
-  color: #493744;
+  background: var(--background);
+  color: var(--text);
   font-family: Arial, sans-serif;
 }
 
 .container {
-  max-width: 650px;
+  max-width: 750px;
   margin: 50px auto;
 }
 
 header {
   text-align: center;
   padding: 30px 15px;
-  background: linear-gradient(135deg, #f8c8dc, #e6d5f5);
+  background: linear-gradient(120deg, #21132f, #392047);
+  border: 1px solid #71428c;
   border-radius: 20px;
+  box-shadow: 0 8px 30px #00000044;
 }
 
 header h1 {
-  color: #8e4774;
+  color: white;
   margin: 0;
 }
 
 main {
   margin-top: 20px;
   padding: 25px;
-  background: white;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 20px;
-  box-shadow: 0 5px 20px #d9b8cc55;
+  box-shadow: 0 8px 30px #00000033;
 }
 
-h2 { color: #a45482; }
+h2 {
+  color: var(--pink);
+}
 
 label {
   display: block;
   margin: 15px 0 6px;
-  color: #70566a;
+  color: var(--muted);
   font-weight: bold;
 }
 
-input, textarea, select {
+input,
+textarea,
+select {
   width: 100%;
   padding: 13px;
-  border: 1px solid #ecc8dc;
+  border: 1px solid var(--border);
   border-radius: 10px;
   font-size: 16px;
   font-family: Arial, sans-serif;
-  background: white;
-  color: #493744;
+  background: var(--surface-light);
+  color: var(--text);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--pink);
+  box-shadow: 0 0 0 2px #f05ba833;
 }
 
 textarea {
@@ -73,30 +103,34 @@ button {
   padding: 14px;
   border: none;
   border-radius: 10px;
-  background: #b76b9b;
+  background: linear-gradient(100deg, #e94f9f, #a875f5);
   color: white;
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
+  transition: opacity .2s, transform .2s;
+}
+
+button:hover {
+  opacity: .88;
+  transform: translateY(-1px);
 }
 
 button:disabled {
   opacity: .6;
   cursor: wait;
+  transform: none;
 }
 
-#logout-button {
-  background: #a99aaa;
-}
-
+#logout-button,
 #cancel-edit-button {
-  background: #a99aaa;
+  background: #51445f;
 }
 
 #message {
   margin-top: 15px;
   line-height: 1.5;
-  color: #854d78;
+  color: var(--pink);
 }
 
 #dashboard[hidden],
@@ -108,19 +142,19 @@ button:disabled {
 .form-section {
   margin-top: 25px;
   padding-top: 15px;
-  border-top: 1px solid #f0dce8;
+  border-top: 1px solid var(--border);
 }
 
 .drama-item {
   padding: 15px;
   margin-top: 12px;
-  border: 1px solid #ecc8dc;
+  border: 1px solid var(--border);
   border-radius: 12px;
-  background: #fffafd;
+  background: var(--surface-light);
 }
 
 .drama-item h3 {
-  color: #8e4774;
+  color: var(--pink);
   margin-top: 0;
 }
 
@@ -134,32 +168,50 @@ button:disabled {
 }
 
 .edit-button {
-  background: #9875b5;
+  background: #7653a5;
 }
 
-a {
-  display: block;
-  margin-top: 20px;
-  text-align: center;
-  color: #a45482;
-  text-decoration: none;
-}
-
-footer {
-  text-align: center;
-  color: #987d91;
-  margin-top: 20px;
-}
-  .delete-button {
-  background: #c76b80;
+.delete-button {
+  background: #a94369;
   color: white;
   border: none;
   padding: 8px 12px;
   border-radius: 8px;
   cursor: pointer;
 }
+
+a {
+  display: block;
+  margin-top: 20px;
+  text-align: center;
+  color: var(--pink);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--purple);
+}
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  margin-top: 20px;
+}
+
+@media (max-width: 600px) {
+  .container {
+    margin: 20px auto;
+  }
+
+  main {
+    padding: 18px;
+  }
+
+  .drama-actions {
+    flex-direction: column;
+  }
+}
 </style>
-</head>
 
 <body>
 <div class="container">

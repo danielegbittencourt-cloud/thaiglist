@@ -18,7 +18,7 @@ body {
 }
 
 .container {
-  max-width: 480px;
+  max-width: 650px;
   margin: 50px auto;
 }
 
@@ -51,12 +51,20 @@ label {
   font-weight: bold;
 }
 
-input {
+input, textarea, select {
   width: 100%;
   padding: 13px;
   border: 1px solid #ecc8dc;
   border-radius: 10px;
   font-size: 16px;
+  font-family: Arial, sans-serif;
+  background: white;
+  color: #493744;
+}
+
+textarea {
+  min-height: 100px;
+  resize: vertical;
 }
 
 button {
@@ -92,6 +100,12 @@ button:disabled {
   display: none;
 }
 
+.form-section {
+  margin-top: 25px;
+  padding-top: 15px;
+  border-top: 1px solid #f0dce8;
+}
+
 a {
   display: block;
   margin-top: 20px;
@@ -123,33 +137,82 @@ footer {
 
     <form id="login-form">
       <label for="email">E-mail</label>
-      <input
-        type="email"
-        id="email"
-        autocomplete="username"
-        required
-      >
+      <input type="email" id="email"
+        autocomplete="username" required>
 
       <label for="password">Senha</label>
-      <input
-        type="password"
-        id="password"
-        autocomplete="current-password"
-        required
-      >
+      <input type="password" id="password"
+        autocomplete="current-password" required>
 
-      <button type="submit" id="login-button">
-        Entrar
-      </button>
+      <button type="submit" id="login-button">Entrar</button>
     </form>
   </section>
 
   <section id="dashboard" hidden>
     <h2>Acesso autorizado! 🌷</h2>
-    <p>Você entrou na área administrativa do ThaiGList.</p>
     <p id="user-email"></p>
 
-    <p>Na próxima etapa, vamos adicionar as ferramentas para gerenciar os dramas.</p>
+    <div class="form-section">
+      <h2>Cadastrar novo drama</h2>
+      <p>Preencha as informações para adicionar um título ao catálogo.</p>
+
+      <form id="drama-form">
+
+        <label for="title">Título</label>
+        <input id="title" required
+          placeholder="Ex.: 23.5">
+
+        <label for="original_title">Título original</label>
+        <input id="original_title"
+          placeholder="Nome em tailandês">
+
+        <label for="synopsis">Sinopse</label>
+        <textarea id="synopsis"
+          placeholder="Escreva a sinopse do drama..."></textarea>
+
+        <label for="year">Ano de lançamento</label>
+        <input id="year" type="number"
+          min="1900" max="2100" placeholder="2024">
+
+        <label for="episodes">Número de episódios</label>
+        <input id="episodes" type="number"
+          min="1" placeholder="12">
+
+        <label for="poster_url">Link do pôster</label>
+        <input id="poster_url" type="url"
+          placeholder="https://...">
+
+        <label for="genre">Gênero</label>
+        <input id="genre"
+          placeholder="Romance, Drama, Comédia...">
+
+        <label for="status">Status</label>
+        <select id="status">
+          <option value="Quero assistir">Quero assistir</option>
+          <option value="Assistindo">Assistindo</option>
+          <option value="Concluída">Concluída</option>
+        </select>
+
+        <label for="country">País</label>
+        <input id="country" value="Tailândia">
+
+        <label for="main_cast">Elenco principal</label>
+        <textarea id="main_cast"
+          placeholder="Nome das atrizes..."></textarea>
+
+        <label for="characters">Personagens</label>
+        <textarea id="characters"
+          placeholder="Nome da personagem — Nome da atriz"></textarea>
+
+        <label for="trailer_url">Link do trailer no YouTube</label>
+        <input id="trailer_url" type="url"
+          placeholder="https://www.youtube.com/watch?v=...">
+
+        <button type="submit" id="save-button">
+          Salvar drama 🌷
+        </button>
+      </form>
+    </div>
 
     <button type="button" id="logout-button">
       Sair da conta
@@ -181,6 +244,8 @@ const dashboard = document.getElementById("dashboard");
 const message = document.getElementById("message");
 const loginForm = document.getElementById("login-form");
 const loginButton = document.getElementById("login-button");
+const dramaForm = document.getElementById("drama-form");
+const saveButton = document.getElementById("save-button");
 
 function showSession(session) {
   if (session) {
@@ -232,6 +297,70 @@ loginForm.addEventListener("submit", async (event) => {
   loginForm.reset();
   showSession(data.session);
   message.textContent = "Login realizado com sucesso!";
+});
+
+dramaForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  saveButton.disabled = true;
+  saveButton.textContent = "Salvando...";
+  message.textContent = "";
+
+  const { data: sessionData, error: sessionError } =
+    await db.auth.getSession();
+
+  if (sessionError || !sessionData.session) {
+    message.textContent = "Sua sessão expirou. Entre novamente.";
+    showSession(null);
+    saveButton.disabled = false;
+    saveButton.textContent = "Salvar drama 🌷";
+    return;
+  }
+
+  function getText(id) {
+    const value = document.getElementById(id).value.trim();
+    return value || null;
+  }
+
+  function getNumber(id) {
+    const value = document.getElementById(id).value;
+    return value === "" ? null : Number(value);
+  }
+
+  const newDrama = {
+    title: getText("title"),
+    original_title: getText("original_title"),
+    synopsis: getText("synopsis"),
+    year: getNumber("year"),
+    episodes: getNumber("episodes"),
+    poster_url: getText("poster_url"),
+    genre: getText("genre"),
+    status: getText("status"),
+    country: getText("country"),
+    main_cast: getText("main_cast"),
+    characters: getText("characters"),
+    trailer_url: getText("trailer_url")
+  };
+
+  const { error } = await db
+    .from("dramas")
+    .insert([newDrama]);
+
+  saveButton.disabled = false;
+  saveButton.textContent = "Salvar drama 🌷";
+
+  if (error) {
+    console.error(error);
+    message.textContent =
+      "Não foi possível salvar. Verifique as permissões e os dados.";
+    return;
+  }
+
+  dramaForm.reset();
+  document.getElementById("country").value = "Tailândia";
+
+  message.textContent =
+    "Drama cadastrado com sucesso! 🌷 Ele já foi salvo no banco de dados.";
 });
 
 document.getElementById("logout-button").addEventListener("click", async () => {

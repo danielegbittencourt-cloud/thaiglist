@@ -150,6 +150,14 @@ footer {
   color: #987d91;
   margin-top: 20px;
 }
+  .delete-button {
+  background: #c76b80;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
 </style>
 </head>
 
@@ -365,6 +373,40 @@ async function loadDramas() {
 
     editButton.addEventListener("click", () => {
       editDrama(drama.id);
+      async function deleteDrama(id) {
+  const confirmed = confirm(
+    "Tem certeza de que deseja excluir este drama? Essa ação não pode ser desfeita."
+  );
+
+  if (!confirmed) return;
+
+  const { data: sessionData } = await db.auth.getSession();
+
+  if (!sessionData.session) {
+    alert("Você precisa estar conectada para excluir.");
+    return;
+  }
+
+  const { error } = await db
+    .from("dramas")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    alert("Não foi possível excluir: " + error.message);
+    return;
+  }
+
+  alert("Drama excluído com sucesso! 🌷");
+  loadDramas();
+}
+      const deleteButton = document.createElement("button");
+deleteButton.textContent = "🗑️ Excluir";
+deleteButton.className = "delete-button";
+
+deleteButton.addEventListener("click", () => deleteDrama(drama.id));
+
+actions.appendChild(deleteButton);
     });
 
     actions.appendChild(editButton);

@@ -705,6 +705,37 @@ async function loadSeries() {
   );
 
   showWeeklySeries(weeklySeries);
+  showFeaturedDrama(weeklySeries[0]);
+}
+
+function showFeaturedDrama(item) {
+  const banner = document.getElementById("featured-banner");
+  const title = document.getElementById("featured-title");
+  const synopsis = document.getElementById("featured-synopsis");
+  const button = document.getElementById("featured-button");
+
+  if (!item) {
+    banner.style.display = "none";
+    return;
+  }
+
+  banner.style.display = "flex";
+  title.textContent = item.title || "Drama em destaque";
+
+  synopsis.textContent =
+    item.synopsis || "Conheça este drama no ThaiGList!";
+
+  if (item.poster_url) {
+    banner.style.backgroundImage =
+      `linear-gradient(90deg, #100d18 5%, #100d18dd 45%, #100d1880 100%), url("${item.poster_url}")`;
+    banner.style.backgroundSize = "cover";
+    banner.style.backgroundPosition = "center 30%";
+  }
+
+  button.onclick = () => {
+    window.location.href =
+      "drama.html?id=" + encodeURIComponent(item.id);
+  };
 }
 
 function showWeeklySeries(items) {

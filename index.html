@@ -100,20 +100,40 @@ h2 {
 
 /* BANNER PRINCIPAL */
 
+
 .featured-banner {
-  position: relative;
-  min-height: 350px;
   display: flex;
   align-items: center;
-  padding: 40px;
+  justify-content: space-between;
+  gap: 30px;
+  min-height: 350px;
+  padding: 35px 45px;
   margin-bottom: 35px;
   overflow: hidden;
   border-radius: 20px;
   border: 1px solid #71428c;
-  background:
-    linear-gradient(90deg, #100d18 5%, #100d18dd 45%, #100d1855 100%),
-    linear-gradient(135deg, #472052, #21132f);
+  background: linear-gradient(120deg, #21132f, #30203f);
   box-shadow: 0 10px 35px #00000066;
+}
+
+.featured-content {
+  flex: 1;
+  max-width: 600px;
+}
+
+.featured-image {
+  flex: 0 0 220px;
+  width: 220px;
+}
+
+.featured-image img {
+  display: block;
+  width: 100%;
+  height: 310px;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 1px solid #a875f5;
+  box-shadow: 0 8px 25px #00000088;
 }
 
 .featured-content {
@@ -165,6 +185,20 @@ h2 {
   .featured-banner {
     min-height: 320px;
     padding: 25px;
+    .featured-banner {
+    flex-direction: column;
+    padding: 25px;
+    text-align: center;
+  }
+
+  .featured-image {
+    flex-basis: auto;
+    width: 160px;
+  }
+
+  .featured-image img {
+    height: 230px;
+  }
   }
 
   #featured-title {

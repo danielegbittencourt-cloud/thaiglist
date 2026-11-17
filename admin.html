@@ -329,13 +329,14 @@ function resetForm() {
 }
 
 
+
 async function loadDramas() {
   const dramaList = document.getElementById("drama-list");
   dramaList.textContent = "Carregando dramas...";
 
   const { data, error } = await db
     .from("dramas")
-    .select("id, title, year, status")
+    .select("id, title, year, status, weekly_featured")
     .order("id", { ascending: false });
 
   if (error) {
@@ -363,6 +364,37 @@ async function loadDramas() {
       (drama.year || "Ano não informado") +
       " · " +
       (drama.status || "Sem status");
+
+    // Seleção GL da Semana
+    const featuredLabel = document.createElement("label");
+    const featuredCheckbox = document.createElement("input");
+
+    featuredCheckbox.type = "checkbox";
+    featuredCheckbox.checked = drama.weekly_featured === true;
+
+    featuredLabel.appendChild(featuredCheckbox);
+    featuredLabel.appendChild(
+      document.createTextNode(" 🌷 GL da Semana")
+    );
+
+    featuredCheckbox.addEventListener("change", async () => {
+      featuredCheckbox.disabled = true;
+
+      const { error } = await db
+        .from("dramas")
+        .update({ weekly_featured: featuredCheckbox.checked })
+        .eq("id", drama.id);
+
+      if (error) {
+        alert("Não foi possível atualizar o destaque.");
+        console.error(error);
+        featuredCheckbox.checked = !featuredCheckbox.checked;
+      } else {
+        alert("Destaque atualizado! 🌷");
+      }
+
+      featuredCheckbox.disabled = false;
+    });
 
     const actions = document.createElement("div");
     actions.className = "drama-actions";
@@ -392,6 +424,7 @@ async function loadDramas() {
 
     item.appendChild(title);
     item.appendChild(info);
+    item.appendChild(featuredLabel);
     item.appendChild(actions);
 
     dramaList.appendChild(item);

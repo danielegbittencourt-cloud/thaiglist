@@ -71,6 +71,7 @@ h2 { color: #a45482; }
   border: 1px solid #f0d2e3;
   border-radius: 16px;
   transition: .2s;
+  cursor: pointer;
 }
 
 .series-card:hover {
@@ -310,7 +311,9 @@ function showSeries(items) {
   items.forEach(item => {
     const card = document.createElement("article");
     card.className = "series-card";
-
+card.addEventListener("click", () => {
+  window.location.href = "drama.html?id=" + encodeURIComponent(item.id);
+});
     const poster = document.createElement("div");
     poster.className = "poster";
 

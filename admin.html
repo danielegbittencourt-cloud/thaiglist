@@ -89,6 +89,10 @@ button:disabled {
   background: #a99aaa;
 }
 
+#cancel-edit-button {
+  background: #a99aaa;
+}
+
 #message {
   margin-top: 15px;
   line-height: 1.5;
@@ -96,7 +100,8 @@ button:disabled {
 }
 
 #dashboard[hidden],
-#login-section[hidden] {
+#login-section[hidden],
+#cancel-edit-button[hidden] {
   display: none;
 }
 
@@ -105,6 +110,7 @@ button:disabled {
   padding-top: 15px;
   border-top: 1px solid #f0dce8;
 }
+
 .drama-item {
   padding: 15px;
   margin-top: 12px;
@@ -131,9 +137,6 @@ button:disabled {
   background: #9875b5;
 }
 
-.delete-button {
-  background: #c76b80;
-}
 a {
   display: block;
   margin-top: 20px;
@@ -181,38 +184,31 @@ footer {
     <p id="user-email"></p>
 
     <div class="form-section">
-      <h2>Cadastrar novo drama</h2>
-      <p>Preencha as informações para adicionar um título ao catálogo.</p>
+      <h2 id="form-title">Cadastrar novo drama</h2>
+      <p>Preencha as informações do drama.</p>
 
       <form id="drama-form">
 
         <label for="title">Título</label>
-        <input id="title" required
-          placeholder="Ex.: 23.5">
+        <input id="title" required placeholder="Ex.: 23.5">
 
         <label for="original_title">Título original</label>
-        <input id="original_title"
-          placeholder="Nome em tailandês">
+        <input id="original_title" placeholder="Nome em tailandês">
 
         <label for="synopsis">Sinopse</label>
-        <textarea id="synopsis"
-          placeholder="Escreva a sinopse do drama..."></textarea>
+        <textarea id="synopsis"></textarea>
 
         <label for="year">Ano de lançamento</label>
-        <input id="year" type="number"
-          min="1900" max="2100" placeholder="2024">
+        <input id="year" type="number" min="1900" max="2100">
 
         <label for="episodes">Número de episódios</label>
-        <input id="episodes" type="number"
-          min="1" placeholder="12">
+        <input id="episodes" type="number" min="1">
 
         <label for="poster_url">Link do pôster</label>
-        <input id="poster_url" type="url"
-          placeholder="https://...">
+        <input id="poster_url" type="url">
 
         <label for="genre">Gênero</label>
-        <input id="genre"
-          placeholder="Romance, Drama, Comédia...">
+        <input id="genre">
 
         <label for="status">Status</label>
         <select id="status">
@@ -225,40 +221,40 @@ footer {
         <input id="country" value="Tailândia">
 
         <label for="main_cast">Elenco principal</label>
-        <textarea id="main_cast"
-          placeholder="Nome das atrizes..."></textarea>
+        <textarea id="main_cast"></textarea>
 
         <label for="characters">Personagens</label>
-        <textarea id="characters"
-          placeholder="Nome da personagem — Nome da atriz"></textarea>
+        <textarea id="characters"></textarea>
 
         <label for="trailer_url">Link do trailer no YouTube</label>
-        <input id="trailer_url" type="url"
-          placeholder="https://www.youtube.com/watch?v=...">
+        <input id="trailer_url" type="url">
 
         <button type="submit" id="save-button">
           Salvar drama 🌷
         </button>
+
+        <button type="button" id="cancel-edit-button" hidden>
+          Cancelar edição
+        </button>
       </form>
     </div>
 
-        <div class="form-section">
+    <div class="form-section">
       <h2>Gerenciar dramas 🌸</h2>
       <p>Consulte e organize os títulos do catálogo.</p>
       <div id="drama-list">Carregando dramas...</div>
     </div>
+
     <button type="button" id="logout-button">
       Sair da conta
     </button>
   </section>
 
   <p id="message" role="status"></p>
-
   <a href="index.html">← Voltar ao catálogo</a>
 </main>
 
 <footer>ThaiGList © 2026</footer>
-
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -279,23 +275,53 @@ const loginForm = document.getElementById("login-form");
 const loginButton = document.getElementById("login-button");
 const dramaForm = document.getElementById("drama-form");
 const saveButton = document.getElementById("save-button");
+const cancelButton = document.getElementById("cancel-edit-button");
+
+let editingId = null;
+
+const fields = [
+  "title",
+  "original_title",
+  "synopsis",
+  "year",
+  "episodes",
+  "poster_url",
+  "genre",
+  "status",
+  "country",
+  "main_cast",
+  "characters",
+  "trailer_url"
+];
 
 function showSession(session) {
   if (session) {
-        loadDramas();
     loginSection.hidden = true;
     dashboard.hidden = false;
     document.getElementById("user-email").textContent =
       "Conta: " + (session.user.email || "");
+    loadDramas();
   } else {
     loginSection.hidden = false;
     dashboard.hidden = true;
+    resetForm();
   }
+}
+
+function resetForm() {
+  editingId = null;
+  dramaForm.reset();
+
+  document.getElementById("country").value = "Tailândia";
+  document.getElementById("form-title").textContent =
+    "Cadastrar novo drama";
+
+  saveButton.textContent = "Salvar drama 🌷";
+  cancelButton.hidden = true;
 }
 
 async function loadDramas() {
   const dramaList = document.getElementById("drama-list");
-
   dramaList.textContent = "Carregando dramas...";
 
   const { data, error } = await db
@@ -329,11 +355,61 @@ async function loadDramas() {
       " · " +
       (drama.status || "Sem status");
 
+    const actions = document.createElement("div");
+    actions.className = "drama-actions";
+
+    const editButton = document.createElement("button");
+    editButton.type = "button";
+    editButton.className = "edit-button";
+    editButton.textContent = "✏️ Editar";
+
+    editButton.addEventListener("click", () => {
+      editDrama(drama.id);
+    });
+
+    actions.appendChild(editButton);
     item.appendChild(title);
     item.appendChild(info);
+    item.appendChild(actions);
 
     dramaList.appendChild(item);
   });
+}
+
+async function editDrama(id) {
+  message.textContent = "Carregando informações...";
+
+  const { data, error } = await db
+    .from("dramas")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error || !data) {
+    console.error(error);
+    message.textContent = "Não foi possível abrir esse drama.";
+    return;
+  }
+
+  editingId = id;
+
+  fields.forEach((field) => {
+    const input = document.getElementById(field);
+    input.value = data[field] ?? "";
+  });
+
+  document.getElementById("form-title").textContent =
+    "Editando: " + data.title;
+
+  saveButton.textContent = "Salvar alterações 🌷";
+  cancelButton.hidden = false;
+
+  document.getElementById("form-title").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+
+  message.textContent = "Edite as informações e salve as alterações.";
 }
 
 async function checkSession() {
@@ -390,7 +466,6 @@ dramaForm.addEventListener("submit", async (event) => {
     message.textContent = "Sua sessão expirou. Entre novamente.";
     showSession(null);
     saveButton.disabled = false;
-    saveButton.textContent = "Salvar drama 🌷";
     return;
   }
 
@@ -404,7 +479,7 @@ dramaForm.addEventListener("submit", async (event) => {
     return value === "" ? null : Number(value);
   }
 
-  const newDrama = {
+  const dramaData = {
     title: getText("title"),
     original_title: getText("original_title"),
     synopsis: getText("synopsis"),
@@ -419,25 +494,43 @@ dramaForm.addEventListener("submit", async (event) => {
     trailer_url: getText("trailer_url")
   };
 
-  const { error } = await db
-    .from("dramas")
-    .insert([newDrama]);
+  let result;
+
+  if (editingId !== null) {
+    result = await db
+      .from("dramas")
+      .update(dramaData)
+      .eq("id", editingId);
+  } else {
+    result = await db
+      .from("dramas")
+      .insert([dramaData]);
+  }
 
   saveButton.disabled = false;
-  saveButton.textContent = "Salvar drama 🌷";
 
-  if (error) {
-    console.error(error);
+  if (result.error) {
+    console.error(result.error);
     message.textContent =
       "Não foi possível salvar. Verifique as permissões e os dados.";
+    saveButton.textContent =
+      editingId !== null ? "Salvar alterações 🌷" : "Salvar drama 🌷";
     return;
   }
 
-  dramaForm.reset();
-  document.getElementById("country").value = "Tailândia";
+  const wasEditing = editingId !== null;
 
-  message.textContent =
-    "Drama cadastrado com sucesso! 🌷 Ele já foi salvo no banco de dados.";
+  resetForm();
+  message.textContent = wasEditing
+    ? "Drama atualizado com sucesso! 🌷"
+    : "Drama cadastrado com sucesso! 🌷";
+
+  loadDramas();
+});
+
+cancelButton.addEventListener("click", () => {
+  resetForm();
+  message.textContent = "Edição cancelada.";
 });
 
 document.getElementById("logout-button").addEventListener("click", async () => {

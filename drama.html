@@ -207,6 +207,35 @@ async function loadDrama() {
   layout.appendChild(info);
   details.appendChild(layout);
   
+  if (data.trailer_url) {
+    const trailerSection = document.createElement("section");
+    trailerSection.className = "synopsis";
+
+    addText(trailerSection, "h2", "", "Trailer oficial");
+
+    const video = document.createElement("iframe");
+
+    const videoId = data.trailer_url.match(
+      /(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+    );
+
+    if (videoId) {
+      video.src = "https://www.youtube.com/embed/" + videoId[1];
+      video.title = "Trailer de " + data.title;
+      video.width = "100%";
+      video.height = "315";
+      video.style.border = "0";
+      video.style.borderRadius = "14px";
+      video.allow =
+        "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+      video.allowFullscreen = true;
+
+      trailerSection.appendChild(video);
+      details.appendChild(trailerSection);
+    }
+  }
+
+  
   if (data.main_cast) {
     const castSection = document.createElement("section");
     castSection.className = "synopsis";

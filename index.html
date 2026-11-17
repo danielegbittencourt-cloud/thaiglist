@@ -497,7 +497,25 @@ document.getElementById("weekly-next").addEventListener("click", () => {
     behavior: "smooth"
   });
 });
+// Pesquisa do catálogo
+search.addEventListener("input", () => {
+  const term = search.value.trim().toLowerCase();
 
+  const filtered = series.filter(item => {
+    const searchable = [
+      item.title,
+      item.original_title,
+      item.genre
+    ].join(" ").toLowerCase();
+
+    return searchable.includes(term);
+  });
+
+  showSeries(filtered);
+});
+
+// Inicia o carregamento
+loadSeries();
 </script>
 
 </body>

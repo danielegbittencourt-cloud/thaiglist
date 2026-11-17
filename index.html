@@ -600,16 +600,16 @@ footer {
   <div class="header-top">
     <h1>ThaiGList 🌷</h1>
 
-    <nav class="user-nav">
+   <nav class="user-nav">
   <a href="conta.html" id="login-link">Entrar / Cadastrar</a>
+
+  <span id="user-name" hidden></span>
 
   <a href="minha-lista.html" id="my-list-link" hidden>
     Minha Lista
   </a>
 
-  <a href="#" id="logout-link" hidden>
-    Sair
-  </a>
+  <a href="#" id="logout-link" hidden>Sair</a>
 </nav>
   </div>
 
@@ -955,6 +955,31 @@ search.addEventListener("input", () => {
 });
 // Atualiza o menu conforme o estado da conta
 function updateUserMenu(session) {
+  const loginLink = document.getElementById("login-link");
+  const myListLink = document.getElementById("my-list-link");
+  const logoutLink = document.getElementById("logout-link");
+  const userName = document.getElementById("user-name");
+
+  if (session) {
+    const email = session.user.email || "";
+    const name =
+      session.user.user_metadata?.name ||
+      email.split("@")[0] ||
+      "Usuário";
+
+    loginLink.hidden = true;
+    myListLink.hidden = false;
+    logoutLink.hidden = false;
+    userName.hidden = false;
+
+    userName.textContent = "Olá, " + name + " 🌷";
+  } else {
+    loginLink.hidden = false;
+    myListLink.hidden = true;
+    logoutLink.hidden = true;
+    userName.hidden = true;
+  }
+}
   const loginLink = document.getElementById("login-link");
   const myListLink = document.getElementById("my-list-link");
   const logoutLink = document.getElementById("logout-link");

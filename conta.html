@@ -109,6 +109,74 @@ a {
   text-align: center;
   text-decoration: none;
 }
+  
+/* POPUP DE MENSAGENS */
+
+.popup-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #000000bb;
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.popup-overlay.active {
+  display: flex;
+}
+
+.popup-box {
+  width: 100%;
+  max-width: 380px;
+  padding: 30px 25px;
+  text-align: center;
+  background: #1b1626;
+  border: 1px solid #71428c;
+  border-radius: 18px;
+  box-shadow: 0 10px 40px #00000088;
+  animation: popupIn .25s ease;
+}
+
+.popup-icon {
+  font-size: 42px;
+  margin-bottom: 12px;
+}
+
+.popup-box h3 {
+  color: #f05ba8;
+  margin: 0 0 12px;
+}
+
+.popup-box p {
+  color: #d0c3dc;
+  line-height: 1.6;
+}
+
+.popup-box button {
+  width: 100%;
+  margin-top: 15px;
+  padding: 13px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(100deg, #f05ba8, #a875f5);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+@keyframes popupIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 </style>
 </head>
 

@@ -256,6 +256,18 @@ const client = window.supabase.createClient(
 );
 
 const message = document.getElementById("message");
+  
+function showPopup(title, text, icon = "🌷") {
+  document.getElementById("popup-title").textContent = title;
+  document.getElementById("popup-text").textContent = text;
+  document.getElementById("popup-icon").textContent = icon;
+  document.getElementById("popup").classList.add("active");
+}
+
+document.getElementById("popup-close").addEventListener("click", function() {
+  document.getElementById("popup").classList.remove("active");
+});
+
 
 document.getElementById("signup-form")
 .addEventListener("submit", async function(event) {
@@ -281,14 +293,14 @@ document.getElementById("signup-form")
   button.textContent = "Criar conta";
 
   if (error) {
-    message.textContent = "Não foi possível criar a conta: " + error.message;
+   showPopup("Ops!", "Não foi possível criar a conta: " + error.message, "⚠️");
     return;
   }
 
   if (data.session) {
-    message.textContent = "Conta criada! Você já está conectado.";
+  showPopup("Conta criada!", "Sua conta foi criada e você já está conectado. 🌷", "🎉");  
   } else {
-    message.textContent = "Conta criada! Confira seu e-mail para confirmar o cadastro.";
+   showPopup("Cadastro realizado!", "Confira seu e-mail para confirmar sua conta no ThaiGList.", "💌");
   }
 });
 
@@ -313,11 +325,11 @@ document.getElementById("login-form")
   button.textContent = "Entrar";
 
   if (error) {
-    message.textContent = "Não foi possível entrar: " + error.message;
+   showPopup("Não foi possível entrar", error.message, "⚠️");
     return;
   }
 
-  message.textContent = "Login realizado com sucesso! Sua conta está conectada.";
+  showPopup("Bem-vindo ao ThaiGList!", "Login realizado com sucesso. 🌷", "🎉");
 });
 </script>
 

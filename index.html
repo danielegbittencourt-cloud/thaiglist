@@ -61,6 +61,40 @@ header p {
   font-size: 16px;
 }
 
+.user-nav {
+  display: flex;
+  gap: 12px;
+  margin-top: 25px;
+  flex-wrap: wrap;
+}
+
+.user-nav a {
+  display: inline-block;
+  padding: 11px 18px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  background: #7653a5;
+  transition: .2s;
+}
+
+.user-nav a:last-child {
+  background: linear-gradient(100deg, #f05ba8, #a875f5);
+}
+
+.user-nav a:hover {
+  transform: translateY(-2px);
+  opacity: .9;
+}
+
+@media (max-width: 520px) {
+  .user-nav {
+    justify-content: center;
+  }
+}
+
 /* ÁREA PRINCIPAL */
 
 main {
@@ -550,9 +584,14 @@ footer {
 
 <header>
   <h1>ThaiGList 🌷</h1>
-  <p>Seu cantinho para acompanhar o universo Girls' Love tailandês.</p>
-</header>
 
+  <p>Seu cantinho para acompanhar o universo Girls' Love tailandês.</p>
+
+  <nav class="user-nav">
+    <a href="conta.html">Entrar / Cadastrar</a>
+    <a href="minha-lista.html">Minha Lista</a>
+  </nav>
+</header>
 <main>
   <h2>Minha coleção</h2>
 

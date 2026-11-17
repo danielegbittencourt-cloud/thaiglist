@@ -206,6 +206,35 @@ async function loadDrama() {
 
   layout.appendChild(info);
   details.appendChild(layout);
+  
+  if (data.main_cast) {
+    const castSection = document.createElement("section");
+    castSection.className = "synopsis";
+
+    addText(castSection, "h2", "", "Elenco principal");
+
+    const castText = addText(
+      castSection, "p", "", data.main_cast
+    );
+    castText.style.whiteSpace = "pre-line";
+
+    details.appendChild(castSection);
+  }
+
+  if (data.characters) {
+    const charactersSection = document.createElement("section");
+    charactersSection.className = "synopsis";
+
+    addText(charactersSection, "h2", "", "Personagens");
+
+    const charactersText = addText(
+      charactersSection, "p", "", data.characters
+    );
+    charactersText.style.whiteSpace = "pre-line";
+
+    details.appendChild(charactersSection);
+  }
+
 
   if (data.synopsis) {
     const synopsis = document.createElement("section");

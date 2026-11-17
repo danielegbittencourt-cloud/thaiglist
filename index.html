@@ -263,50 +263,25 @@ footer {
   </footer>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-(function(){
-  try{
+const SUPABASE_URL = "https://jjybnidhwfimcdwygafk.supabase.co";
 
+const SUPABASE_KEY = "sb_publishable_DyikY0WSJJ4apDc0_ZwfOw_x6LvfqM-";
 
-let series = [
-  {
-    title: "23.5",
-    year: 2024,
-    country: "Tailândia",
-    episodes: 12,
-    status: "Concluída"
-  },
-  {
-    title: "The Secret of Us",
-    year: 2024,
-    country: "Tailândia",
-    episodes: 8,
-    status: "Assistida"
-  },
-  {
-    title: "Pluto",
-    year: 2024,
-    country: "Tailândia",
-    episodes: 12,
-    status: "Quero assistir"
-  },
-  {
-    title: "Blank",
-    year: 2024,
-    country: "Tailândia",
-    episodes: 12,
-    status: "Assistindo"
-  }
-];
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+let series = [];
 
 const list = document.getElementById("series-list");
 const search = document.getElementById("search");
 const form = document.getElementById("series-form");
-console.log("Formulário encontrado:", form);
 const addButton = document.getElementById("add-button");
 const cancelButton = document.getElementById("cancel-button");
 
-// Mostrar as séries
 function showSeries(items) {
   list.innerHTML = "";
 
@@ -323,7 +298,7 @@ function showSeries(items) {
     title.textContent = item.title;
 
     const year = document.createElement("p");
-    year.textContent = "Ano: " + item.year;
+    year.textContent = "Ano: " + (item.year || "Não informado");
 
     const country = document.createElement("p");
     country.textContent = "País: " + (item.country || "Não informado");
@@ -332,55 +307,31 @@ function showSeries(items) {
     episodes.textContent = "Episódios: " + (item.episodes || "Não informado");
 
     const status = document.createElement("p");
-    status.textContent = "Status: " + item.status;
+    status.textContent = "Status: " + (item.status || "Não informado");
 
     card.append(title, year, country, episodes, status);
     list.appendChild(card);
   });
 }
 
-// Abrir formulário
-addButton.addEventListener("click", () => {
-  form.hidden = false;
-});
+async function loadSeries() {
+  list.innerHTML = "<p>Carregando catálogo... 🌷</p>";
 
-// Fechar formulário
-cancelButton.addEventListener("click", () => {
-  form.reset();
-  form.hidden = true;
-});
+  const { data, error } = await db
+    .from("dramas")
+    .select("id, title, year, country, episodes, status")
+    .order("id");
 
-// Cadastrar série
-
-function saveSeries() {
-  const newSeries = {
-    title: document.getElementById("title").value.trim(),
-    year: document.getElementById("year").value,
-    country: document.getElementById("country").value.trim(),
-    episodes: document.getElementById("episodes").value,
-    status: document.getElementById("status").value
-  };
-
-  if (!newSeries.title || !newSeries.year) {
-    alert("Preencha o nome e o ano!");
+  if (error) {
+    console.error("Erro ao carregar dramas:", error);
+    list.innerHTML = "<p>Não foi possível carregar o catálogo.</p>";
     return;
   }
 
-  series.push(newSeries);
-
+  series = data || [];
   showSeries(series);
-  form.reset();
-  form.hidden = true;
-  search.value = "";
-
-  alert("Série adicionada com sucesso! 🌷");
 }
 
-document.querySelector(
-  "#series-form button[type='submit']"
-).addEventListener("click", saveSeries);
-
-// Pesquisa
 search.addEventListener("input", () => {
   const term = search.value.toLowerCase();
 
@@ -391,13 +342,15 @@ search.addEventListener("input", () => {
   showSeries(filtered);
 });
 
-// Iniciar catálogo
-showSeries(series);
+// Cadastro será habilitado após configurarmos
+// o acesso administrativo seguro.
+addButton.disabled = true;
+addButton.textContent = "Cadastro em breve 🌷";
 
-  }catch(e){
-    try{window.parent.postMessage({type:'hxlog',level:'error',msg:'Script error: '+e.message},'*')}catch(_){}
-  }
-}());
+form.hidden = true;
+
+loadSeries();
 </script>
+
 </body>
 </html>

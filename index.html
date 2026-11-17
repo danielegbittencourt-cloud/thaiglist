@@ -418,7 +418,8 @@ async function loadSeries() {
       poster_url,
       genre,
       status,
-      country
+      country,
+      weekly_featured
     `)
     .order("id");
 
@@ -430,26 +431,73 @@ async function loadSeries() {
   }
 
   series = data || [];
+
+  // Carrega o catálogo normal
   showSeries(series);
+
+  // Seleciona somente os GLs da semana
+  const weeklySeries = series.filter(
+    item => item.weekly_featured === true
+  );
+
+  showWeeklySeries(weeklySeries);
 }
 
-search.addEventListener("input", () => {
-  const term = search.value.trim().toLowerCase();
+function showWeeklySeries(items) {
+  const weeklyList = document.getElementById("weekly-list");
 
-  const filtered = series.filter(item => {
-    const searchable = [
-      item.title,
-      item.original_title,
-      item.genre
-    ].join(" ").toLowerCase();
+  weeklyList.innerHTML = "";
 
-    return searchable.includes(term);
+  if (!items.length) {
+    weeklyList.textContent =
+      "Em breve teremos GLs em destaque! 🌷";
+    return;
+  }
+
+  items.forEach(item => {
+    const card = document.createElement("article");
+    card.className = "weekly-card";
+
+    card.addEventListener("click", () => {
+      window.location.href =
+        "drama.html?id=" + encodeURIComponent(item.id);
+    });
+
+    if (item.poster_url) {
+      const image = document.createElement("img");
+      image.src = item.poster_url;
+      image.alt = "Pôster de " + item.title;
+      image.loading = "lazy";
+      card.appendChild(image);
+    } else {
+      const placeholder = document.createElement("div");
+      placeholder.textContent = "Capa em breve 🌷";
+      card.appendChild(placeholder);
+    }
+
+    const title = document.createElement("h3");
+    title.textContent = item.title || "Sem título";
+
+    card.appendChild(title);
+    weeklyList.appendChild(card);
   });
+}
 
-  showSeries(filtered);
+// Navegação do carrossel
+document.getElementById("weekly-prev").addEventListener("click", () => {
+  document.getElementById("weekly-list").scrollBy({
+    left: -220,
+    behavior: "smooth"
+  });
 });
 
-loadSeries();
+document.getElementById("weekly-next").addEventListener("click", () => {
+  document.getElementById("weekly-list").scrollBy({
+    left: 220,
+    behavior: "smooth"
+  });
+});
+
 </script>
 
 </body>

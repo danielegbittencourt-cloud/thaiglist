@@ -282,6 +282,7 @@ const saveButton = document.getElementById("save-button");
 
 function showSession(session) {
   if (session) {
+        loadDramas();
     loginSection.hidden = true;
     dashboard.hidden = false;
     document.getElementById("user-email").textContent =
@@ -290,6 +291,49 @@ function showSession(session) {
     loginSection.hidden = false;
     dashboard.hidden = true;
   }
+}
+
+async function loadDramas() {
+  const dramaList = document.getElementById("drama-list");
+
+  dramaList.textContent = "Carregando dramas...";
+
+  const { data, error } = await db
+    .from("dramas")
+    .select("id, title, year, status")
+    .order("id", { ascending: false });
+
+  if (error) {
+    console.error(error);
+    dramaList.textContent = "Não foi possível carregar os dramas.";
+    return;
+  }
+
+  dramaList.innerHTML = "";
+
+  if (!data || data.length === 0) {
+    dramaList.textContent = "Nenhum drama cadastrado ainda.";
+    return;
+  }
+
+  data.forEach((drama) => {
+    const item = document.createElement("div");
+    item.className = "drama-item";
+
+    const title = document.createElement("h3");
+    title.textContent = drama.title;
+
+    const info = document.createElement("p");
+    info.textContent =
+      (drama.year || "Ano não informado") +
+      " · " +
+      (drama.status || "Sem status");
+
+    item.appendChild(title);
+    item.appendChild(info);
+
+    dramaList.appendChild(item);
+  });
 }
 
 async function checkSession() {

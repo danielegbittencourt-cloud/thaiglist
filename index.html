@@ -35,62 +35,21 @@ body {
   margin: auto;
 }
 
-/* CABEÇALHO */
 
+/* CABEÇALHO THAIGLIST */
 
-header {
-  width: 100%;
-  min-height: 380px;
-
-  background-image:
-    linear-gradient(
-      90deg,
-      rgba(25, 12, 35, 0.45),
-      rgba(25, 12, 35, 0.10)
-    ),
-    url("./banner.jpeg");
-
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  display: block;
-  position: relative;
-  padding: 35px 40px;
-  box-sizing: border-box;
-  color: white;
-  text-align: left;
-}
-
-/* Nome e navegação */
-.header-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  width: 100%;
-  gap: 20px;
-  flex-wrap: nowrap;
-}
-
-.header-top h1 {
-  font-size: 46px;
-  color: white;
-  margin: 0;
-  letter-spacing: 1px;
-}
-
-/* Botões no canto superior direito */
 .user-nav {
   display: flex;
   justify-content: flex-end;
   align-items: center;
   gap: 12px;
   flex-wrap: wrap;
+  margin-bottom: 12px;
 }
 
 .user-nav a {
   display: inline-block;
-  padding: 11px 18px;
+  padding: 11px 20px;
   border-radius: 10px;
   text-decoration: none;
   font-size: 14px;
@@ -109,50 +68,84 @@ header {
   opacity: 0.9;
 }
 
-/* Textos secundários */
+/* Banner principal */
+
+header {
+  width: 100%;
+  min-height: 380px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 30px 20px;
+
+  background-image:
+    linear-gradient(
+      to top,
+      rgba(16, 10, 25, 0.85),
+      rgba(25, 12, 35, 0.05) 65%
+    ),
+    url("./banner.jpeg");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  color: white;
+  text-align: center;
+}
+
+/* Nome e slogan */
+
+header h1 {
+  color: white;
+  font-size: 46px;
+  margin: 0 0 8px;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
 header p {
   color: #f1dcef;
   font-size: 15px;
+  margin: 0;
+  text-align: center;
 }
 
-/* Celular */
+/* Adaptação para celulares */
+
 @media (max-width: 600px) {
-  header {
-    min-height: 280px;
-    padding: 22px;
-  }
-
-  .header-top {
-    flex-wrap: wrap;
-    align-items: flex-start;
-  }
-
-  .header-top h1 {
-    font-size: 34px;
-  }
 
   .user-nav {
-    justify-content: flex-start;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-bottom: 10px;
   }
-}
- 
-/* Banner responsivo para celulares */
-@media (max-width: 600px) {
+
+  .user-nav a {
+    padding: 9px 13px;
+    font-size: 12px;
+  }
 
   header {
-    width: 100%;
-    min-height: 380px;
+    min-height: 340px;
+    padding: 22px 15px;
 
     background-size: auto 100%;
     background-position: right center;
-    background-repeat: no-repeat;
-
-    padding: 25px 20px;
-    box-sizing: border-box;
-
-    display: block;
-    position: relative;
   }
+
+  header h1 {
+    font-size: 34px;
+  }
+
+  header p {
+    font-size: 13px;
+    max-width: 300px;
+    line-height: 1.5;
+  }
+}
 
 }  /* ÁREA PRINCIPAL */
 
@@ -280,14 +273,7 @@ h2 {
     padding: 16px 12px;
   }
 
-  header {
-    padding: 35px 22px;
-  }
-
-  header h1 {
-    font-size: 34px;
-  }
-
+  
   main {
     padding: 19px;
   }
@@ -701,12 +687,13 @@ footer {
 <body>
 <div class="container">
 
-<header>
-  <div class="header-top">
-    <h1>ThaiGList 🌷</h1>
 
-   <nav class="user-nav">
-  <a href="conta.html" id="login-link">Entrar / Cadastrar</a>
+<!-- BOTÕES ACIMA DO BANNER -->
+
+<nav class="user-nav">
+  <a href="conta.html" id="login-link">
+    Entrar / Cadastrar
+  </a>
 
   <span id="user-name" hidden></span>
 
@@ -714,13 +701,21 @@ footer {
     Minha Lista
   </a>
 
-  <a href="#" id="logout-link" hidden>Sair</a>
+  <a href="#" id="logout-link" hidden>
+    Sair
+  </a>
 </nav>
-  </div>
 
-  <p>Seu cantinho para acompanhar o universo Girls' Love tailandês.</p>
+<!-- BANNER PRINCIPAL -->
 
+<header>
+  <h1>ThaiGList 🌷</h1>
+
+  <p>
+    Seu cantinho para acompanhar o universo Girls' Love tailandês.
+  </p>
 </header>
+
 <section class="brand-banner">
   
 </section>

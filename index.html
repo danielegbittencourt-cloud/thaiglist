@@ -517,59 +517,6 @@ h2 {
 /* BOTÕES E FORMULÁRIOS */
 
 
-#series-form {
-  margin-top: 20px;
-  padding: 24px;
-  background: var(--surface-light);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-}
-
-#series-form[hidden] {
-  display: none;
-}
-
-#series-form h3 {
-  color: var(--pink);
-}
-
-#series-form label {
-  display: block;
-  margin: 14px 0 6px;
-  color: var(--muted);
-  font-weight: bold;
-}
-
-#series-form input,
-#series-form select {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: #171221;
-  color: white;
-  font-size: 15px;
-}
-
-.form-buttons {
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.form-buttons button {
-  flex: 1;
-  padding: 12px;
-  border: none;
-  border-radius: 10px;
-  background: var(--pink);
-  color: white;
-  cursor: pointer;
-}
-
-#cancel-button {
-  background: #65576e;
-}
 
 /* RODAPÉ */
 
@@ -723,34 +670,7 @@ footer {
   >
 
   
-  <form id="series-form" hidden>
-    <h3>Nova série</h3>
-
-    <label>Nome da série</label>
-    <input type="text" id="title" required>
-
-    <label>Ano de lançamento</label>
-    <input type="number" id="year">
-
-    <label>País</label>
-    <input type="text" id="country">
-
-    <label>Número de episódios</label>
-    <input type="number" id="episodes">
-
-    <label>Status</label>
-    <select id="status">
-      <option value="Quero assistir">Quero assistir</option>
-      <option value="Assistindo">Assistindo</option>
-      <option value="Concluída">Concluída</option>
-    </select>
-
-    <div class="form-buttons">
-      <button type="submit">Salvar série</button>
-      <button type="button" id="cancel-button">Cancelar</button>
-    </div>
-  </form>
-<section id="featured-banner" class="featured-banner">
+ <section id="featured-banner" class="featured-banner">
   <div class="featured-content">
     <span class="featured-label">🌷 DESTAQUE DA SEMANA</span>
 

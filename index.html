@@ -637,21 +637,27 @@ footer {
     background: #100d18;
   }
 
-  .card-content {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 16px;
-    background: linear-gradient(
-      to bottom,
-      transparent 25%,
-      rgba(16, 13, 24, 0.35) 50%,
-      rgba(16, 13, 24, 0.97) 100%
-    );
-    z-index: 1;
-  }
+  
+.card-content {
+  position: absolute;
+  top: auto;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 50%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 12px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(16, 13, 24, 0.75) 35%,
+    rgba(16, 13, 24, 0.98) 100%
+  );
+  z-index: 1;
+}
 
   .series-card h3 {
     color: #fff;

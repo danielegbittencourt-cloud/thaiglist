@@ -41,11 +41,12 @@ body {
 header {
   width: 100%;
   min-height: 380px;
+
   background-image:
     linear-gradient(
       90deg,
-      rgba(25, 12, 35, 0.75),
-      rgba(25, 12, 35, 0.15)
+      rgba(25, 12, 35, 0.45),
+      rgba(25, 12, 35, 0.10)
     ),
     url("./banner-thaiglist.png");
 
@@ -53,50 +54,37 @@ header {
   background-position: center;
   background-repeat: no-repeat;
 
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 40px;
+  display: block;
+  position: relative;
+  padding: 35px 40px;
   box-sizing: border-box;
   color: white;
   text-align: left;
 }
 
-@media (max-width: 600px) {
-  header {
-    min-height: 260px;
-    padding: 20px;
-  }
-}
-
-
-header h1 {
-  font-size: 46px;
-  color: #ffffff;
-  margin: 0 0 12px;
-  letter-spacing: 1px;
-}
-
-header p {
-  color: #e6d3f5;
-  font-size: 16px;
-}
-
+/* Nome e navegação */
 .header-top {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  width: 100%;
   gap: 20px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .header-top h1 {
+  font-size: 46px;
+  color: white;
   margin: 0;
+  letter-spacing: 1px;
 }
 
+/* Botões no canto superior direito */
 .user-nav {
   display: flex;
-  gap: 10px;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
@@ -109,6 +97,7 @@ header p {
   font-weight: bold;
   color: white;
   background: #7653a5;
+  transition: 0.2s;
 }
 
 .user-nav a:last-child {
@@ -117,17 +106,33 @@ header p {
 
 .user-nav a:hover {
   transform: translateY(-2px);
-  opacity: .9;
+  opacity: 0.9;
 }
 
-@media (max-width: 520px) {
+/* Textos secundários */
+header p {
+  color: #f1dcef;
+  font-size: 15px;
+}
+
+/* Celular */
+@media (max-width: 600px) {
+  header {
+    min-height: 280px;
+    padding: 22px;
+  }
+
   .header-top {
-    flex-direction: column;
-    align-items: center;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .header-top h1 {
+    font-size: 34px;
   }
 
   .user-nav {
-    justify-content: center;
+    justify-content: flex-start;
   }
 }
   /* ÁREA PRINCIPAL */

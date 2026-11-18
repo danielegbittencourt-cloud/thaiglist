@@ -37,17 +37,38 @@ body {
 
 /* CABEÇALHO */
 
+
 header {
+  width: 100%;
+  min-height: 380px;
+  background-image:
+    linear-gradient(
+      90deg,
+      rgba(25, 12, 35, 0.75),
+      rgba(25, 12, 35, 0.15)
+    ),
+    url("./banner-thaiglist.png");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 40px;
+  box-sizing: border-box;
+  color: white;
   text-align: left;
-  padding: 55px 40px;
-  background:
-    linear-gradient(110deg, #21132fdd, #31153bdd),
-    linear-gradient(135deg, #a875f5, #f05ba8);
-  border: 1px solid #75418b;
-  border-radius: 22px;
-  margin-bottom: 30px;
-  box-shadow: 0 10px 35px #00000055;
 }
+
+@media (max-width: 600px) {
+  header {
+    min-height: 260px;
+    padding: 20px;
+  }
+}
+
 
 header h1 {
   font-size: 46px;

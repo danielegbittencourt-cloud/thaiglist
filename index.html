@@ -389,8 +389,10 @@ h2 {
   margin-top: 25px;
 }
 
+
 .series-card {
   overflow: hidden;
+  position: relative;
   background: var(--surface-light);
   border: 1px solid var(--border);
   border-radius: 16px;
@@ -427,6 +429,45 @@ h2 {
   padding: 17px;
 }
 
+@media (max-width: 600px) {
+  .series-card {
+    position: relative;
+    aspect-ratio: 2 / 3;
+    height: auto;
+  }
+
+  .poster {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+  }
+
+  .poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #100d18;
+  }
+
+  .card-content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 16px;
+    background: linear-gradient(
+      to bottom,
+      transparent 25%,
+      rgba(16, 13, 24, 0.35) 50%,
+      rgba(16, 13, 24, 0.97) 100%
+    );
+    z-index: 1;
+  }
+
+ 
 .series-card h3 {
   color: var(--pink);
   font-size: 19px;
@@ -462,6 +503,7 @@ h2 {
   font-size: 12px;
   font-weight: bold;
 }
+
 
 /* BOTÕES E FORMULÁRIOS */
 
@@ -546,8 +588,8 @@ footer {
   color: var(--muted);
 }
 
-/* CELULARES */
 
+/* CELULARES */
 @media (max-width: 520px) {
   body {
     padding: 16px 12px;
@@ -565,8 +607,57 @@ footer {
     padding: 19px;
   }
 
+  .series-card {
+    position: relative;
+    aspect-ratio: 2 / 3;
+    height: auto;
+  }
+
   .poster {
-    height: 260px;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+  }
+
+  .poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #100d18;
+  }
+
+  .card-content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 16px;
+    background: linear-gradient(
+      to bottom,
+      transparent 25%,
+      rgba(16, 13, 24, 0.35) 50%,
+      rgba(16, 13, 24, 0.97) 100%
+    );
+    z-index: 1;
+  }
+
+  .series-card h3 {
+    color: #fff;
+    font-size: 17px;
+    margin-bottom: 5px;
+  }
+
+  .series-card p {
+    font-size: 12px;
+    margin: 3px 0;
+    color: #f7efff;
+  }
+
+  .original-title {
+    color: #e1cce9;
   }
 
   .weekly-card {
@@ -589,6 +680,11 @@ footer {
     height: 30px;
   }
 }
+
+[hidden] {
+  display: none !important;
+}
+
   [hidden] {
   display: none !important;
 }

@@ -883,13 +883,7 @@ function showSeries(items) {
       createText("h3", "", item.title || "Sem título")
     );
 
-    if (item.original_title) {
-      content.appendChild(
-        createText("p", "original-title", item.original_title)
-      );
-    }
-
-    if (item.year) {
+       if (item.year) {
       content.appendChild(
         createText("p", "", "Ano: " + item.year)
       );

@@ -516,24 +516,6 @@ h2 {
 }
 /* BOTÕES E FORMULÁRIOS */
 
-#add-button {
-  display: block;
-  width: 100%;
-  margin-top: 18px;
-  padding: 14px;
-  border: none;
-  border-radius: 12px;
-  background: linear-gradient(100deg, var(--pink), var(--purple));
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-#add-button:disabled {
-  opacity: .65;
-  cursor: not-allowed;
-}
 
 #series-form {
   margin-top: 20px;
@@ -739,10 +721,7 @@ footer {
     aria-label="Pesquisar dramas"
   >
 
-  <button type="button" id="add-button" disabled>
-    Cadastro em breve 🌷
-  </button>
-
+  
   <form id="series-form" hidden>
     <h3>Nova série</h3>
 
@@ -941,7 +920,7 @@ function showSeries(items) {
   showWeeklySeries(weeklySeries);
   showFeaturedDrama(weeklySeries[0]);
 }
-
+getElementById
 function showFeaturedDrama(item) {
   const banner = document.getElementById("featured-banner");
   const title = document.getElementById("featured-title");

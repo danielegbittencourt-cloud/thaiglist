@@ -192,6 +192,90 @@ footer {
     font-size: 24px;
   }
 }
+  
+.my-list-controls {
+  margin-top: 28px;
+  padding: 22px;
+  background: #1b1626;
+  border: 1px solid #382b49;
+  border-radius: 16px;
+}
+
+.my-list-controls h3 {
+  color: #f05ba8;
+  margin-top: 0;
+  margin-bottom: 18px;
+}
+
+.list-status-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin: 15px 0;
+}
+
+.list-status-options button {
+  padding: 11px 15px;
+  border-radius: 10px;
+  border: 1px solid #493956;
+  background: #241d32;
+  color: #f7efff;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.list-status-options button.active {
+  background: linear-gradient(135deg, #f05ba8, #a875f5);
+  border-color: transparent;
+  color: white;
+}
+
+.rating-area {
+  margin: 20px 0;
+}
+
+.rating-stars {
+  display: flex;
+  gap: 7px;
+  margin-top: 10px;
+}
+
+.rating-stars button {
+  background: transparent;
+  border: none;
+  color: #f5bd54;
+  font-size: 30px;
+  cursor: pointer;
+  padding: 2px;
+}
+
+.save-list-button {
+  width: 100%;
+  padding: 13px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #f05ba8, #a875f5);
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+.save-list-button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.list-message {
+  color: #f05ba8;
+  margin-bottom: 0;
+}
+
+.my-list-controls [hidden] {
+  display: none !important;
+}
+
 </style>
 
 <body>
@@ -288,7 +372,8 @@ async function loadDrama() {
 
   layout.appendChild(info);
   
-  // Minha Lista: controles do usuário
+
+  // Minha Lista: controles visuais
   const listSection = document.createElement("section");
   listSection.className = "my-list-controls";
 
@@ -313,52 +398,88 @@ async function loadDrama() {
   } else {
     const userId = session.user.id;
 
-    const statusSelect = document.createElement("select");
+    let selectedStatus = "want_to_watch";
+    let selectedRating = 0;
+
+    const statusOptions = document.createElement("div");
+    statusOptions.className = "list-status-options";
 
     const statuses = [
-      { value: "want_to_watch", label: "Quero assistir" },
-      { value: "watching", label: "Estou assistindo" },
-      { value: "completed", label: "Concluído" }
+      { value: "want_to_watch", label: "♡ Quero assistir" },
+      { value: "watching", label: "▶ Assistindo" },
+      { value: "completed", label: "✓ Concluído" }
     ];
 
+    const statusButtons = [];
+
     statuses.forEach(status => {
-      const option = document.createElement("option");
-      option.value = status.value;
-      option.textContent = status.label;
-      statusSelect.appendChild(option);
+      const button = document.createElement("button");
+      button.type = "button";
+      button.textContent = status.label;
+
+      button.addEventListener("click", () => {
+        selectedStatus = status.value;
+
+        statusButtons.forEach(item => {
+          item.classList.toggle("active", item === button);
+        });
+
+        ratingArea.hidden = selectedStatus !== "completed";
+
+        if (selectedStatus !== "completed") {
+          selectedRating = 0;
+          updateStars();
+        }
+      });
+
+      statusButtons.push(button);
+      statusOptions.appendChild(button);
     });
 
-    const ratingSelect = document.createElement("select");
+    const ratingArea = document.createElement("div");
+    ratingArea.className = "rating-area";
+    ratingArea.hidden = true;
 
-    const noRating = document.createElement("option");
-    noRating.value = "";
-    noRating.textContent = "Sem nota";
-    ratingSelect.appendChild(noRating);
+    addText(ratingArea, "p", "", "Sua avaliação");
 
-    for (let i = 1; i <= 5; i++) {
-      const option = document.createElement("option");
-      option.value = i;
-      option.textContent = "⭐".repeat(i);
-      ratingSelect.appendChild(option);
+    const stars = document.createElement("div");
+    stars.className = "rating-stars";
+
+    const starButtons = [];
+
+    function updateStars() {
+      starButtons.forEach((button, index) => {
+        button.textContent =
+          index < selectedRating ? "★" : "☆";
+      });
     }
 
-    ratingSelect.hidden = true;
+    for (let i = 1; i <= 5; i++) {
+      const star = document.createElement("button");
+      star.type = "button";
+      star.textContent = "☆";
+      star.setAttribute("aria-label", i + " estrelas");
 
-    statusSelect.addEventListener("change", () => {
-      ratingSelect.hidden = statusSelect.value !== "completed";
+      star.addEventListener("click", () => {
+        selectedRating = i;
+        updateStars();
+      });
 
-      if (statusSelect.value !== "completed") {
-        ratingSelect.value = "";
-      }
-    });
+      starButtons.push(star);
+      stars.appendChild(star);
+    }
+
+    ratingArea.appendChild(stars);
 
     const saveButton = document.createElement("button");
     saveButton.type = "button";
-    saveButton.textContent = "Salvar na Minha Lista";
+    saveButton.className = "save-list-button";
+    saveButton.textContent = "＋ Salvar na Minha Lista";
 
     const message = document.createElement("p");
+    message.className = "list-message";
 
-    // Recupera o registro existente, se houver
+    // Recupera os dados já salvos
     const { data: existing, error: readError } = await db
       .from("user_drama_list")
       .select("status, rating")
@@ -372,21 +493,27 @@ async function loadDrama() {
     }
 
     if (existing) {
-      statusSelect.value = existing.status;
-      ratingSelect.hidden = existing.status !== "completed";
-      ratingSelect.value = existing.rating || "";
-      saveButton.textContent = "Atualizar Minha Lista";
+      selectedStatus = existing.status;
+      selectedRating = existing.rating || 0;
+
+      saveButton.textContent = "✓ Atualizar Minha Lista";
     }
+
+    statusButtons.forEach((button, index) => {
+      button.classList.toggle(
+        "active",
+        statuses[index].value === selectedStatus
+      );
+    });
+
+    ratingArea.hidden = selectedStatus !== "completed";
+    updateStars();
 
     saveButton.addEventListener("click", async () => {
       saveButton.disabled = true;
       saveButton.textContent = "Salvando...";
 
-      const selectedStatus = statusSelect.value;
-      const selectedRating =
-        selectedStatus === "completed" && ratingSelect.value
-          ? Number(ratingSelect.value)
-          : null;
+      message.textContent = "";
 
       const { error } = await db
         .from("user_drama_list")
@@ -395,7 +522,10 @@ async function loadDrama() {
             user_id: userId,
             drama_id: data.id,
             status: selectedStatus,
-            rating: selectedRating,
+            rating:
+              selectedStatus === "completed" && selectedRating
+                ? selectedRating
+                : null,
             updated_at: new Date().toISOString()
           },
           {
@@ -404,11 +534,12 @@ async function loadDrama() {
         );
 
       saveButton.disabled = false;
-      saveButton.textContent = "Atualizar Minha Lista";
+      saveButton.textContent = "✓ Atualizar Minha Lista";
 
       if (error) {
         console.error("Erro ao salvar:", error);
-        message.textContent = "Não foi possível salvar. Tente novamente.";
+        message.textContent =
+          "Não foi possível salvar. Tente novamente.";
         return;
       }
 
@@ -416,14 +547,15 @@ async function loadDrama() {
     });
 
     listSection.append(
-      statusSelect,
-      ratingSelect,
+      statusOptions,
+      ratingArea,
       saveButton,
       message
     );
   }
 
   info.appendChild(listSection);
+
 
   details.appendChild(layout);
   

@@ -799,13 +799,7 @@ card.addEventListener("click", () => {
       );
     }
 
-    if (item.status) {
-      content.appendChild(
-        createText("span", "status", item.status)
-      );
-    }
-
-    
+        
     card.append(poster, content);
     list.appendChild(card);
   });

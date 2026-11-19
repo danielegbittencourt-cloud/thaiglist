@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -7,110 +6,228 @@
 <title>Minha conta | ThaiGList</title>
 
 <style>
-* { box-sizing: border-box; }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
 :root {
   --background: #100d18;
   --surface: #1b1626;
+  --surface-light: #241d32;
+  --surface-hover: #2c233d;
   --pink: #f05ba8;
+  --pink-soft: #f05ba822;
   --purple: #a875f5;
+  --purple-soft: #a875f522;
   --text: #f7efff;
   --muted: #b8a9c9;
   --border: #382b49;
+  --border-glow: #71428c;
 }
 
 body {
   margin: 0;
-  padding: 25px 15px;
+  padding: 24px 14px 48px;
   background: var(--background);
   color: var(--text);
   font-family: Arial, sans-serif;
+  line-height: 1.5;
 }
 
 .container {
-  max-width: 480px;
-  margin: 40px auto;
+  max-width: 780px;
+  margin: 0 auto;
 }
 
-header {
-  text-align: center;
-  margin-bottom: 25px;
+/* Cabeçalho e navegação */
+header.top-banner {
+  padding: 22px 24px;
+  background: linear-gradient(120deg, #21132f, #392047);
+  border: 1px solid var(--border-glow);
+  border-radius: 20px;
+  box-shadow: 0 8px 30px #00000044;
+  margin-bottom: 20px;
 }
 
-header h1 { color: white; }
-header p { color: var(--muted); }
+.brand-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
 
-main {
-  padding: 25px;
+.brand-title {
+  margin: 0;
+  font-size: 26px;
+  color: #ffffff;
+}
+
+.brand-subtitle {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+nav.top-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid #ffffff1a;
+}
+
+nav.top-nav a {
+  display: inline-block;
+  margin: 0;
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--text);
+  background: #171122aa;
+  border: 1px solid transparent;
+  text-decoration: none;
+  transition: border-color .15s, background .15s;
+}
+
+nav.top-nav a:hover,
+nav.top-nav a.active {
+  border-color: var(--pink);
+  background: var(--pink-soft);
+  color: #ffffff;
+}
+
+/* Cards principais */
+.card {
+  padding: 24px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 18px;
+  box-shadow: 0 8px 28px #00000033;
+  margin-bottom: 18px;
 }
 
-h2 { color: var(--pink); }
+h2 {
+  margin: 0 0 8px;
+  color: var(--pink);
+  font-size: 20px;
+}
+
+h3 {
+  margin: 0 0 8px;
+  color: var(--text);
+  font-size: 16px;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 14px;
+  margin: 0;
+}
+
+.small-muted {
+  color: var(--muted);
+  font-size: 12px;
+}
 
 label {
   display: block;
-  margin: 15px 0 7px;
+  margin: 14px 0 6px;
   color: var(--muted);
   font-weight: bold;
+  font-size: 14px;
 }
 
-input {
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="url"],
+textarea,
+select {
   width: 100%;
-  padding: 13px;
+  padding: 12px 14px;
   border: 1px solid var(--border);
   border-radius: 10px;
-  background: #241d32;
-  color: white;
-  font-size: 16px;
+  background: var(--surface-light);
+  color: var(--text);
+  font-size: 15px;
+  font-family: Arial, sans-serif;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--pink);
+  box-shadow: 0 0 0 2px #f05ba833;
+}
+
+textarea {
+  min-height: 90px;
+  resize: vertical;
 }
 
 button {
   width: 100%;
-  margin-top: 18px;
-  padding: 14px;
+  margin-top: 16px;
+  padding: 13px 16px;
   border: none;
   border-radius: 10px;
   background: linear-gradient(100deg, var(--pink), var(--purple));
-  color: white;
-  font-size: 16px;
+  color: #ffffff;
+  font-size: 15px;
   font-weight: bold;
   cursor: pointer;
+  transition: opacity .2s, transform .15s;
+}
+
+button:hover {
+  opacity: .92;
+  transform: translateY(-1px);
 }
 
 button:disabled {
-  opacity: .6;
+  opacity: .55;
   cursor: wait;
+  transform: none;
+}
+
+.btn-inline {
+  width: auto;
+  margin-top: 0;
+  padding: 9px 14px;
+  font-size: 13px;
+}
+
+.secondary-button {
+  background: #30213e;
+  border: 1px solid var(--border-glow);
+}
+
+#logout-button {
+  background: #493044;
 }
 
 .divider {
-  margin: 28px 0;
+  margin: 26px 0;
   border-top: 1px solid var(--border);
 }
 
-#message {
-  margin-top: 18px;
-  color: var(--pink);
-  line-height: 1.5;
-}
-
-a {
-  display: block;
-  margin-top: 22px;
-  color: var(--pink);
-  text-align: center;
-  text-decoration: none;
-}
-
-#account-panel {
-  text-align: center;
+/* Cabeçalho do perfil */
+.profile-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
 }
 
 .avatar-container {
-  width: 125px;
-  height: 125px;
-  margin: 20px auto;
+  width: 104px;
+  height: 104px;
   border-radius: 50%;
   overflow: hidden;
   border: 3px solid var(--pink);
@@ -118,6 +235,7 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
   box-shadow: 0 0 20px #f05ba844;
 }
 
@@ -129,62 +247,240 @@ a {
 }
 
 #avatar-fallback {
-  font-size: 48px;
+  font-size: 40px;
+}
+
+.profile-identity {
+  flex: 1 1 260px;
 }
 
 #account-name {
-  color: white;
-  font-size: 23px;
-  margin: 12px 0;
+  margin: 0;
+  font-size: 22px;
+  color: #ffffff;
 }
 
 #account-email {
+  margin: 4px 0 10px;
   color: var(--muted);
-  font-size: 14px;
+  font-size: 13px;
   word-break: break-word;
 }
 
-.account-description {
-  color: var(--muted);
-  line-height: 1.6;
-  margin: 20px 0;
+.badge-pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
-.photo-description {
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: bold;
+  background: var(--purple-soft);
+  color: var(--text);
+  border: 1px solid #a875f555;
+}
+
+/* Estatísticas */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.stat-box {
+  background: var(--surface-light);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 8px;
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--pink);
+}
+
+.stat-label {
+  font-size: 12px;
   color: var(--muted);
+  margin-top: 2px;
+}
+
+/* Barra de progresso do perfil */
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
   font-size: 13px;
-  line-height: 1.5;
+}
+
+.progress-track {
+  width: 100%;
+  height: 10px;
+  background: var(--surface-light);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--pink), var(--purple));
+  transition: width .25s ease;
+}
+
+.checklist-mini {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
   margin-top: 10px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.checklist-mini span.done {
+  color: var(--pink);
+  font-weight: bold;
+}
+
+/* Quests e Badges */
+.quests-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.quest-card {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--surface-light);
+  border: 1px solid var(--border);
+}
+
+.quest-card.unlocked {
+  border-color: var(--pink);
+  background: linear-gradient(135deg, #271836, #241d32);
+}
+
+.quest-icon {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.quest-title {
+  font-weight: bold;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.quest-desc {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.quest-progress {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 11px;
+  font-weight: bold;
+  color: var(--purple);
+}
+
+.quest-card.unlocked .quest-progress {
+  color: var(--pink);
+}
+
+/* Alertas de novos episódios */
+.alert-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 12px;
+  background: linear-gradient(120deg, #281738, #1e182c);
+  border: 1px solid var(--border-glow);
+  margin-top: 12px;
+}
+
+.alert-preview-title {
+  font-weight: bold;
+  color: var(--pink);
+  font-size: 14px;
+}
+
+/* Chips de sugestão e seleção */
+.chips-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.chip-btn {
+  width: auto;
+  margin-top: 0;
+  padding: 6px 11px;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 999px;
+  background: var(--surface-light);
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
+
+.chip-btn:hover {
+  color: var(--text);
+  border-color: var(--pink);
+}
+
+.chip-btn.selected {
+  background: var(--pink-soft);
+  color: #ffffff;
+  border-color: var(--pink);
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--surface-light);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  font-weight: normal;
+}
+
+.checkbox-row input[type="checkbox"] {
+  width: auto;
+  margin-top: 3px;
+  cursor: pointer;
 }
 
 #photo-input {
   display: none;
 }
 
-.photo-button {
-  background: #30213e;
-  border: 1px solid #71428c;
-}
-
-#save-photo-button {
-  margin-top: 12px;
-}
-
-.secondary-button {
-  background: #30213e;
-  border: 1px solid #71428c;
-}
-
-#logout-button {
-  background: #493044;
-}
-
-[hidden] {
-  display: none !important;
-}
-
-/* POPUP */
-
+/* Popup */
 .popup-overlay {
   display: none;
   position: fixed;
@@ -202,788 +498,977 @@ a {
 
 .popup-box {
   width: 100%;
-  max-width: 380px;
-  padding: 30px 25px;
+  max-width: 390px;
+  padding: 28px 24px;
   text-align: center;
-  background: #1b1626;
-  border: 1px solid #71428c;
+  background: var(--surface);
+  border: 1px solid var(--border-glow);
   border-radius: 18px;
   box-shadow: 0 10px 40px #00000088;
 }
 
 .popup-icon {
-  font-size: 42px;
-  margin-bottom: 12px;
+  font-size: 40px;
+  margin-bottom: 10px;
 }
 
 .popup-box h3 {
   color: var(--pink);
+  font-size: 20px;
 }
 
 .popup-box p {
-  color: #d0c3dc;
-  line-height: 1.6;
+  color: var(--muted);
+  font-size: 14px;
 }
 
+[hidden] {
+  display: none !important;
+}
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 24px;
+}
+
+@media (max-width: 680px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .quests-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 18px;
+  }
+}
 </style>
 </head>
 
 <body>
-
 <div class="container">
 
-<header>
-  <h1>ThaiGList 🌷</h1>
-  <p>Seu espaço pessoal no universo Girls' Love.</p>
-</header>
+  <header class="top-banner">
+    <div class="brand-row">
+      <div>
+        <h1 class="brand-title">ThaiGList 🌷</h1>
+        <p class="brand-subtitle">Seu espaço pessoal no universo Girls' Love.</p>
+      </div>
+      <span class="status-chip" id="member-since-chip">Membro desde Nov 2026</span>
+    </div>
 
-<main>
+    <nav class="top-nav" aria-label="Navegação principal">
+      <a href="index.html">Catálogo</a>
+      <a href="conta.html" class="active">Minha conta</a>
+      <a href="#sec-stats">Estatísticas</a>
+      <a href="#sec-quests">Conquistas</a>
+      <a href="#sec-alerts">Alertas</a>
+      <a href="#sec-profile">Editar perfil</a>
+    </nav>
+  </header>
 
-<!-- FORMULÁRIOS DE AUTENTICAÇÃO -->
-
-<div id="auth-forms" hidden>
-
-  <section>
+  <!-- AUTENTICAÇÃO -->
+  <section id="auth-forms" class="card" hidden>
     <h2>Criar minha conta</h2>
+    <p class="muted">Entre ou cadastre-se para acompanhar seus GLs e personalizar seu perfil.</p>
 
     <form id="signup-form">
-
       <label for="signup-email">E-mail</label>
       <input id="signup-email" type="email" required>
 
       <label for="signup-password">Senha</label>
-      <input id="signup-password"
-        type="password" minlength="6" required>
+      <input id="signup-password" type="password" minlength="6" required>
 
-      <button id="signup-button" type="submit">
-        Criar conta
-      </button>
-
+      <button id="signup-button" type="submit">Criar conta</button>
     </form>
-  </section>
 
-  <div class="divider"></div>
+    <div class="divider"></div>
 
-  <section>
     <h2>Já tenho uma conta</h2>
-
     <form id="login-form">
-
       <label for="login-email">E-mail</label>
       <input id="login-email" type="email" required>
 
       <label for="login-password">Senha</label>
       <input id="login-password" type="password" required>
 
-      <button id="login-button" type="submit">
-        Entrar
-      </button>
-
+      <button id="login-button" type="submit">Entrar</button>
     </form>
   </section>
 
-</div>
+  <!-- PAINEL DA CONTA -->
+  <div id="account-panel" hidden>
 
+    <!-- CABEÇALHO DO PERFIL E FOTO -->
+    <section class="card">
+      <div class="profile-header">
+        <div class="avatar-container">
+          <img id="account-avatar" src="" alt="Minha foto de perfil">
+          <span id="avatar-fallback">👤</span>
+        </div>
 
-<!-- ÁREA DA CONTA -->
+        <div class="profile-identity">
+          <h2 id="account-name">Carregando...</h2>
+          <p id="account-email"></p>
+          <div class="badge-pill-row">
+            <span class="status-chip" id="display-couple-chip">💜 Casal favorito não definido</span>
+            <span class="status-chip" id="display-country-chip">🌏 Brasil</span>
+          </div>
+        </div>
+      </div>
 
-<section id="account-panel" hidden>
+      <p class="small-muted" style="margin-top: 14px;">
+        Escolha uma foto para personalizar seu perfil (JPG, PNG ou WebP até 5 MB).
+      </p>
 
-  <h2>Minha conta 🌷</h2>
+      <input id="photo-input" type="file" accept="image/jpeg,image/png,image/webp">
 
-  <div class="avatar-container">
+      <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
+        <button type="button" id="change-photo-button" class="secondary-button btn-inline">
+          📷 Alterar foto
+        </button>
+        <button type="button" id="save-photo-button" class="btn-inline" hidden>
+          Salvar foto
+        </button>
+      </div>
+    </section>
 
-    <img id="account-avatar" src="" alt="Minha foto de perfil">
+    <!-- ESTATÍSTICAS -->
+    <section id="sec-stats" class="card">
+      <h2>Resumo da sua lista</h2>
+      <p class="muted">Sincronizado com suas séries salvas no ThaiGList.</p>
 
-    <span id="avatar-fallback">👤</span>
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="stat-value" id="stat-watching">0</div>
+          <div class="stat-label">👁 Assistindo</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value" id="stat-completed">0</div>
+          <div class="stat-label">✅ Concluídas</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value" id="stat-plan">0</div>
+          <div class="stat-label">⏳ Quero ver</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value" id="stat-favorites">0</div>
+          <div class="stat-label">♥ Nota 4–5★</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value" id="stat-episodes">0</div>
+          <div class="stat-label">📺 EPs vistos</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONQUISTAS E BADGES -->
+    <section id="sec-quests" class="card">
+      <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 10px;">
+        <h2>🏅 Minhas conquistas e badges</h2>
+        <span class="status-chip" id="quests-counter">1/6</span>
+      </div>
+      <p class="muted">
+        Complete missões na sua lista para desbloquear badges no seu perfil e nos seus comentários.
+      </p>
+
+      <div class="quests-grid">
+        <div class="quest-card unlocked" id="card-founder">
+          <div class="quest-icon">🌟</div>
+          <div>
+            <div class="quest-title">Membro fundadora</div>
+            <div class="quest-desc">Entrou na comunidade ThaiGList</div>
+            <span class="quest-progress">Desbloqueada 🌷</span>
+          </div>
+        </div>
+
+        <div class="quest-card" id="card-rookie">
+          <div class="quest-icon">🌱</div>
+          <div>
+            <div class="quest-title">Novata no GL</div>
+            <div class="quest-desc">Conclua 5 séries GL</div>
+            <span class="quest-progress" id="q-rookie">0/5</span>
+          </div>
+        </div>
+
+        <div class="quest-card" id="card-truefan">
+          <div class="quest-icon">💜</div>
+          <div>
+            <div class="quest-title">Fã de carteirinha</div>
+            <div class="quest-desc">Conclua 15 séries GL</div>
+            <span class="quest-progress" id="q-truefan">0/15</span>
+          </div>
+        </div>
+
+        <div class="quest-card" id="card-superfan">
+          <div class="quest-icon">👑</div>
+          <div>
+            <div class="quest-title">Superfã GL</div>
+            <div class="quest-desc">Conclua 30 séries GL</div>
+            <span class="quest-progress" id="q-superfan">0/30</span>
+          </div>
+        </div>
+
+        <div class="quest-card" id="card-stars">
+          <div class="quest-icon">⭐</div>
+          <div>
+            <div class="quest-title">Avaliadora de estrelas</div>
+            <div class="quest-desc">Avalie 10 séries com nota</div>
+            <span class="quest-progress" id="q-stars">0/10</span>
+          </div>
+        </div>
+
+        <div class="quest-card" id="card-collector">
+          <div class="quest-icon">📚</div>
+          <div>
+            <div class="quest-title">Colecionadora</div>
+            <div class="quest-desc">Adicione 20 séries na sua lista</div>
+            <span class="quest-progress" id="q-collector">0/20</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ALERTAS DE NOVOS EPISÓDIOS -->
+    <section id="sec-alerts" class="card">
+      <h2>🔔 Alertas de novos episódios</h2>
+      <p class="muted">
+        Receba lembretes quando uma série da sua lista tiver novo episódio no ar.
+      </p>
+
+      <div class="alert-banner">
+        <div>
+          <div class="alert-preview-title" id="alert-preview-title">📺 Em andamento no catálogo: Built in Love · EP 5</div>
+          <div class="small-muted" id="alert-preview-sub">Confira as séries em exibição no catálogo do ThaiGList</div>
+        </div>
+        <button type="button" id="toggle-alerts-button" class="btn-inline">
+          Ativar alertas
+        </button>
+      </div>
+    </section>
+
+    <!-- EDIÇÃO DE PERFIL -->
+    <section id="sec-profile" class="card">
+      <h2>Personalizar perfil</h2>
+      <p class="muted">Seu nome e foto aparecem junto às suas resenhas. Seu e-mail nunca é exibido publicamente.</p>
+
+      <div style="margin-top: 14px;">
+        <div class="progress-header">
+          <span>Perfil <strong id="profile-percent">0%</strong> completo</span>
+          <span class="small-muted" id="profile-steps">0/5 campos</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="profile-progress-bar"></div>
+        </div>
+        <div class="checklist-mini">
+          <span id="chk-bio">○ Sobre você</span>
+          <span id="chk-couple">○ Casal favorito</span>
+          <span id="chk-series">○ Série favorita</span>
+          <span id="chk-country">○ País</span>
+          <span id="chk-social">○ X / IG</span>
+        </div>
+      </div>
+
+      <form id="profile-details-form">
+        <label for="display_name">Nome de exibição</label>
+        <input id="display_name" type="text" maxlength="60" placeholder="Como você quer ser chamada">
+
+        <label for="bio">Sobre você (máx. 300 caracteres)</label>
+        <textarea id="bio" maxlength="300" placeholder="Ex.: Fã de GL desde GAP, amo romances de escritório e dramas intensos"></textarea>
+        <div class="small-muted" id="bio-counter" style="text-align: right;">0/300</div>
+
+        <div class="chips-wrap" id="bio-presets">
+          <button type="button" class="chip-btn" data-bio="Fã de GL pra vida 💜">+ Fã de GL pra vida 💜</button>
+          <button type="button" class="chip-btn" data-bio="Maratono uma série inteira numa noite 🌙">+ Maratono numa noite 🌙</button>
+          <button type="button" class="chip-btn" data-bio="Apaixonada por romance no escritório 💼">+ Romance no escritório 💼</button>
+          <button type="button" class="chip-btn" data-bio="Amo casal caótico e engraçado 😆">+ Casal caótico e engraçado 😆</button>
+          <button type="button" class="chip-btn" data-bio="Aqui pelos dramas que fazem chorar 🥲">+ Dramas emocionantes 🥲</button>
+        </div>
+
+        <label for="favorite_couple">Casal favorito</label>
+        <input id="favorite_couple" type="text" list="couples-datalist" placeholder="Ex.: Freen × Becky, Milk × Love, Engfa × Charlotte...">
+        <datalist id="couples-datalist">
+          <option value="Freen × Becky">
+          <option value="Milk × Love">
+          <option value="Engfa × Charlotte">
+          <option value="Lingling × Orm">
+          <option value="Lookmhee × Sonya">
+          <option value="Namtan × Film">
+          <option value="Faye × Yoko">
+          <option value="Emi × Bonnie">
+          <option value="Anda × Lookkaew">
+          <option value="Jan × JingJing">
+        </datalist>
+
+        <div class="chips-wrap" id="couple-chips">
+          <button type="button" class="chip-btn" data-couple="Freen × Becky">Freen × Becky</button>
+          <button type="button" class="chip-btn" data-couple="Milk × Love">Milk × Love</button>
+          <button type="button" class="chip-btn" data-couple="Engfa × Charlotte">Engfa × Charlotte</button>
+          <button type="button" class="chip-btn" data-couple="Lingling × Orm">Lingling × Orm</button>
+          <button type="button" class="chip-btn" data-couple="Lookmhee × Sonya">Lookmhee × Sonya</button>
+          <button type="button" class="chip-btn" data-couple="Namtan × Film">Namtan × Film</button>
+        </div>
+
+        <label for="favorite_series">Série GL favorita</label>
+        <select id="favorite_series">
+          <option value="">— Selecione uma série —</option>
+        </select>
+
+        <label for="country">País</label>
+        <input id="country" type="text" placeholder="Ex.: Brasil">
+
+        <label for="social_handle">X / Instagram</label>
+        <input id="social_handle" type="text" placeholder="@seuusuario">
+
+        <label class="checkbox-row">
+          <input type="checkbox" id="show_on_reviews" checked>
+          <span>Mostrar meu nome e foto nas minhas resenhas e comentários</span>
+        </label>
+
+        <label class="checkbox-row">
+          <input type="checkbox" id="public_profile" checked>
+          <span>Permitir que outras fãs abram meu perfil (seu e-mail nunca é mostrado)</span>
+        </label>
+
+        <button type="submit" id="save-profile-button">Salvar perfil 🌷</button>
+      </form>
+
+      <button type="button" class="secondary-button" id="back-catalog">
+        ← Voltar ao catálogo
+      </button>
+
+      <button type="button" id="logout-button">
+        Sair da conta
+      </button>
+    </section>
 
   </div>
 
-  <p class="photo-description">
-    Escolha uma foto para personalizar seu perfil.
-  </p>
-
-  <input
-    id="photo-input"
-    type="file"
-    accept="image/jpeg,image/png,image/webp"
-  >
-
-  <button
-    type="button"
-    id="change-photo-button"
-    class="photo-button"
-  >
-    📷 Alterar foto
-  </button>
-
-  <button
-    type="button"
-    id="save-photo-button"
-    hidden
-  >
-    Salvar foto
-  </button>
-
-  <h3 id="account-name">Carregando...</h3>
-
-  <p id="account-email"></p>
-
-  <p class="account-description">
-    Bem-vinda ao seu espaço pessoal no ThaiGList!
-    Aqui ficará seu perfil e suas informações.
-  </p>
-
-  <button
-    type="button"
-    class="secondary-button"
-    id="back-catalog"
-  >
-    ← Voltar ao catálogo
-  </button>
-
-  <button
-    type="button"
-    id="logout-button"
-  >
-    Sair da conta
-  </button>
-
-</section>
-
-
-<!-- POPUP -->
-
-<div id="popup" class="popup-overlay">
-
-  <div class="popup-box">
-
-    <div id="popup-icon" class="popup-icon">🌷</div>
-
-    <h3 id="popup-title">Aviso</h3>
-
-    <p id="popup-text"></p>
-
-    <button id="popup-close" type="button">
-      Entendi
-    </button>
-
+  <!-- POPUP -->
+  <div id="popup" class="popup-overlay">
+    <div class="popup-box">
+      <div id="popup-icon" class="popup-icon">🌷</div>
+      <h3 id="popup-title">Aviso</h3>
+      <p id="popup-text"></p>
+      <button id="popup-close" type="button">Entendi</button>
+    </div>
   </div>
 
+  <footer>ThaiGList © 2026</footer>
 </div>
-
-<p id="message" role="status" aria-live="polite"></p>
-
-<a href="index.html">← Voltar ao catálogo</a>
-
-</main>
-</div>
-
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script>
+const SUPABASE_URL = "https://jjybnidhwfimcdwygafk.supabase.co";
+const SUPABASE_KEY = "sb_publishable_DyikY0WSJJ4apDc0_ZwfOw_x6LvfqM-";
 
-// ========================================
-// CONEXÃO SUPABASE
-// ========================================
-
-const SUPABASE_URL =
-  "https://jjybnidhwfimcdwygafk.supabase.co";
-
-const SUPABASE_KEY =
-  "sb_publishable_DyikY0WSJJ4apDc0_ZwfOw_x6LvfqM-";
-
-const client = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const authForms = document.getElementById("auth-forms");
 const accountPanel = document.getElementById("account-panel");
+const avatar = document.getElementById("account-avatar");
+const fallback = document.getElementById("avatar-fallback");
+const photoInput = document.getElementById("photo-input");
+const changePhotoButton = document.getElementById("change-photo-button");
+const savePhotoButton = document.getElementById("save-photo-button");
+const bioInput = document.getElementById("bio");
+const bioCounter = document.getElementById("bio-counter");
+const coupleInput = document.getElementById("favorite_couple");
+const seriesSelect = document.getElementById("favorite_series");
+const countryInput = document.getElementById("country");
+const socialInput = document.getElementById("social_handle");
+const displayNameInput = document.getElementById("display_name");
+const showOnReviewsInput = document.getElementById("show_on_reviews");
+const publicProfileInput = document.getElementById("public_profile");
+const toggleAlertsButton = document.getElementById("toggle-alerts-button");
 
 let activeUserId = null;
 let selectedPhoto = null;
 let currentAvatarPath = null;
 
-
-// ========================================
-// ELEMENTOS DA FOTO
-// ========================================
-
-const avatar = document.getElementById("account-avatar");
-const fallback = document.getElementById("avatar-fallback");
-
-const photoInput = document.getElementById("photo-input");
-
-const changePhotoButton =
-  document.getElementById("change-photo-button");
-
-const savePhotoButton =
-  document.getElementById("save-photo-button");
-
-
-// ========================================
-// POPUP
-// ========================================
-
 function showPopup(title, text, icon = "🌷") {
-
   document.getElementById("popup-title").textContent = title;
   document.getElementById("popup-text").textContent = text;
   document.getElementById("popup-icon").textContent = icon;
-
   document.getElementById("popup").classList.add("active");
-
 }
 
-document.getElementById("popup-close")
-.addEventListener("click", function() {
-
+document.getElementById("popup-close").addEventListener("click", () => {
   document.getElementById("popup").classList.remove("active");
-
 });
 
-
-// ========================================
-// EXIBIR FOTO
-// ========================================
-
 function displayAvatar(url) {
-
   if (!url) {
-
     avatar.style.display = "none";
     avatar.removeAttribute("src");
-
     fallback.style.display = "block";
-
     return;
-
   }
-
   avatar.onload = () => {
-
     avatar.style.display = "block";
     fallback.style.display = "none";
-
   };
-
   avatar.onerror = () => {
-
     avatar.style.display = "none";
     fallback.style.display = "block";
-
   };
-
   avatar.src = url;
-
 }
 
+function updateBioCounter() {
+  bioCounter.textContent = `${bioInput.value.length}/300`;
+}
+
+function updateProfileCompletion() {
+  const checks = {
+    bio: bioInput.value.trim().length > 0,
+    couple: coupleInput.value.trim().length > 0,
+    series: seriesSelect.value.trim().length > 0,
+    country: countryInput.value.trim().length > 0,
+    social: socialInput.value.trim().length > 0
+  };
+
+  const completedCount = Object.values(checks).filter(Boolean).length;
+  const percent = Math.round((completedCount / 5) * 100);
+
+  document.getElementById("profile-percent").textContent = `${percent}%`;
+  document.getElementById("profile-steps").textContent = `${completedCount}/5 campos`;
+  document.getElementById("profile-progress-bar").style.width = `${percent}%`;
+
+  const setCheck = (id, label, done) => {
+    const el = document.getElementById(id);
+    el.textContent = `${done ? "✓" : "○"} ${label}`;
+    el.classList.toggle("done", done);
+  };
+
+  setCheck("chk-bio", "Sobre você", checks.bio);
+  setCheck("chk-couple", "Casal favorito", checks.couple);
+  setCheck("chk-series", "Série favorita", checks.series);
+  setCheck("chk-country", "País", checks.country);
+  setCheck("chk-social", "X / IG", checks.social);
+
+  document.getElementById("display-couple-chip").textContent =
+    checks.couple ? `💜 ${coupleInput.value.trim()}` : "💜 Casal favorito não definido";
+
+  document.getElementById("display-country-chip").textContent =
+    `🌏 ${countryInput.value.trim() || "Brasil"}`;
+}
+
+function loadLocalPrefs(userId) {
+  try {
+    const raw = localStorage.getItem(`thaiglist_profile_${userId}`);
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    return {};
+  }
+}
+
+function saveLocalPrefs(userId, payload) {
+  try {
+    localStorage.setItem(`thaiglist_profile_${userId}`, JSON.stringify(payload));
+  } catch (e) {
+    console.warn("Erro ao salvar preferências locais:", e);
+  }
+}
+
+function renderAlertsState(userId) {
+  const alertsOn = localStorage.getItem(`thaiglist_alerts_${userId}`) === "true";
+  toggleAlertsButton.textContent = alertsOn ? "✓ Alertas ativados" : "Ativar alertas";
+  toggleAlertsButton.classList.toggle("secondary-button", alertsOn);
+}
+
+toggleAlertsButton.addEventListener("click", async () => {
+  if (!activeUserId) return;
+  const current = localStorage.getItem(`thaiglist_alerts_${activeUserId}`) === "true";
+  const next = !current;
+
+  if (next && "Notification" in window && Notification.permission === "default") {
+    try {
+      await Notification.requestPermission();
+    } catch {}
+  }
+
+  localStorage.setItem(`thaiglist_alerts_${activeUserId}`, String(next));
+  renderAlertsState(activeUserId);
+
+  showPopup(
+    next ? "Alertas ativados!" : "Alertas pausados",
+    next
+      ? "Você será lembrada quando saírem novos episódios das séries da sua lista."
+      : "Os lembretes de novos episódios foram desativados neste dispositivo.",
+    "🔔"
+  );
+});
 
 // ========================================
-// MOSTRAR USUÁRIO CONECTADO
+// CARREGAR ESTATÍSTICAS E LISTA DO USUÁRIO
 // ========================================
+
+function normalizeUserStatus(status) {
+  const s = (status || "").trim().toLowerCase();
+  if (["watching", "assistindo"].includes(s)) return "watching";
+  if (["completed", "concluida", "concluída"].includes(s)) return "completed";
+  if (["plan_to_watch", "quero assistir", "quero ver"].includes(s)) return "plan";
+  return "other";
+}
+
+function updateQuestCard(cardId, labelId, current, target) {
+  const done = current >= target;
+  const card = document.getElementById(cardId);
+  const label = document.getElementById(labelId);
+  card.classList.toggle("unlocked", done);
+  label.textContent = done ? `Desbloqueada (${current}/${target}) 🌷` : `${current}/${target}`;
+  return done ? 1 : 0;
+}
+
+async function loadUserListAndDramas(userId, savedFavoriteSeries) {
+  const [listRes, dramasRes] = await Promise.all([
+    client
+      .from("user_drama_list")
+      .select("id, drama_id, status, rating")
+      .eq("user_id", userId),
+    client
+      .from("dramas")
+      .select("id, title, episodes, status")
+      .order("title", { ascending: true })
+  ]);
+
+  if (activeUserId !== userId) return;
+
+  const userRows = listRes.data || [];
+  const allDramas = dramasRes.data || [];
+  const dramaMap = new Map(allDramas.map((d) => [d.id, d]));
+
+  let watching = 0;
+  let completed = 0;
+  let plan = 0;
+  let favorites = 0;
+  let ratedCount = 0;
+  let episodesWatched = 0;
+
+  userRows.forEach((row) => {
+    const bucket = normalizeUserStatus(row.status);
+    const dramaInfo = dramaMap.get(row.drama_id);
+    const epCount = Number(dramaInfo?.episodes) || 0;
+
+    if (bucket === "watching") {
+      watching += 1;
+    } else if (bucket === "completed") {
+      completed += 1;
+      episodesWatched += epCount;
+    } else if (bucket === "plan") {
+      plan += 1;
+    }
+
+    if (row.rating !== null && row.rating !== undefined) {
+      ratedCount += 1;
+      if (Number(row.rating) >= 4) {
+        favorites += 1;
+      }
+    }
+  });
+
+  document.getElementById("stat-watching").textContent = watching;
+  document.getElementById("stat-completed").textContent = completed;
+  document.getElementById("stat-plan").textContent = plan;
+  document.getElementById("stat-favorites").textContent = favorites;
+  document.getElementById("stat-episodes").textContent = episodesWatched;
+
+  // Atualizar conquistas (1 já vem desbloqueada: Membro fundadora)
+  let unlockedTotal = 1;
+  unlockedTotal += updateQuestCard("card-rookie", "q-rookie", completed, 5);
+  unlockedTotal += updateQuestCard("card-truefan", "q-truefan", completed, 15);
+  unlockedTotal += updateQuestCard("card-superfan", "q-superfan", completed, 30);
+  unlockedTotal += updateQuestCard("card-stars", "q-stars", ratedCount, 10);
+  unlockedTotal += updateQuestCard("card-collector", "q-collector", userRows.length, 20);
+  document.getElementById("quests-counter").textContent = `${unlockedTotal}/6`;
+
+  // Atualizar destaque no card de alertas com uma série "Em andamento" do catálogo
+  const ongoing = allDramas.find((d) =>
+    (d.status || "").trim().toLowerCase() === "em andamento"
+  );
+  if (ongoing) {
+    document.getElementById("alert-preview-title").textContent =
+      `📺 Em andamento no catálogo: ${ongoing.title}`;
+  }
+
+  // Popular <select> de Série GL favorita (primeiro as da lista da usuária, depois todo o catálogo)
+  const currentSelection = savedFavoriteSeries || seriesSelect.value;
+  seriesSelect.innerHTML = `<option value="">— Selecione uma série —</option>`;
+
+  const userDramaIds = new Set(userRows.map((r) => r.drama_id));
+  const userDramas = allDramas.filter((d) => userDramaIds.has(d.id));
+
+  if (userDramas.length > 0) {
+    const groupUser = document.createElement("optgroup");
+    groupUser.label = "Da sua lista";
+    userDramas.forEach((d) => {
+      const opt = document.createElement("option");
+      opt.value = d.title;
+      opt.textContent = d.title;
+      groupUser.appendChild(opt);
+    });
+    seriesSelect.appendChild(groupUser);
+  }
+
+  if (allDramas.length > 0) {
+    const groupAll = document.createElement("optgroup");
+    groupAll.label = "Todas as séries do catálogo";
+    allDramas.forEach((d) => {
+      const opt = document.createElement("option");
+      opt.value = d.title;
+      opt.textContent = d.title;
+      groupAll.appendChild(opt);
+    });
+    seriesSelect.appendChild(groupAll);
+  }
+
+  if (currentSelection) {
+    seriesSelect.value = currentSelection;
+    if (seriesSelect.value !== currentSelection) {
+      const customOpt = document.createElement("option");
+      customOpt.value = currentSelection;
+      customOpt.textContent = currentSelection;
+      seriesSelect.appendChild(customOpt);
+      seriesSelect.value = currentSelection;
+    }
+  }
+
+  updateProfileCompletion();
+}
+
+// Presets de bio e casal
+document.querySelectorAll("#bio-presets .chip-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const snippet = btn.dataset.bio;
+    const current = bioInput.value.trim();
+    if (!current.includes(snippet)) {
+      const next = current ? `${current} · ${snippet}` : snippet;
+      bioInput.value = next.slice(0, 300);
+      updateBioCounter();
+      updateProfileCompletion();
+    }
+  });
+});
+
+document.querySelectorAll("#couple-chips .chip-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const chosen = btn.dataset.couple;
+    coupleInput.value = chosen;
+    document.querySelectorAll("#couple-chips .chip-btn").forEach((c) => c.classList.remove("selected"));
+    btn.classList.add("selected");
+    updateProfileCompletion();
+  });
+});
+
+[bioInput, coupleInput, seriesSelect, countryInput, socialInput].forEach((el) => {
+  el.addEventListener("input", () => {
+    updateBioCounter();
+    updateProfileCompletion();
+  });
+  el.addEventListener("change", () => {
+    updateBioCounter();
+    updateProfileCompletion();
+  });
+});
 
 async function showAccount(user) {
-
   if (!user) return;
-
   activeUserId = user.id;
-
   selectedPhoto = null;
   currentAvatarPath = null;
-
   photoInput.value = "";
   savePhotoButton.hidden = true;
 
   authForms.hidden = true;
   accountPanel.hidden = false;
-
   displayAvatar(null);
 
   const email = user.email || "";
-
   const fallbackName =
     user.user_metadata?.full_name ||
     user.user_metadata?.name ||
     email.split("@")[0] ||
-    "Usuário";
+    "Usuária";
 
-  document.getElementById("account-name").textContent =
-    fallbackName;
+  document.getElementById("account-name").textContent = fallbackName;
+  document.getElementById("account-email").textContent = email;
+  displayNameInput.value = fallbackName;
 
-  document.getElementById("account-email").textContent =
-    email;
+  if (user.created_at) {
+    const d = new Date(user.created_at);
+    const formatted = d.toLocaleDateString("pt-BR", { month: "short", year: "numeric" });
+    document.getElementById("member-since-chip").textContent = `Membro desde ${formatted}`;
+  }
+
+  const localPrefs = loadLocalPrefs(user.id);
+  bioInput.value = localPrefs.bio || "";
+  coupleInput.value = localPrefs.favorite_couple || "";
+  countryInput.value = localPrefs.country || "Brasil";
+  socialInput.value = localPrefs.social_handle || "";
+  showOnReviewsInput.checked = localPrefs.show_on_reviews !== false;
+  publicProfileInput.checked = localPrefs.public_profile !== false;
+  let savedSeries = localPrefs.favorite_series || "";
 
   const { data, error } = await client
     .from("profiles")
-    .select("display_name, avatar_url")
+    .select("*")
     .eq("id", user.id)
     .maybeSingle();
 
   if (activeUserId !== user.id) return;
 
   if (error) {
-
     console.error("Erro ao carregar perfil:", error);
+  } else if (data) {
+    if (data.display_name) {
+      document.getElementById("account-name").textContent = data.display_name;
+      displayNameInput.value = data.display_name;
+    }
+    if (data.bio !== undefined && data.bio !== null) bioInput.value = data.bio;
+    if (data.favorite_couple !== undefined && data.favorite_couple !== null) coupleInput.value = data.favorite_couple;
+    if (data.favorite_series !== undefined && data.favorite_series !== null) savedSeries = data.favorite_series;
+    if (data.country !== undefined && data.country !== null) countryInput.value = data.country;
+    if (data.social_handle !== undefined && data.social_handle !== null) socialInput.value = data.social_handle;
+    if (typeof data.show_on_reviews === "boolean") showOnReviewsInput.checked = data.show_on_reviews;
+    if (typeof data.public_profile === "boolean") publicProfileInput.checked = data.public_profile;
 
-    showPopup(
-      "Aviso",
-      "Não foi possível carregar todas as informações do perfil.",
-      "⚠️"
-    );
-
-    return;
-
-  }
-
-  if (!data) return;
-
-  if (data.display_name) {
-
-    document.getElementById("account-name").textContent =
-      data.display_name;
-
-  }
-
-  if (data.avatar_url) {
-
-    displayAvatar(data.avatar_url);
-
-    // Recupera o caminho do arquivo para eventual substituição.
-
-    const marker = "/storage/v1/object/public/avatars/";
-
-    const index = data.avatar_url.indexOf(marker);
-
-    if (index !== -1) {
-
-      currentAvatarPath =
-        decodeURIComponent(
+    if (data.avatar_url) {
+      displayAvatar(data.avatar_url);
+      const marker = "/storage/v1/object/public/avatars/";
+      const index = data.avatar_url.indexOf(marker);
+      if (index !== -1) {
+        currentAvatarPath = decodeURIComponent(
           data.avatar_url.substring(index + marker.length).split("?")[0]
         );
-
+      }
     }
-
   }
 
+  renderAlertsState(user.id);
+  updateBioCounter();
+  await loadUserListAndDramas(user.id, savedSeries);
 }
 
-
-// ========================================
-// MOSTRAR FORMULÁRIOS
-// ========================================
-
 function showLogin() {
-
   activeUserId = null;
   selectedPhoto = null;
   currentAvatarPath = null;
-
   accountPanel.hidden = true;
   authForms.hidden = false;
-
   photoInput.value = "";
   savePhotoButton.hidden = true;
-
 }
 
+// Salvar detalhes do perfil
+document.getElementById("profile-details-form").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  if (!activeUserId) return;
 
-// ========================================
-// SELECIONAR FOTO
-// ========================================
+  const btn = document.getElementById("save-profile-button");
+  btn.disabled = true;
+  btn.textContent = "Salvando...";
 
-changePhotoButton.addEventListener("click", function() {
+  const payload = {
+    display_name: displayNameInput.value.trim() || null,
+    bio: bioInput.value.trim() || null,
+    favorite_couple: coupleInput.value.trim() || null,
+    favorite_series: seriesSelect.value.trim() || null,
+    country: countryInput.value.trim() || null,
+    social_handle: socialInput.value.trim() || null,
+    show_on_reviews: showOnReviewsInput.checked,
+    public_profile: publicProfileInput.checked
+  };
 
-  photoInput.click();
+  saveLocalPrefs(activeUserId, payload);
 
+  const { error } = await client
+    .from("profiles")
+    .update(payload)
+    .eq("id", activeUserId);
+
+  btn.disabled = false;
+  btn.textContent = "Salvar perfil 🌷";
+
+  if (payload.display_name) {
+    document.getElementById("account-name").textContent = payload.display_name;
+  }
+  updateProfileCompletion();
+
+  if (error) {
+    console.warn("Atualização parcial/local salva:", error);
+    showPopup(
+      "Preferências salvas!",
+      "Suas informações foram salvas com sucesso no navegador. 🌷",
+      "🌷"
+    );
+    return;
+  }
+
+  showPopup("Perfil atualizado!", "Suas informações foram salvas com sucesso. 🌷", "🎉");
 });
 
+// Foto de perfil
+changePhotoButton.addEventListener("click", () => photoInput.click());
 
-photoInput.addEventListener("change", function(event) {
-
+photoInput.addEventListener("change", (event) => {
   const file = event.target.files[0];
-
   if (!file) return;
 
-  const allowedTypes = [
-    "image/jpeg",
-    "image/png",
-    "image/webp"
-  ];
-
+  const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
   if (!allowedTypes.includes(file.type)) {
-
-    showPopup(
-      "Formato inválido",
-      "Escolha uma imagem JPG, PNG ou WebP.",
-      "⚠️"
-    );
-
+    showPopup("Formato inválido", "Escolha uma imagem JPG, PNG ou WebP.", "⚠️");
     photoInput.value = "";
-
     return;
-
   }
 
   if (file.size > 5 * 1024 * 1024) {
-
-    showPopup(
-      "Imagem muito grande",
-      "A foto precisa ter no máximo 5 MB.",
-      "⚠️"
-    );
-
+    showPopup("Imagem muito grande", "A foto precisa ter no máximo 5 MB.", "⚠️");
     photoInput.value = "";
-
     return;
-
   }
 
   selectedPhoto = file;
-
-  const previewURL = URL.createObjectURL(file);
-
-  displayAvatar(previewURL);
-
+  displayAvatar(URL.createObjectURL(file));
   savePhotoButton.hidden = false;
-
 });
 
-
-// ========================================
-// SALVAR FOTO NO SUPABASE
-// ========================================
-
-savePhotoButton.addEventListener("click", async function() {
-
-  if (!selectedPhoto || !activeUserId) {
-
-    showPopup(
-      "Atenção",
-      "Selecione uma foto antes de salvar.",
-      "⚠️"
-    );
-
-    return;
-
-  }
+savePhotoButton.addEventListener("click", async function () {
+  if (!selectedPhoto || !activeUserId) return;
 
   const button = this;
-
   const userId = activeUserId;
-
   button.disabled = true;
   button.textContent = "Salvando foto...";
 
   try {
+    const extension = selectedPhoto.name.split(".").pop().toLowerCase();
+    const filePath = `${userId}/avatar-${Date.now()}.${extension}`;
 
-    const extension = selectedPhoto.name
-      .split(".")
-      .pop()
-      .toLowerCase();
-
-    const filePath =
-      userId + "/avatar-" + Date.now() + "." + extension;
-
-    // Envia a nova foto para o Storage.
-
-    const { data: uploadData, error: uploadError } =
-      await client.storage
-        .from("avatars")
-        .upload(filePath, selectedPhoto, {
-          cacheControl: "3600",
-          upsert: false,
-          contentType: selectedPhoto.type
-        });
+    const { error: uploadError } = await client.storage
+      .from("avatars")
+      .upload(filePath, selectedPhoto, {
+        cacheControl: "3600",
+        upsert: false,
+        contentType: selectedPhoto.type
+      });
 
     if (uploadError) throw uploadError;
 
-    // Obtém o endereço público.
-
-    const { data: publicData } =
-      client.storage
-        .from("avatars")
-        .getPublicUrl(filePath);
-
+    const { data: publicData } = client.storage.from("avatars").getPublicUrl(filePath);
     const publicURL = publicData.publicUrl;
-
-    // Atualiza o perfil.
 
     const { error: updateError } = await client
       .from("profiles")
-      .update({
-        avatar_url: publicURL
-      })
+      .update({ avatar_url: publicURL })
       .eq("id", userId);
 
     if (updateError) {
-
-      // Evita deixar o arquivo novo abandonado.
-
-      await client.storage
-        .from("avatars")
-        .remove([filePath]);
-
+      await client.storage.from("avatars").remove([filePath]);
       throw updateError;
-
     }
-
-    // Guarda o caminho da nova foto.
 
     const previousPath = currentAvatarPath;
-
     currentAvatarPath = filePath;
-
-    // Atualiza a imagem na página.
-
     displayAvatar(publicURL);
-
     selectedPhoto = null;
     photoInput.value = "";
-
     savePhotoButton.hidden = true;
 
-    showPopup(
-      "Foto atualizada!",
-      "Sua nova foto de perfil foi salva com sucesso. 🌷",
-      "🎉"
-    );
-
-    // Remove a foto antiga somente após atualizar o perfil.
+    showPopup("Foto atualizada!", "Sua nova foto de perfil foi salva com sucesso. 🌷", "🎉");
 
     if (previousPath) {
-
-      const { error: removeError } = await client.storage
-        .from("avatars")
-        .remove([previousPath]);
-
-      if (removeError) {
-
-        console.warn(
-          "Não foi possível remover a foto anterior:",
-          removeError
-        );
-
-      }
-
+      await client.storage.from("avatars").remove([previousPath]);
     }
-
   } catch (error) {
-
     console.error("Erro ao salvar foto:", error);
-
-    showPopup(
-      "Não foi possível salvar",
-      error.message || "Ocorreu um erro durante o envio da foto.",
-      "⚠️"
-    );
-
+    showPopup("Não foi possível salvar", error.message || "Erro no envio da foto.", "⚠️");
   } finally {
-
     button.disabled = false;
     button.textContent = "Salvar foto";
-
   }
-
 });
-
-
-// ========================================
-// VERIFICAR SESSÃO
-// ========================================
 
 async function checkSession() {
-
   const { data, error } = await client.auth.getSession();
-
-  if (error) {
-
-    console.error(error);
-
+  if (error || !data.session) {
     showLogin();
-
     return;
-
   }
-
-  if (data.session) {
-
-    await showAccount(data.session.user);
-
-  } else {
-
-    showLogin();
-
-  }
-
+  await showAccount(data.session.user);
 }
 
-
-// ========================================
-// ACOMPANHAR AUTENTICAÇÃO
-// ========================================
-
 client.auth.onAuthStateChange((event, session) => {
-
-  if (event === "SIGNED_OUT") {
-
+  if (event === "SIGNED_OUT" || !session) {
     showLogin();
-
-  } else if (session) {
-
-    showAccount(session.user);
-
   } else {
-
-    showLogin();
-
+    showAccount(session.user);
   }
-
 });
 
-
-// ========================================
-// CRIAR CONTA
-// ========================================
-
-document.getElementById("signup-form")
-.addEventListener("submit", async function(event) {
-
+document.getElementById("signup-form").addEventListener("submit", async (event) => {
   event.preventDefault();
-
   const button = document.getElementById("signup-button");
-
-  const email =
-    document.getElementById("signup-email").value.trim();
-
-  const password =
-    document.getElementById("signup-password").value;
+  const email = document.getElementById("signup-email").value.trim();
+  const password = document.getElementById("signup-password").value;
 
   button.disabled = true;
   button.textContent = "Criando conta...";
 
   const { data, error } = await client.auth.signUp({
-
     email,
     password,
-
-    options: {
-
-      emailRedirectTo:
-        "https://danielegbittencourt-cloud.github.io/thaiglist/"
-
-    }
-
+    options: { emailRedirectTo: "https://danielegbittencourt-cloud.github.io/thaiglist/" }
   });
 
   button.disabled = false;
   button.textContent = "Criar conta";
 
   if (error) {
-
-    showPopup(
-      "Ops!",
-      "Não foi possível criar a conta: " + error.message,
-      "⚠️"
-    );
-
+    showPopup("Ops!", "Não foi possível criar a conta: " + error.message, "⚠️");
     return;
-
   }
 
   if (data.session) {
-
     await showAccount(data.session.user);
-
-    showPopup(
-      "Conta criada!",
-      "Sua conta foi criada e você já está conectada. 🌷",
-      "🎉"
-    );
-
+    showPopup("Conta criada!", "Sua conta foi criada e você já está conectada. 🌷", "🎉");
   } else {
-
-    showPopup(
-      "Cadastro realizado!",
-      "Confira seu e-mail para confirmar sua conta no ThaiGList.",
-      "💌"
-    );
-
+    showPopup("Cadastro realizado!", "Confira seu e-mail para confirmar sua conta no ThaiGList.", "💌");
   }
-
 });
 
-
-// ========================================
-// LOGIN
-// ========================================
-
-document.getElementById("login-form")
-.addEventListener("submit", async function(event) {
-
+document.getElementById("login-form").addEventListener("submit", async (event) => {
   event.preventDefault();
-
   const button = document.getElementById("login-button");
-
-  const email =
-    document.getElementById("login-email").value.trim();
-
-  const password =
-    document.getElementById("login-password").value;
+  const email = document.getElementById("login-email").value.trim();
+  const password = document.getElementById("login-password").value;
 
   button.disabled = true;
   button.textContent = "Entrando...";
 
-  const { error } = await client.auth.signInWithPassword({
-
-    email,
-    password
-
-  });
+  const { error } = await client.auth.signInWithPassword({ email, password });
 
   button.disabled = false;
   button.textContent = "Entrar";
 
   if (error) {
-
-    showPopup(
-      "Ops!",
-      "E-mail ou senha incorretos.",
-      "⚠️"
-    );
-
+    showPopup("Ops!", "E-mail ou senha incorretos.", "⚠️");
     return;
-
   }
 
   window.location.href = "index.html";
-
 });
 
-
-// ========================================
-// VOLTAR AO CATÁLOGO
-// ========================================
-
-document.getElementById("back-catalog")
-.addEventListener("click", function() {
-
+document.getElementById("back-catalog").addEventListener("click", () => {
   window.location.href = "index.html";
-
 });
 
-
-// ========================================
-// SAIR DA CONTA
-// ========================================
-
-document.getElementById("logout-button")
-.addEventListener("click", async function() {
-
+document.getElementById("logout-button").addEventListener("click", async function () {
   const button = this;
-
   button.disabled = true;
   button.textContent = "Saindo...";
 
@@ -993,31 +1478,14 @@ document.getElementById("logout-button")
   button.textContent = "Sair da conta";
 
   if (error) {
-
-    showPopup(
-      "Ops!",
-      "Não foi possível sair da conta.",
-      "⚠️"
-    );
-
-    console.error(error);
-
+    showPopup("Ops!", "Não foi possível sair da conta.", "⚠️");
     return;
-
   }
 
   window.location.href = "index.html";
-
 });
 
-
-// ========================================
-// INICIALIZAÇÃO
-// ========================================
-
 checkSession();
-
 </script>
-
 </body>
 </html>

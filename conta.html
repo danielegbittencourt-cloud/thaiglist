@@ -37,13 +37,9 @@ header {
   margin-bottom: 25px;
 }
 
-header h1 {
-  color: white;
-}
+header h1 { color: white; }
 
-header p {
-  color: var(--muted);
-}
+header p { color: var(--muted); }
 
 main {
   padding: 25px;
@@ -52,9 +48,7 @@ main {
   border-radius: 18px;
 }
 
-h2 {
-  color: var(--pink);
-}
+h2 { color: var(--pink); }
 
 label {
   display: block;
@@ -109,8 +103,70 @@ a {
   text-align: center;
   text-decoration: none;
 }
-  
-/* POPUP DE MENSAGENS */
+
+/* PERFIL */
+
+#account-panel {
+  text-align: center;
+}
+
+.avatar-container {
+  width: 115px;
+  height: 115px;
+  margin: 20px auto;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--pink);
+  background: linear-gradient(135deg, var(--pink), var(--purple));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 20px #f05ba844;
+}
+
+#account-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: none;
+}
+
+#avatar-fallback {
+  font-size: 48px;
+}
+
+#account-name {
+  color: white;
+  font-size: 23px;
+  margin: 12px 0;
+}
+
+#account-email {
+  color: var(--muted);
+  font-size: 14px;
+  word-break: break-word;
+}
+
+.account-description {
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 20px 0;
+}
+
+.secondary-button {
+  background: #30213e;
+  border: 1px solid #71428c;
+}
+
+#logout-button {
+  background: #493044;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* POPUP */
 
 .popup-overlay {
   display: none;
@@ -136,7 +192,6 @@ a {
   border: 1px solid #71428c;
   border-radius: 18px;
   box-shadow: 0 10px 40px #00000088;
-  animation: popupIn .25s ease;
 }
 
 .popup-icon {
@@ -145,42 +200,18 @@ a {
 }
 
 .popup-box h3 {
-  color: #f05ba8;
-  margin: 0 0 12px;
+  color: var(--pink);
 }
 
 .popup-box p {
   color: #d0c3dc;
   line-height: 1.6;
 }
-
-.popup-box button {
-  width: 100%;
-  margin-top: 15px;
-  padding: 13px;
-  border: none;
-  border-radius: 10px;
-  background: linear-gradient(100deg, #f05ba8, #a875f5);
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-@keyframes popupIn {
-  from {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 </style>
 </head>
 
 <body>
+
 <div class="container">
 
 <header>
@@ -190,20 +221,26 @@ a {
 
 <main>
 
+<!-- FORMULÁRIOS PARA QUEM NÃO ESTÁ CONECTADO -->
+
+<div id="auth-forms" hidden>
+
   <section>
     <h2>Criar minha conta</h2>
 
     <form id="signup-form">
+
       <label for="signup-email">E-mail</label>
       <input id="signup-email" type="email" required>
 
       <label for="signup-password">Senha</label>
-      <input id="signup-password" type="password"
-        minlength="6" required>
+      <input id="signup-password"
+        type="password" minlength="6" required>
 
       <button id="signup-button" type="submit">
         Criar conta
       </button>
+
     </form>
   </section>
 
@@ -213,6 +250,7 @@ a {
     <h2>Já tenho uma conta</h2>
 
     <form id="login-form">
+
       <label for="login-email">E-mail</label>
       <input id="login-email" type="email" required>
 
@@ -222,116 +260,463 @@ a {
       <button id="login-button" type="submit">
         Entrar
       </button>
+
     </form>
   </section>
 
- 
-<div id="popup" class="popup-overlay">
-  <div class="popup-box">
-    <div id="popup-icon" class="popup-icon">🌷</div>
-    <h3 id="popup-title">Aviso</h3>
-    <p id="popup-text"></p>
-    <button id="popup-close" type="button">Entendi</button>
+</div>
+
+
+<!-- ÁREA DO USUÁRIO CONECTADO -->
+
+<section id="account-panel" hidden>
+
+  <h2>Minha conta 🌷</h2>
+
+  <div class="avatar-container">
+
+    <img id="account-avatar" src="" alt="Minha foto de perfil">
+
+    <span id="avatar-fallback">👤</span>
+
   </div>
+
+  <h3 id="account-name">Carregando...</h3>
+
+  <p id="account-email"></p>
+
+  <p class="account-description">
+    Bem-vinda ao seu espaço pessoal no ThaiGList!
+    Aqui ficará seu perfil e suas informações.
+  </p>
+
+  <button
+    type="button"
+    class="secondary-button"
+    id="back-catalog"
+  >
+    ← Voltar ao catálogo
+  </button>
+
+  <button
+    type="button"
+    id="logout-button"
+  >
+    Sair da conta
+  </button>
+
+</section>
+
+
+<!-- MENSAGENS -->
+
+<div id="popup" class="popup-overlay">
+
+  <div class="popup-box">
+
+    <div id="popup-icon" class="popup-icon">🌷</div>
+
+    <h3 id="popup-title">Aviso</h3>
+
+    <p id="popup-text"></p>
+
+    <button id="popup-close" type="button">
+      Entendi
+    </button>
+
+  </div>
+
 </div>
 
 <p id="message" role="status" aria-live="polite"></p>
 
-
-  <a href="index.html">← Voltar ao catálogo</a>
+<a href="index.html">← Voltar ao catálogo</a>
 
 </main>
 </div>
 
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-const SUPABASE_URL = "https://jjybnidhwfimcdwygafk.supabase.co";
 
-const SUPABASE_KEY = "sb_publishable_DyikY0WSJJ4apDc0_ZwfOw_x6LvfqM-";
+// ========================================
+// CONEXÃO SUPABASE
+// ========================================
+
+const SUPABASE_URL =
+  "https://jjybnidhwfimcdwygafk.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_DyikY0WSJJ4apDc0_ZwfOw_x6LvfqM-";
 
 const client = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
 
+const authForms = document.getElementById("auth-forms");
+const accountPanel = document.getElementById("account-panel");
 const message = document.getElementById("message");
-  
+
+let activeUserId = null;
+
+
+// ========================================
+// POPUP
+// ========================================
+
 function showPopup(title, text, icon = "🌷") {
+
   document.getElementById("popup-title").textContent = title;
   document.getElementById("popup-text").textContent = text;
   document.getElementById("popup-icon").textContent = icon;
+
   document.getElementById("popup").classList.add("active");
+
 }
 
-document.getElementById("popup-close").addEventListener("click", function() {
+document.getElementById("popup-close")
+.addEventListener("click", function() {
+
   document.getElementById("popup").classList.remove("active");
+
 });
 
 
+// ========================================
+// MOSTRAR USUÁRIO CONECTADO
+// ========================================
+
+async function showAccount(user) {
+
+  if (!user) return;
+
+  activeUserId = user.id;
+
+  authForms.hidden = true;
+  accountPanel.hidden = false;
+
+  const email = user.email || "";
+
+  const fallbackName =
+    user.user_metadata?.full_name ||
+    user.user_metadata?.name ||
+    email.split("@")[0] ||
+    "Usuário";
+
+  document.getElementById("account-name").textContent =
+    fallbackName;
+
+  document.getElementById("account-email").textContent =
+    email;
+
+  // Restaura ícone padrão
+
+  const avatar = document.getElementById("account-avatar");
+  const fallback = document.getElementById("avatar-fallback");
+
+  avatar.style.display = "none";
+  avatar.removeAttribute("src");
+  fallback.style.display = "block";
+
+  // Busca informações do perfil
+
+  const { data, error } = await client
+    .from("profiles")
+    .select("display_name, avatar_url")
+    .eq("id", user.id)
+    .maybeSingle();
+
+  // Evita atualizar a página com dados de outro usuário
+
+  if (activeUserId !== user.id) return;
+
+  if (error) {
+
+    console.error("Erro ao carregar perfil:", error);
+
+    return;
+
+  }
+
+  if (!data) return;
+
+  if (data.display_name) {
+
+    document.getElementById("account-name").textContent =
+      data.display_name;
+
+  }
+
+  if (data.avatar_url) {
+
+    avatar.onload = () => {
+
+      if (activeUserId === user.id) {
+
+        avatar.style.display = "block";
+        fallback.style.display = "none";
+
+      }
+
+    };
+
+    avatar.onerror = () => {
+
+      avatar.style.display = "none";
+      fallback.style.display = "block";
+
+    };
+
+    avatar.src = data.avatar_url;
+
+  }
+
+}
+
+
+// ========================================
+// MOSTRAR FORMULÁRIOS
+// ========================================
+
+function showLogin() {
+
+  activeUserId = null;
+
+  accountPanel.hidden = true;
+  authForms.hidden = false;
+
+}
+
+
+// ========================================
+// VERIFICAR SESSÃO EXISTENTE
+// ========================================
+
+async function checkSession() {
+
+  const { data, error } = await client.auth.getSession();
+
+  if (error) {
+
+    console.error("Erro ao verificar sessão:", error);
+
+    showLogin();
+
+    return;
+
+  }
+
+  if (data.session) {
+
+    await showAccount(data.session.user);
+
+  } else {
+
+    showLogin();
+
+  }
+
+}
+
+
+// ========================================
+// ACOMPANHAR MUDANÇAS NA SESSÃO
+// ========================================
+
+client.auth.onAuthStateChange((event, session) => {
+
+  if (event === "SIGNED_OUT") {
+
+    showLogin();
+
+  } else if (session) {
+
+    showAccount(session.user);
+
+  } else {
+
+    showLogin();
+
+  }
+
+});
+
+
+// ========================================
+// CRIAR CONTA
+// ========================================
+
 document.getElementById("signup-form")
 .addEventListener("submit", async function(event) {
+
   event.preventDefault();
 
   const button = document.getElementById("signup-button");
-  const email = document.getElementById("signup-email").value;
-  const password = document.getElementById("signup-password").value;
+
+  const email =
+    document.getElementById("signup-email").value.trim();
+
+  const password =
+    document.getElementById("signup-password").value;
 
   button.disabled = true;
   button.textContent = "Criando conta...";
-  message.textContent = "";
 
   const { data, error } = await client.auth.signUp({
-    email: email,
-    password: password,
+
+    email,
+    password,
+
     options: {
-      emailRedirectTo: "https://danielegbittencourt-cloud.github.io/thaiglist/"
+
+      emailRedirectTo:
+        "https://danielegbittencourt-cloud.github.io/thaiglist/"
+
     }
+
   });
 
   button.disabled = false;
   button.textContent = "Criar conta";
 
   if (error) {
-   showPopup("Ops!", "Não foi possível criar a conta: " + error.message, "⚠️");
+
+    showPopup(
+      "Ops!",
+      "Não foi possível criar a conta: " + error.message,
+      "⚠️"
+    );
+
     return;
+
   }
 
   if (data.session) {
-  showPopup("Conta criada!", "Sua conta foi criada e você já está conectado. 🌷", "🎉");  
+
+    await showAccount(data.session.user);
+
+    showPopup(
+      "Conta criada!",
+      "Sua conta foi criada e você já está conectado. 🌷",
+      "🎉"
+    );
+
   } else {
-   showPopup("Cadastro realizado!", "Confira seu e-mail para confirmar sua conta no ThaiGList.", "💌");
+
+    showPopup(
+      "Cadastro realizado!",
+      "Confira seu e-mail para confirmar sua conta no ThaiGList.",
+      "💌"
+    );
+
   }
+
 });
+
+
+// ========================================
+// LOGIN
+// ========================================
 
 document.getElementById("login-form")
 .addEventListener("submit", async function(event) {
+
   event.preventDefault();
 
   const button = document.getElementById("login-button");
-  const email = document.getElementById("login-email").value;
-  const password = document.getElementById("login-password").value;
+
+  const email =
+    document.getElementById("login-email").value.trim();
+
+  const password =
+    document.getElementById("login-password").value;
 
   button.disabled = true;
   button.textContent = "Entrando...";
-  message.textContent = "";
 
   const { error } = await client.auth.signInWithPassword({
-    email: email,
-    password: password
+
+    email,
+    password
+
   });
 
   button.disabled = false;
   button.textContent = "Entrar";
 
- if (error) {
-  showPopup("Ops!", "E-mail ou senha incorretos.", "⚠️");
-  return;
-}
+  if (error) {
 
-window.location.href = "index.html";
+    showPopup(
+      "Ops!",
+      "E-mail ou senha incorretos.",
+      "⚠️"
+    );
+
+    return;
+
+  }
+
+  window.location.href = "index.html";
 
 });
+
+
+// ========================================
+// VOLTAR AO CATÁLOGO
+// ========================================
+
+document.getElementById("back-catalog")
+.addEventListener("click", function() {
+
+  window.location.href = "index.html";
+
+});
+
+
+// ========================================
+// SAIR DA CONTA
+// ========================================
+
+document.getElementById("logout-button")
+.addEventListener("click", async function() {
+
+  const button = this;
+
+  button.disabled = true;
+  button.textContent = "Saindo...";
+
+  const { error } = await client.auth.signOut();
+
+  button.disabled = false;
+  button.textContent = "Sair da conta";
+
+  if (error) {
+
+    showPopup(
+      "Ops!",
+      "Não foi possível sair da conta.",
+      "⚠️"
+    );
+
+    console.error(error);
+
+    return;
+
+  }
+
+  window.location.href = "index.html";
+
+});
+
+
+// ========================================
+// INICIALIZAÇÃO
+// ========================================
+
+checkSession();
+
 </script>
 
 </body>

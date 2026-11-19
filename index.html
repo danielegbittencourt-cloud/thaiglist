@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -70,6 +70,50 @@ body {
 #user-name {
   color: #f1dcef;
   font-size: 14px;
+}
+
+/* ÍCONE DE PERFIL */
+
+.profile-link {
+  width: 46px;
+  height: 46px;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  overflow: hidden;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f05ba8, #a875f5) !important;
+  border: 2px solid #d99aff;
+  box-shadow: 0 0 12px #a875f555;
+  flex-shrink: 0;
+}
+
+.profile-link:hover {
+  transform: scale(1.08) !important;
+  box-shadow: 0 0 18px #f05ba888;
+}
+
+.profile-link img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: none;
+}
+
+.profile-fallback {
+  color: white;
+  font-size: 23px;
+  line-height: 1;
+}
+
+.profile-link.has-photo img {
+  display: block;
+}
+
+.profile-link.has-photo .profile-fallback {
+  display: none;
 }
 
 /* BANNER PRINCIPAL */
@@ -482,6 +526,16 @@ h2 {
     font-size: 12px;
   }
 
+  .profile-link {
+    width: 42px;
+    height: 42px;
+    padding: 0 !important;
+  }
+
+  .profile-fallback {
+    font-size: 21px;
+  }
+
   header {
     min-height: 340px;
     padding: 22px 15px;
@@ -606,6 +660,18 @@ footer {
   </a>
 
   <span id="user-name" hidden></span>
+
+  <a
+    href="conta.html"
+    id="profile-link"
+    class="profile-link"
+    title="Meu perfil"
+    aria-label="Acessar meu perfil"
+    hidden
+  >
+    <img id="profile-avatar" src="" alt="Foto do perfil">
+    <span class="profile-fallback">👤</span>
+  </a>
 
   <a href="minha-lista.html" id="my-list-link" hidden>
     Minha Lista
@@ -777,6 +843,7 @@ const db = window.supabase.createClient(
 );
 
 let series = [];
+let activeUserId = null;
 
 const list = document.getElementById("series-list");
 const search = document.getElementById("search");
@@ -1328,6 +1395,12 @@ function updateUserMenu(session) {
   const loginLink =
     document.getElementById("login-link");
 
+  const profileLink =
+    document.getElementById("profile-link");
+
+  const profileAvatar =
+    document.getElementById("profile-avatar");
+
   const myListLink =
     document.getElementById("my-list-link");
 
@@ -1339,14 +1412,21 @@ function updateUserMenu(session) {
 
   if (session) {
 
-    const email = session.user.email || "";
+    const user = session.user;
+
+    const email = user.email || "";
 
     const name =
-      session.user.user_metadata?.name ||
+      user.user_metadata?.full_name ||
+      user.user_metadata?.name ||
       email.split("@")[0] ||
       "Usuário";
 
+    activeUserId = user.id;
+
     loginLink.hidden = true;
+
+    profileLink.hidden = false;
 
     myListLink.hidden = false;
 
@@ -1357,15 +1437,117 @@ function updateUserMenu(session) {
     userName.textContent =
       "Olá, " + name + " 🌷";
 
+    // Restaura o ícone padrão enquanto carrega a foto
+
+    profileLink.classList.remove("has-photo");
+
+    profileAvatar.removeAttribute("src");
+
+    // Carrega os dados do perfil
+
+    loadProfileAvatar(user.id);
+
   } else {
 
+    activeUserId = null;
+
     loginLink.hidden = false;
+
+    profileLink.hidden = true;
 
     myListLink.hidden = true;
 
     logoutLink.hidden = true;
 
     userName.hidden = true;
+
+    profileLink.classList.remove("has-photo");
+
+    profileAvatar.removeAttribute("src");
+
+  }
+
+}
+
+
+// ========================================
+// CARREGAR FOTO E NOME DO PERFIL
+// ========================================
+
+async function loadProfileAvatar(userId) {
+
+  const profileLink =
+    document.getElementById("profile-link");
+
+  const profileAvatar =
+    document.getElementById("profile-avatar");
+
+  const userName =
+    document.getElementById("user-name");
+
+  const { data, error } = await db
+
+    .from("profiles")
+
+    .select("display_name, avatar_url")
+
+    .eq("id", userId)
+
+    .maybeSingle();
+
+  // Evita aplicar dados de uma sessão anterior
+
+  if (activeUserId !== userId) {
+    return;
+  }
+
+  if (error) {
+
+    console.error(
+      "Erro ao carregar perfil:",
+      error
+    );
+
+    return;
+
+  }
+
+  if (!data) {
+    return;
+  }
+
+  // Atualiza o nome, caso exista no perfil
+
+  if (data.display_name) {
+
+    userName.textContent =
+      "Olá, " + data.display_name + " 🌷";
+
+  }
+
+  // Atualiza a foto de perfil
+
+  if (data.avatar_url) {
+
+    profileAvatar.onload = () => {
+
+      if (activeUserId === userId) {
+
+        profileLink.classList.add("has-photo");
+
+      }
+
+    };
+
+    profileAvatar.onerror = () => {
+
+      profileLink.classList.remove("has-photo");
+
+      profileAvatar.removeAttribute("src");
+
+    };
+
+    profileAvatar.src = data.avatar_url;
 
   }
 
@@ -1441,3 +1623,4 @@ loadSeries();
 
 </body>
 </html>
+```

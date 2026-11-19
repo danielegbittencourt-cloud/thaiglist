@@ -38,7 +38,6 @@ header {
 }
 
 header h1 { color: white; }
-
 header p { color: var(--muted); }
 
 main {
@@ -104,15 +103,13 @@ a {
   text-decoration: none;
 }
 
-/* PERFIL */
-
 #account-panel {
   text-align: center;
 }
 
 .avatar-container {
-  width: 115px;
-  height: 115px;
+  width: 125px;
+  height: 125px;
   margin: 20px auto;
   border-radius: 50%;
   overflow: hidden;
@@ -151,6 +148,26 @@ a {
   color: var(--muted);
   line-height: 1.6;
   margin: 20px 0;
+}
+
+.photo-description {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+  margin-top: 10px;
+}
+
+#photo-input {
+  display: none;
+}
+
+.photo-button {
+  background: #30213e;
+  border: 1px solid #71428c;
+}
+
+#save-photo-button {
+  margin-top: 12px;
 }
 
 .secondary-button {
@@ -207,6 +224,7 @@ a {
   color: #d0c3dc;
   line-height: 1.6;
 }
+
 </style>
 </head>
 
@@ -221,7 +239,7 @@ a {
 
 <main>
 
-<!-- FORMULÁRIOS PARA QUEM NÃO ESTÁ CONECTADO -->
+<!-- FORMULÁRIOS DE AUTENTICAÇÃO -->
 
 <div id="auth-forms" hidden>
 
@@ -267,7 +285,7 @@ a {
 </div>
 
 
-<!-- ÁREA DO USUÁRIO CONECTADO -->
+<!-- ÁREA DA CONTA -->
 
 <section id="account-panel" hidden>
 
@@ -280,6 +298,32 @@ a {
     <span id="avatar-fallback">👤</span>
 
   </div>
+
+  <p class="photo-description">
+    Escolha uma foto para personalizar seu perfil.
+  </p>
+
+  <input
+    id="photo-input"
+    type="file"
+    accept="image/jpeg,image/png,image/webp"
+  >
+
+  <button
+    type="button"
+    id="change-photo-button"
+    class="photo-button"
+  >
+    📷 Alterar foto
+  </button>
+
+  <button
+    type="button"
+    id="save-photo-button"
+    hidden
+  >
+    Salvar foto
+  </button>
 
   <h3 id="account-name">Carregando...</h3>
 
@@ -308,7 +352,7 @@ a {
 </section>
 
 
-<!-- MENSAGENS -->
+<!-- POPUP -->
 
 <div id="popup" class="popup-overlay">
 
@@ -357,9 +401,26 @@ const client = window.supabase.createClient(
 
 const authForms = document.getElementById("auth-forms");
 const accountPanel = document.getElementById("account-panel");
-const message = document.getElementById("message");
 
 let activeUserId = null;
+let selectedPhoto = null;
+let currentAvatarPath = null;
+
+
+// ========================================
+// ELEMENTOS DA FOTO
+// ========================================
+
+const avatar = document.getElementById("account-avatar");
+const fallback = document.getElementById("avatar-fallback");
+
+const photoInput = document.getElementById("photo-input");
+
+const changePhotoButton =
+  document.getElementById("change-photo-button");
+
+const savePhotoButton =
+  document.getElementById("save-photo-button");
 
 
 // ========================================
@@ -385,6 +446,42 @@ document.getElementById("popup-close")
 
 
 // ========================================
+// EXIBIR FOTO
+// ========================================
+
+function displayAvatar(url) {
+
+  if (!url) {
+
+    avatar.style.display = "none";
+    avatar.removeAttribute("src");
+
+    fallback.style.display = "block";
+
+    return;
+
+  }
+
+  avatar.onload = () => {
+
+    avatar.style.display = "block";
+    fallback.style.display = "none";
+
+  };
+
+  avatar.onerror = () => {
+
+    avatar.style.display = "none";
+    fallback.style.display = "block";
+
+  };
+
+  avatar.src = url;
+
+}
+
+
+// ========================================
 // MOSTRAR USUÁRIO CONECTADO
 // ========================================
 
@@ -394,8 +491,16 @@ async function showAccount(user) {
 
   activeUserId = user.id;
 
+  selectedPhoto = null;
+  currentAvatarPath = null;
+
+  photoInput.value = "";
+  savePhotoButton.hidden = true;
+
   authForms.hidden = true;
   accountPanel.hidden = false;
+
+  displayAvatar(null);
 
   const email = user.email || "";
 
@@ -411,30 +516,23 @@ async function showAccount(user) {
   document.getElementById("account-email").textContent =
     email;
 
-  // Restaura ícone padrão
-
-  const avatar = document.getElementById("account-avatar");
-  const fallback = document.getElementById("avatar-fallback");
-
-  avatar.style.display = "none";
-  avatar.removeAttribute("src");
-  fallback.style.display = "block";
-
-  // Busca informações do perfil
-
   const { data, error } = await client
     .from("profiles")
     .select("display_name, avatar_url")
     .eq("id", user.id)
     .maybeSingle();
 
-  // Evita atualizar a página com dados de outro usuário
-
   if (activeUserId !== user.id) return;
 
   if (error) {
 
     console.error("Erro ao carregar perfil:", error);
+
+    showPopup(
+      "Aviso",
+      "Não foi possível carregar todas as informações do perfil.",
+      "⚠️"
+    );
 
     return;
 
@@ -451,25 +549,22 @@ async function showAccount(user) {
 
   if (data.avatar_url) {
 
-    avatar.onload = () => {
+    displayAvatar(data.avatar_url);
 
-      if (activeUserId === user.id) {
+    // Recupera o caminho do arquivo para eventual substituição.
 
-        avatar.style.display = "block";
-        fallback.style.display = "none";
+    const marker = "/storage/v1/object/public/avatars/";
 
-      }
+    const index = data.avatar_url.indexOf(marker);
 
-    };
+    if (index !== -1) {
 
-    avatar.onerror = () => {
+      currentAvatarPath =
+        decodeURIComponent(
+          data.avatar_url.substring(index + marker.length).split("?")[0]
+        );
 
-      avatar.style.display = "none";
-      fallback.style.display = "block";
-
-    };
-
-    avatar.src = data.avatar_url;
+    }
 
   }
 
@@ -483,15 +578,220 @@ async function showAccount(user) {
 function showLogin() {
 
   activeUserId = null;
+  selectedPhoto = null;
+  currentAvatarPath = null;
 
   accountPanel.hidden = true;
   authForms.hidden = false;
+
+  photoInput.value = "";
+  savePhotoButton.hidden = true;
 
 }
 
 
 // ========================================
-// VERIFICAR SESSÃO EXISTENTE
+// SELECIONAR FOTO
+// ========================================
+
+changePhotoButton.addEventListener("click", function() {
+
+  photoInput.click();
+
+});
+
+
+photoInput.addEventListener("change", function(event) {
+
+  const file = event.target.files[0];
+
+  if (!file) return;
+
+  const allowedTypes = [
+    "image/jpeg",
+    "image/png",
+    "image/webp"
+  ];
+
+  if (!allowedTypes.includes(file.type)) {
+
+    showPopup(
+      "Formato inválido",
+      "Escolha uma imagem JPG, PNG ou WebP.",
+      "⚠️"
+    );
+
+    photoInput.value = "";
+
+    return;
+
+  }
+
+  if (file.size > 5 * 1024 * 1024) {
+
+    showPopup(
+      "Imagem muito grande",
+      "A foto precisa ter no máximo 5 MB.",
+      "⚠️"
+    );
+
+    photoInput.value = "";
+
+    return;
+
+  }
+
+  selectedPhoto = file;
+
+  const previewURL = URL.createObjectURL(file);
+
+  displayAvatar(previewURL);
+
+  savePhotoButton.hidden = false;
+
+});
+
+
+// ========================================
+// SALVAR FOTO NO SUPABASE
+// ========================================
+
+savePhotoButton.addEventListener("click", async function() {
+
+  if (!selectedPhoto || !activeUserId) {
+
+    showPopup(
+      "Atenção",
+      "Selecione uma foto antes de salvar.",
+      "⚠️"
+    );
+
+    return;
+
+  }
+
+  const button = this;
+
+  const userId = activeUserId;
+
+  button.disabled = true;
+  button.textContent = "Salvando foto...";
+
+  try {
+
+    const extension = selectedPhoto.name
+      .split(".")
+      .pop()
+      .toLowerCase();
+
+    const filePath =
+      userId + "/avatar-" + Date.now() + "." + extension;
+
+    // Envia a nova foto para o Storage.
+
+    const { data: uploadData, error: uploadError } =
+      await client.storage
+        .from("avatars")
+        .upload(filePath, selectedPhoto, {
+          cacheControl: "3600",
+          upsert: false,
+          contentType: selectedPhoto.type
+        });
+
+    if (uploadError) throw uploadError;
+
+    // Obtém o endereço público.
+
+    const { data: publicData } =
+      client.storage
+        .from("avatars")
+        .getPublicUrl(filePath);
+
+    const publicURL = publicData.publicUrl;
+
+    // Atualiza o perfil.
+
+    const { error: updateError } = await client
+      .from("profiles")
+      .update({
+        avatar_url: publicURL
+      })
+      .eq("id", userId);
+
+    if (updateError) {
+
+      // Evita deixar o arquivo novo abandonado.
+
+      await client.storage
+        .from("avatars")
+        .remove([filePath]);
+
+      throw updateError;
+
+    }
+
+    // Guarda o caminho da nova foto.
+
+    const previousPath = currentAvatarPath;
+
+    currentAvatarPath = filePath;
+
+    // Atualiza a imagem na página.
+
+    displayAvatar(publicURL);
+
+    selectedPhoto = null;
+    photoInput.value = "";
+
+    savePhotoButton.hidden = true;
+
+    showPopup(
+      "Foto atualizada!",
+      "Sua nova foto de perfil foi salva com sucesso. 🌷",
+      "🎉"
+    );
+
+    // Remove a foto antiga somente após atualizar o perfil.
+
+    if (previousPath) {
+
+      const { error: removeError } = await client.storage
+        .from("avatars")
+        .remove([previousPath]);
+
+      if (removeError) {
+
+        console.warn(
+          "Não foi possível remover a foto anterior:",
+          removeError
+        );
+
+      }
+
+    }
+
+  } catch (error) {
+
+    console.error("Erro ao salvar foto:", error);
+
+    showPopup(
+      "Não foi possível salvar",
+      error.message || "Ocorreu um erro durante o envio da foto.",
+      "⚠️"
+    );
+
+  } finally {
+
+    button.disabled = false;
+    button.textContent = "Salvar foto";
+
+  }
+
+});
+
+
+// ========================================
+// VERIFICAR SESSÃO
 // ========================================
 
 async function checkSession() {
@@ -500,7 +800,7 @@ async function checkSession() {
 
   if (error) {
 
-    console.error("Erro ao verificar sessão:", error);
+    console.error(error);
 
     showLogin();
 
@@ -522,7 +822,7 @@ async function checkSession() {
 
 
 // ========================================
-// ACOMPANHAR MUDANÇAS NA SESSÃO
+// ACOMPANHAR AUTENTICAÇÃO
 // ========================================
 
 client.auth.onAuthStateChange((event, session) => {
@@ -599,7 +899,7 @@ document.getElementById("signup-form")
 
     showPopup(
       "Conta criada!",
-      "Sua conta foi criada e você já está conectado. 🌷",
+      "Sua conta foi criada e você já está conectada. 🌷",
       "🎉"
     );
 

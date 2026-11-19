@@ -925,8 +925,39 @@ footer {
 const SUPABASE_URL = "https://jjybnidhwfimcdwygafk.supabase.co";
 const SUPABASE_KEY = "sb_publishable_DyikY0WSJJ4apDc0_ZwfOw_x6LvfqM-";
 
-const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const memoryStorage = new Map();
 
+const safeStorage = {
+  getItem: (key) => {
+    try {
+      return window.localStorage.getItem(key);
+    } catch {
+      return memoryStorage.get(key) ?? null;
+    }
+  },
+  setItem: (key, value) => {
+    try {
+      window.localStorage.setItem(key, value);
+    } catch {
+      memoryStorage.set(key, value);
+    }
+  },
+  removeItem: (key) => {
+    try {
+      window.localStorage.removeItem(key);
+    } catch {
+      memoryStorage.delete(key);
+    }
+  }
+};
+
+const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+  auth: {
+    storage: safeStorage,
+    persistSession: true,
+    autoRefreshToken: true
+  }
+});
 const visitedUserId = new URLSearchParams(window.location.search).get("user");
 
 const authForms = document.getElementById("auth-forms");

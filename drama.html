@@ -1042,14 +1042,21 @@ async function loadDramaComments(dramaId) {
 
     const userIds = [...new Set(comments.map((c) => c.user_id))];
     const { data: profiles } = await db
-      .from("profiles")
-      .select("id, display_name, avatar_url")
-      .in("id", userIds);
+  .from("profiles")
+  .select("id, display_name, avatar_url, public_profile")
+  .in("id", userIds);
 
     const profileMap = new Map((profiles || []).map((p) => [p.id, p]));
     commentsListEl.innerHTML = "";
 
-    comments.forEach((comment) => {
+    comments.forEach((comment) => {const isPublicAuthor = !profile || profile.public_profile !== false;
+const authorWrap = document.createElement(isPublicAuthor ? "a" : "div");
+authorWrap.className = "comment-author";
+if (isPublicAuthor) {
+  authorWrap.href = `conta.html?user=${comment.user_id}`;
+  authorWrap.style.textDecoration = "none";
+  authorWrap.title = `Ver perfil de ${authorName}`;
+}
       const profile = profileMap.get(comment.user_id);
       const authorName = profile?.display_name || "Fã do ThaiGList";
 

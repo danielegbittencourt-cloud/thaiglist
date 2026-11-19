@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -7,281 +6,9 @@
 <title>Detalhes do drama | ThaiGList</title>
 
 <style>
-  /* ========================================
-   AVALIAÇÕES E COMENTÁRIOS (THAIGLIST)
-   ======================================== */
-.reviews-section {
-  margin-top: 28px;
-  padding: 24px;
-  background: #1b1626;
-  border: 1px solid #382b49;
-  border-radius: 18px;
-}
-
-.reviews-header {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 14px;
-}
-
-.reviews-header h2 {
-  margin: 0;
-  color: #f05ba8;
-  font-size: 20px;
-}
-
-.average-badge {
-  padding: 6px 12px;
-  border-radius: 999px;
-  background: #a875f522;
-  border: 1px solid #a875f555;
-  color: #f7efff;
-  font-size: 13px;
-  font-weight: bold;
-}
-
-/* Aviso geral de spoilers */
-.spoiler-disclaimer {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 12px 14px;
-  margin-bottom: 18px;
-  border-radius: 12px;
-  background: #2b182d;
-  border: 1px solid #f05ba855;
-  color: #e8d8f5;
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-/* Formulário de novo comentário */
-.comment-form-box {
-  padding: 16px;
-  border-radius: 14px;
-  background: #241d32;
-  border: 1px solid #382b49;
-  margin-bottom: 22px;
-}
-
-.star-picker {
-  display: inline-flex;
-  gap: 6px;
-  margin: 6px 0 12px;
-}
-
-.star-btn {
-  width: auto;
-  margin: 0;
-  padding: 4px 8px;
-  font-size: 22px;
-  line-height: 1;
-  background: transparent;
-  border: 1px solid transparent;
-  color: #6f5d84;
-  cursor: pointer;
-  transition: transform .12s, color .12s;
-}
-
-.star-btn.active,
-.star-btn:hover {
-  color: #f05ba8;
-  transform: scale(1.1);
-}
-
-.comment-textarea {
-  width: 100%;
-  min-height: 95px;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #382b49;
-  background: #171221;
-  color: #f7efff;
-  font-family: Arial, sans-serif;
-  font-size: 15px;
-  resize: vertical;
-}
-
-.comment-textarea:focus {
-  outline: none;
-  border-color: #f05ba8;
-}
-
-.comment-form-footer {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-top: 12px;
-}
-
-.spoiler-check-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0;
-  color: #f7efff;
-  font-size: 14px;
-  font-weight: normal;
-  cursor: pointer;
-}
-
-.spoiler-check-label input[type="checkbox"] {
-  width: auto;
-  margin: 0;
-  cursor: pointer;
-}
-
-.submit-comment-btn {
-  width: auto;
-  margin: 0;
-  padding: 11px 18px;
-  border: none;
-  border-radius: 10px;
-  background: linear-gradient(100deg, #f05ba8, #a875f5);
-  color: #ffffff;
-  font-size: 14px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.login-prompt-box {
-  padding: 16px;
-  text-align: center;
-  border-radius: 14px;
-  background: #241d32;
-  border: 1px dashed #71428c;
-  color: #b8a9c9;
-  margin-bottom: 20px;
-}
-
-.login-prompt-box a {
-  display: inline-block;
-  margin-top: 8px;
-  color: #f05ba8;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-/* Lista de comentários */
-.comments-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.comment-card {
-  padding: 15px;
-  border-radius: 14px;
-  background: #241d32;
-  border: 1px solid #382b49;
-}
-
-.comment-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.comment-author {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.comment-avatar {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #f05ba8;
-  background: #382b49;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  flex-shrink: 0;
-}
-
-.comment-author-name {
-  font-weight: bold;
-  font-size: 14px;
-  color: #ffffff;
-}
-
-.comment-date {
-  font-size: 12px;
-  color: #b8a9c9;
-}
-
-.comment-rating {
-  color: #f05ba8;
-  font-size: 14px;
-  font-weight: bold;
-}
-
-.comment-body {
-  color: #f7efff;
-  font-size: 14px;
-  line-height: 1.6;
-  white-space: pre-line;
-  margin: 0;
-}
-
-/* Bloco oculto para comentário com spoiler */
-.spoiler-shield {
-  padding: 14px;
-  border-radius: 10px;
-  background: #171221;
-  border: 1px dashed #f05ba888;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.spoiler-shield span {
-  font-size: 13px;
-  color: #f05ba8;
-  font-weight: bold;
-}
-
-.reveal-spoiler-btn {
-  width: auto;
-  margin: 0;
-  padding: 7px 12px;
-  border-radius: 8px;
-  border: 1px solid #71428c;
-  background: #30213e;
-  color: #f7efff;
-  font-size: 12px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.reveal-spoiler-btn:hover {
-  border-color: #f05ba8;
-}
-
-.delete-comment-btn {
-  width: auto;
-  margin: 10px 0 0;
-  padding: 5px 10px;
-  border-radius: 6px;
-  border: none;
-  background: #493044;
-  color: #f7efff;
-  font-size: 12px;
-  cursor: pointer;
-}
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -568,6 +295,277 @@ iframe {
   display: none !important;
 }
 
+/* ========================================
+   AVALIAÇÕES E COMENTÁRIOS (THAIGLIST)
+   ======================================== */
+.reviews-section {
+  margin-top: 32px;
+  padding: 24px;
+  background: #1b1626;
+  border: 1px solid #382b49;
+  border-radius: 18px;
+}
+
+.reviews-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.reviews-header h2 {
+  margin: 0;
+  color: #f05ba8;
+  font-size: 22px;
+}
+
+.average-badge {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #a875f522;
+  border: 1px solid #a875f555;
+  color: #f7efff;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.spoiler-disclaimer {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  margin-bottom: 18px;
+  border-radius: 12px;
+  background: #2b182d;
+  border: 1px solid #f05ba855;
+  color: #e8d8f5;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.comment-form-box {
+  padding: 16px;
+  border-radius: 14px;
+  background: #241d32;
+  border: 1px solid #382b49;
+  margin-bottom: 22px;
+}
+
+.star-picker {
+  display: inline-flex;
+  gap: 6px;
+  margin: 6px 0 12px;
+}
+
+.star-btn {
+  width: auto;
+  margin: 0;
+  padding: 4px 8px;
+  font-size: 24px;
+  line-height: 1;
+  background: transparent;
+  border: 1px solid transparent;
+  color: #6f5d84;
+  cursor: pointer;
+  transition: transform .12s, color .12s;
+}
+
+.star-btn.active,
+.star-btn:hover {
+  color: #f5bd54;
+  transform: scale(1.1);
+}
+
+.comment-textarea {
+  width: 100%;
+  min-height: 95px;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #382b49;
+  background: #171221;
+  color: #f7efff;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  resize: vertical;
+}
+
+.comment-textarea:focus {
+  outline: none;
+  border-color: #f05ba8;
+}
+
+.comment-form-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.spoiler-check-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: #f7efff;
+  font-size: 14px;
+  font-weight: normal;
+  cursor: pointer;
+}
+
+.spoiler-check-label input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+  cursor: pointer;
+}
+
+.submit-comment-btn {
+  width: auto;
+  margin: 0;
+  padding: 11px 18px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(100deg, #f05ba8, #a875f5);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.login-prompt-box {
+  padding: 16px;
+  text-align: center;
+  border-radius: 14px;
+  background: #241d32;
+  border: 1px dashed #71428c;
+  color: #b8a9c9;
+  margin-bottom: 20px;
+}
+
+.login-prompt-box a {
+  display: inline-block;
+  margin-top: 8px;
+  color: #f05ba8;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.comment-card {
+  padding: 15px;
+  border-radius: 14px;
+  background: #241d32;
+  border: 1px solid #382b49;
+}
+
+.comment-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.comment-author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.comment-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #f05ba8;
+  background: #382b49;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.comment-author-name {
+  font-weight: bold;
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.comment-date {
+  font-size: 12px;
+  color: #b8a9c9;
+}
+
+.comment-rating {
+  color: #f5bd54;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.comment-body {
+  color: #f7efff;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-line;
+  margin: 0;
+}
+
+.spoiler-shield {
+  padding: 14px;
+  border-radius: 10px;
+  background: #171221;
+  border: 1px dashed #f05ba888;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.spoiler-shield span {
+  font-size: 13px;
+  color: #f05ba8;
+  font-weight: bold;
+}
+
+.reveal-spoiler-btn {
+  width: auto;
+  margin: 0;
+  padding: 7px 12px;
+  border-radius: 8px;
+  border: 1px solid #71428c;
+  background: #30213e;
+  color: #f7efff;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.reveal-spoiler-btn:hover {
+  border-color: #f05ba8;
+}
+
+.delete-comment-btn {
+  width: auto;
+  margin: 10px 0 0;
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: none;
+  background: #493044;
+  color: #f7efff;
+  font-size: 12px;
+  cursor: pointer;
+}
+
 /* RODAPÉ */
 
 footer {
@@ -668,6 +666,60 @@ footer {
     <p>Carregando informações... 🌷</p>
   </div>
 
+  <!-- AVALIAÇÕES E COMENTÁRIOS -->
+  <section class="reviews-section" id="reviews-section">
+    <div class="reviews-header">
+      <h2>Avaliações e comentários 💬</h2>
+      <span class="average-badge" id="drama-average-rating">★ Sem avaliações ainda</span>
+    </div>
+
+    <div class="spoiler-disclaimer" role="note">
+      <span>⚠️</span>
+      <div>
+        <strong>Aviso de spoilers:</strong> Os comentários abaixo são escritos pela comunidade e podem conter detalhes importantes da história. Comentários marcados com spoiler ficam ocultos por padrão — ler o conteúdo é uma escolha pessoal.
+      </div>
+    </div>
+
+    <!-- Exibido quando a usuária NÃO está logada -->
+    <div id="comment-login-prompt" class="login-prompt-box" hidden>
+      <p style="margin: 0;">Quer avaliar este GL e compartilhar sua opinião com outras fãs?</p>
+      <a href="conta.html">Entrar ou criar conta no ThaiGList →</a>
+    </div>
+
+    <!-- Exibido quando a usuária ESTÁ logada -->
+    <form id="comment-form" class="comment-form-box" hidden>
+      <div style="font-size: 14px; font-weight: bold; color: #b8a9c9;">Sua nota para este drama:</div>
+      <div class="star-picker" id="star-picker" role="radiogroup" aria-label="Avaliação de 1 a 5 estrelas">
+        <button type="button" class="star-btn" data-value="1" title="1 estrela">★</button>
+        <button type="button" class="star-btn" data-value="2" title="2 estrelas">★</button>
+        <button type="button" class="star-btn" data-value="3" title="3 estrelas">★</button>
+        <button type="button" class="star-btn" data-value="4" title="4 estrelas">★</button>
+        <button type="button" class="star-btn" data-value="5" title="5 estrelas">★</button>
+      </div>
+
+      <textarea
+        id="comment-content"
+        class="comment-textarea"
+        maxlength="1000"
+        required
+        placeholder="Escreva o que achou da história, química do casal, atuação..."
+      ></textarea>
+
+      <div class="comment-form-footer">
+        <label class="spoiler-check-label">
+          <input type="checkbox" id="comment-has-spoiler">
+          <span>🚨 Este comentário contém spoiler</span>
+        </label>
+
+        <button type="submit" id="submit-comment-btn" class="submit-comment-btn">
+          Publicar comentário 🌷
+        </button>
+      </div>
+    </form>
+
+    <div id="comments-list" class="comments-list">Carregando comentários...</div>
+  </section>
+
 </main>
 
 <footer>
@@ -692,6 +744,18 @@ const db = window.supabase.createClient(
 );
 
 const details = document.getElementById("details");
+const currentDramaId = Number(
+  new URLSearchParams(window.location.search).get("id")
+);
+
+let loggedUser = null;
+let selectedCommentRating = 0;
+
+const commentForm = document.getElementById("comment-form");
+const loginPrompt = document.getElementById("comment-login-prompt");
+const starPickerButtons = document.querySelectorAll("#star-picker .star-btn");
+const commentsListEl = document.getElementById("comments-list");
+const averageRatingEl = document.getElementById("drama-average-rating");
 
 
 // ========================================
@@ -719,11 +783,7 @@ function addText(parent, tag, className, value) {
 
 async function loadDrama() {
 
-  const id = new URLSearchParams(
-    window.location.search
-  ).get("id");
-
-  if (!id) {
+  if (!currentDramaId) {
 
     details.textContent = "Série não encontrada.";
 
@@ -737,7 +797,7 @@ async function loadDrama() {
 
     .select("*")
 
-    .eq("id", id)
+    .eq("id", currentDramaId)
 
     .single();
 
@@ -750,6 +810,15 @@ async function loadDrama() {
 
     return;
 
+  }
+
+  // Atualiza média inicial caso já exista na tabela dramas
+  if (typeof data.average_rating !== "undefined" && typeof data.ratings_count !== "undefined") {
+    const avg = Number(data.average_rating || 0);
+    const count = Number(data.ratings_count || 0);
+    averageRatingEl.textContent = count > 0
+      ? `★ ${avg.toFixed(1)} (${count} ${count === 1 ? "avaliação" : "avaliações"})`
+      : "★ Sem avaliações ainda";
   }
 
 
@@ -900,6 +969,7 @@ async function loadDrama() {
     await db.auth.getSession();
 
   const session = sessionData.session;
+  loggedUser = session?.user || null;
 
   if (!session) {
 
@@ -1232,187 +1302,4 @@ async function loadDrama() {
     if (videoId) {
 
       video.src =
-        "https://www.youtube.com/embed/" + videoId[1];
-
-      video.title =
-        "Trailer de " + data.title;
-
-      video.width = "100%";
-
-      video.height = "315";
-
-      video.style.border = "0";
-
-      video.style.borderRadius = "14px";
-
-      video.allow =
-        "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
-
-      video.allowFullscreen = true;
-
-      trailerSection.appendChild(video);
-
-      details.appendChild(trailerSection);
-
-    }
-
-  }
-
-
-  // ========================================
-  // ELENCO PRINCIPAL
-  // ========================================
-
-  if (data.main_cast) {
-
-    const castSection =
-      document.createElement("section");
-
-    castSection.className = "synopsis";
-
-    addText(
-      castSection,
-      "h2",
-      "",
-      "Elenco principal"
-    );
-
-    const castText = addText(
-      castSection,
-      "p",
-      "",
-      data.main_cast
-    );
-
-    castText.style.whiteSpace = "pre-line";
-
-    details.appendChild(castSection);
-
-  }
-
-
-  // ========================================
-  // PERSONAGENS
-  // ========================================
-
-  if (data.characters) {
-
-    const charactersSection =
-      document.createElement("section");
-
-    charactersSection.className = "synopsis";
-
-    addText(
-      charactersSection,
-      "h2",
-      "",
-      "Personagens"
-    );
-
-    const charactersText = addText(
-      charactersSection,
-      "p",
-      "",
-      data.characters
-    );
-
-    charactersText.style.whiteSpace = "pre-line";
-
-    details.appendChild(charactersSection);
-
-  }
-
-
-  // ========================================
-  // SINOPSE
-  // ========================================
-
-  if (data.synopsis) {
-
-    const synopsis =
-      document.createElement("section");
-
-    synopsis.className = "synopsis";
-
-    addText(
-      synopsis,
-      "h2",
-      "",
-      "Sinopse"
-    );
-
-    addText(
-      synopsis,
-      "p",
-      "",
-      data.synopsis
-    );
-
-    details.appendChild(synopsis);
-
-  }
-
-}
-<section class="reviews-section" id="reviews-section">
-  <div class="reviews-header">
-    <h2>Avaliações e comentários 💬</h2>
-    <span class="average-badge" id="drama-average-rating">★ Sem avaliações ainda</span>
-  </div>
-
-  <div class="spoiler-disclaimer" role="note">
-    <span>⚠️</span>
-    <div>
-      <strong>Aviso de spoilers:</strong> Os comentários abaixo são escritos pela comunidade e podem conter detalhes importantes da história. Comentários marcados com spoiler ficam ocultos por padrão — ler o conteúdo é uma escolha pessoal.
-    </div>
-  </div>
-
-  <!-- Exibido quando a usuária NÃO está logada -->
-  <div id="comment-login-prompt" class="login-prompt-box" hidden>
-    <p style="margin: 0;">Quer avaliar este GL e compartilhar sua opinião com outras fãs?</p>
-    <a href="conta.html">Entrar ou criar conta no ThaiGList →</a>
-  </div>
-
-  <!-- Exibido quando a usuária ESTÁ logada -->
-  <form id="comment-form" class="comment-form-box" hidden>
-    <div style="font-size: 14px; font-weight: bold; color: #b8a9c9;">Sua nota para este drama:</div>
-    <div class="star-picker" id="star-picker" role="radiogroup" aria-label="Avaliação de 1 a 5 estrelas">
-      <button type="button" class="star-btn" data-value="1" title="1 estrela">★</button>
-      <button type="button" class="star-btn" data-value="2" title="2 estrelas">★</button>
-      <button type="button" class="star-btn" data-value="3" title="3 estrelas">★</button>
-      <button type="button" class="star-btn" data-value="4" title="4 estrelas">★</button>
-      <button type="button" class="star-btn" data-value="5" title="5 estrelas">★</button>
-    </div>
-
-    <textarea
-      id="comment-content"
-      class="comment-textarea"
-      maxlength="1000"
-      required
-      placeholder="Escreva o que achou da história, química do casal, atuação..."
-    ></textarea>
-
-    <div class="comment-form-footer">
-      <label class="spoiler-check-label">
-        <input type="checkbox" id="comment-has-spoiler">
-        <span>🚨 Este comentário contém spoiler</span>
-      </label>
-
-      <button type="submit" id="submit-comment-btn" class="submit-comment-btn">
-        Publicar comentário 🌷
-      </button>
-    </div>
-  </form>
-
-  <div id="comments-list" class="comments-list">Carregando comentários...</div>
-</section>
-
-// ========================================
-// INICIALIZAÇÃO
-// ========================================
-
-loadDrama();
-
-</script>
-
-</body>
-</html>
+        "

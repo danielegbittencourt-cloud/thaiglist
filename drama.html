@@ -5,633 +5,514 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Detalhes do drama | ThaiGList</title>
 
-<style>
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-:root {
-  --background: #100d18;
-  --surface: #1b1626;
-  --surface-light: #241d32;
-  --pink: #f05ba8;
-  --purple: #a875f5;
-  --text: #f7efff;
-  --muted: #b8a9c9;
-  --border: #382b49;
-}
-
-body {
-  margin: 0;
-  padding: 25px 15px;
-  background: var(--background);
-  color: var(--text);
-  font-family: Arial, sans-serif;
-}
-
-.container {
-  max-width: 1000px;
-  margin: auto;
-}
-
-/* CABEÇALHO COM PÔSTER DE FUNDO */
-
-header {
-  position: relative;
-  min-height: 270px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-  text-align: center;
-  padding: 35px 20px;
-  overflow: hidden;
-
-  background: linear-gradient(120deg, #21132f, #392047);
-
-  border: 1px solid #71428c;
-  border-radius: 20px;
-  box-shadow: 0 8px 30px #00000044;
-}
-
-/* IMAGEM DE FUNDO */
-
-.header-backdrop {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
-}
-
-.header-backdrop img {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-  object-position: center 35%;
-  filter: blur(1px);
-  transform: scale(1.03);
-}
-
-/* CAMADA ESCURA SOBRE A IMAGEM */
-
-header::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-
-  background: linear-gradient(
-    to top,
-    rgba(16, 10, 25, 0.95) 0%,
-    rgba(16, 10, 25, 0.65) 45%,
-    rgba(16, 10, 25, 0.25) 100%
-  );
-}
-
-/* TEXTO DO CABEÇALHO */
-
-.header-content {
-  position: relative;
-  z-index: 2;
-}
-
-header h1 {
-  color: white;
-  margin: 0;
-  font-size: 38px;
-  letter-spacing: 1px;
-  text-shadow: 0 3px 12px #000000aa;
-}
-
-header p {
-  color: #f1dcef;
-  margin: 10px 0 0;
-  font-size: 16px;
-  text-shadow: 0 2px 8px #000000aa;
-}
-
-/* CONTEÚDO */
-
-main {
-  margin-top: 25px;
-  padding: 30px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  box-shadow: 0 8px 30px #00000033;
-}
-
-/* VOLTAR */
-
-.back {
-  display: inline-block;
-  margin-bottom: 25px;
-  color: var(--pink);
-  font-weight: bold;
-  text-decoration: none;
-}
-
-.back:hover {
-  color: var(--purple);
-}
-
-/* DETALHES */
-
-.details {
-  display: flex;
-  gap: 30px;
-  flex-wrap: wrap;
-}
-
-.poster {
-  width: 280px;
-  max-width: 100%;
-  border-radius: 14px;
-  object-fit: cover;
-  align-self: flex-start;
-  border: 1px solid #71428c;
-  box-shadow: 0 8px 25px #00000066;
-}
-
-.information {
-  flex: 1;
-  min-width: 220px;
-}
-
-h2 {
-  color: var(--pink);
-  font-size: 28px;
-}
-
-.original-title {
-  color: var(--muted);
-  font-style: italic;
-}
-
-p {
-  color: #d0c3dc;
-  line-height: 1.7;
-}
-
-/* STATUS */
-
-.status {
-  display: inline-block;
-  padding: 8px 13px;
-  border-radius: 20px;
-  background: #452b52;
-  color: #f4b6dc;
-  font-size: 13px;
-  font-weight: bold;
-}
-
-/* SINOPSE */
-
-.synopsis {
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 1px solid var(--border);
-}
-
-/* ELENCO E PERSONAGENS */
-
-h3 {
-  color: var(--purple);
-}
-
-/* TRAILER */
-
-iframe {
-  max-width: 100%;
-  border-radius: 14px;
-  border: 1px solid var(--border);
-}
-
-/* MINHA LISTA */
-
-.my-list-controls {
-  margin-top: 28px;
-  padding: 22px;
-  background: #1b1626;
-  border: 1px solid #382b49;
-  border-radius: 16px;
-}
-
-.my-list-controls h3 {
-  color: #f05ba8;
-  margin-top: 0;
-  margin-bottom: 18px;
-}
-
-.list-status-options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 9px;
-  margin: 15px 0;
-}
-
-.list-status-options button {
-  padding: 11px 15px;
-  border-radius: 10px;
-  border: 1px solid #493956;
-  background: #241d32;
-  color: #f7efff;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.list-status-options button.active {
-  background: linear-gradient(135deg, #f05ba8, #a875f5);
-  border-color: transparent;
-  color: white;
-}
-
-.rating-area {
-  margin: 20px 0;
-}
-
-.rating-stars {
-  display: flex;
-  gap: 7px;
-  margin-top: 10px;
-}
-
-.rating-stars button {
-  background: transparent;
-  border: none;
-  color: #f5bd54;
-  font-size: 30px;
-  cursor: pointer;
-  padding: 2px;
-}
-
-.save-list-button {
-  width: 100%;
-  padding: 13px;
-  border: none;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #f05ba8, #a875f5);
-  color: white;
-  font-weight: bold;
-  font-size: 15px;
-  cursor: pointer;
-  margin-top: 12px;
-}
-
-.save-list-button:disabled {
-  opacity: 0.6;
-  cursor: wait;
-}
-
-.list-message {
-  color: #f05ba8;
-  margin-bottom: 0;
-}
-
-.my-list-controls [hidden] {
-  display: none !important;
-}
-
-/* ========================================
-   AVALIAÇÕES E COMENTÁRIOS (THAIGLIST)
-   ======================================== */
-.reviews-section {
-  margin-top: 32px;
-  padding: 24px;
-  background: #1b1626;
-  border: 1px solid #382b49;
-  border-radius: 18px;
-}
-
-.reviews-header {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 14px;
-}
-
-.reviews-header h2 {
-  margin: 0;
-  color: #f05ba8;
-  font-size: 22px;
-}
-
-.average-badge {
-  padding: 6px 12px;
-  border-radius: 999px;
-  background: #a875f522;
-  border: 1px solid #a875f555;
-  color: #f7efff;
-  font-size: 13px;
-  font-weight: bold;
-}
-
-.spoiler-disclaimer {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 12px 14px;
-  margin-bottom: 18px;
-  border-radius: 12px;
-  background: #2b182d;
-  border: 1px solid #f05ba855;
-  color: #e8d8f5;
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.comment-form-box {
-  padding: 16px;
-  border-radius: 14px;
-  background: #241d32;
-  border: 1px solid #382b49;
-  margin-bottom: 22px;
-}
-
-.star-picker {
-  display: inline-flex;
-  gap: 6px;
-  margin: 6px 0 12px;
-}
-
-.star-btn {
-  width: auto;
-  margin: 0;
-  padding: 4px 8px;
-  font-size: 24px;
-  line-height: 1;
-  background: transparent;
-  border: 1px solid transparent;
-  color: #6f5d84;
-  cursor: pointer;
-  transition: transform .12s, color .12s;
-}
-
-.star-btn.active,
-.star-btn:hover {
-  color: #f5bd54;
-  transform: scale(1.1);
-}
-
-.comment-textarea {
-  width: 100%;
-  min-height: 95px;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #382b49;
-  background: #171221;
-  color: #f7efff;
-  font-family: Arial, sans-serif;
-  font-size: 15px;
-  resize: vertical;
-}
-
-.comment-textarea:focus {
-  outline: none;
-  border-color: #f05ba8;
-}
-
-.comment-form-footer {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-top: 12px;
-}
-
-.spoiler-check-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0;
-  color: #f7efff;
-  font-size: 14px;
-  font-weight: normal;
-  cursor: pointer;
-}
-
-.spoiler-check-label input[type="checkbox"] {
-  width: auto;
-  margin: 0;
-  cursor: pointer;
-}
-
-.submit-comment-btn {
-  width: auto;
-  margin: 0;
-  padding: 11px 18px;
-  border: none;
-  border-radius: 10px;
-  background: linear-gradient(100deg, #f05ba8, #a875f5);
-  color: #ffffff;
-  font-size: 14px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.login-prompt-box {
-  padding: 16px;
-  text-align: center;
-  border-radius: 14px;
-  background: #241d32;
-  border: 1px dashed #71428c;
-  color: #b8a9c9;
-  margin-bottom: 20px;
-}
-
-.login-prompt-box a {
-  display: inline-block;
-  margin-top: 8px;
-  color: #f05ba8;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-.comments-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.comment-card {
-  padding: 15px;
-  border-radius: 14px;
-  background: #241d32;
-  border: 1px solid #382b49;
-}
-
-.comment-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.comment-author {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.comment-avatar {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #f05ba8;
-  background: #382b49;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  flex-shrink: 0;
-}
-
-.comment-author-name {
-  font-weight: bold;
-  font-size: 14px;
-  color: #ffffff;
-}
-
-.comment-date {
-  font-size: 12px;
-  color: #b8a9c9;
-}
-
-.comment-rating {
-  color: #f5bd54;
-  font-size: 14px;
-  font-weight: bold;
-}
-
-.comment-body {
-  color: #f7efff;
-  font-size: 14px;
-  line-height: 1.6;
-  white-space: pre-line;
-  margin: 0;
-}
-
-.spoiler-shield {
-  padding: 14px;
-  border-radius: 10px;
-  background: #171221;
-  border: 1px dashed #f05ba888;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.spoiler-shield span {
-  font-size: 13px;
-  color: #f05ba8;
-  font-weight: bold;
-}
-
-.reveal-spoiler-btn {
-  width: auto;
-  margin: 0;
-  padding: 7px 12px;
-  border-radius: 8px;
-  border: 1px solid #71428c;
-  background: #30213e;
-  color: #f7efff;
-  font-size: 12px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.reveal-spoiler-btn:hover {
-  border-color: #f05ba8;
-}
-
-.delete-comment-btn {
-  width: auto;
-  margin: 10px 0 0;
-  padding: 5px 10px;
-  border-radius: 6px;
-  border: none;
-  background: #493044;
-  color: #f7efff;
-  font-size: 12px;
-  cursor: pointer;
-}
-
-/* RODAPÉ */
-
-footer {
-  text-align: center;
-  padding: 20px;
-  color: var(--muted);
-}
-
-/* CELULAR */
-
-@media (max-width: 600px) {
-
-  body {
-    padding: 15px 10px;
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "https://jjybnidhwfimcdwygafk.supabase.co";
+const SUPABASE_KEY = "sb_publishable_DyikY0WSJJ4apDc0_ZwfOw_x6LvfqM-";
+
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const details = document.getElementById("details");
+const currentDramaId = new URLSearchParams(window.location.search).get("id");
+
+let loggedUser = null;
+let selectedCommentRating = 0;
+
+const commentForm = document.getElementById("comment-form");
+const loginPrompt = document.getElementById("comment-login-prompt");
+const starPickerButtons = document.querySelectorAll("#star-picker .star-btn");
+const commentsListEl = document.getElementById("comments-list");
+const averageRatingEl = document.getElementById("drama-average-rating");
+
+function addText(parent, tag, className, value) {
+  const element = document.createElement(tag);
+  if (className) element.className = className;
+  element.textContent = value;
+  parent.appendChild(element);
+  return element;
+}
+
+// ========================================
+// 1. CARREGAR DETALHES DO DRAMA
+// ========================================
+async function loadDrama() {
+  if (!currentDramaId) {
+    details.textContent = "Série não encontrada (ID ausente na URL).";
+    return;
   }
 
-  header {
-    min-height: 220px;
-    padding: 25px 15px;
-  }
+  try {
+    const { data, error } = await db
+      .from("dramas")
+      .select("*")
+      .eq("id", currentDramaId)
+      .single();
 
-  header h1 {
-    font-size: 30px;
-  }
+    if (error || !data) {
+      console.error("Erro ao buscar drama:", error);
+      details.textContent = "Não foi possível carregar esta série: " + (error?.message || "não encontrada");
+      return;
+    }
 
-  header p {
-    font-size: 14px;
-  }
+    // Atualiza média se as colunas já existirem
+    if (typeof data.average_rating !== "undefined" && typeof data.ratings_count !== "undefined") {
+      const avg = Number(data.average_rating || 0);
+      const count = Number(data.ratings_count || 0);
+      averageRatingEl.textContent = count > 0
+        ? `★ ${avg.toFixed(1)} (${count} ${count === 1 ? "avaliação" : "avaliações"})`
+        : "★ Sem avaliações ainda";
+    }
 
-  .header-backdrop img {
-    object-position: center center;
-  }
+    // Banner com pôster
+    const headerPoster = document.getElementById("header-poster");
+    if (headerPoster) {
+      if (data.poster_url) {
+        headerPoster.src = data.poster_url;
+        headerPoster.onerror = () => { headerPoster.style.display = "none"; };
+      } else {
+        headerPoster.style.display = "none";
+      }
+    }
 
-  main {
-    padding: 20px;
-  }
+    details.innerHTML = "";
 
-  .details {
-    flex-direction: column;
-    align-items: center;
-  }
+    const layout = document.createElement("div");
+    layout.className = "details";
 
-  .poster {
-    width: 100%;
-    max-width: 280px;
-  }
+    // Pôster
+    if (data.poster_url) {
+      const image = document.createElement("img");
+      image.className = "poster";
+      image.src = data.poster_url;
+      image.alt = "Pôster de " + (data.title || "drama");
+      image.onerror = () => { image.remove(); };
+      layout.appendChild(image);
+    }
 
-  .information {
-    width: 100%;
-  }
+    // Informações principais
+    const info = document.createElement("div");
+    info.className = "information";
 
-  h2 {
-    font-size: 24px;
-  }
+    addText(info, "h2", "", data.title || "Sem título");
+    if (data.original_title) addText(info, "p", "original-title", data.original_title);
+    if (data.year) addText(info, "p", "", "Ano: " + data.year);
+    if (data.country) addText(info, "p", "", "País: " + data.country);
+    if (data.episodes) addText(info, "p", "", "Episódios: " + data.episodes);
+    if (data.genre) addText(info, "p", "", "Gênero: " + data.genre);
 
-  .my-list-controls {
-    padding: 16px;
-  }
+    // Minha Lista
+    const listSection = document.createElement("section");
+    listSection.className = "my-list-controls";
+    addText(listSection, "h3", "", "Minha Lista 🌷");
 
-  .list-status-options button {
-    font-size: 12px;
-    padding: 10px;
+    const { data: sessionData } = await db.auth.getSession();
+    const session = sessionData?.session || null;
+    loggedUser = session?.user || null;
+
+    if (!session) {
+      addText(listSection, "p", "", "Entre na sua conta para adicionar este drama à sua lista.");
+      const loginLink = document.createElement("a");
+      loginLink.href = "conta.html";
+      loginLink.textContent = "Entrar / Cadastrar";
+      listSection.appendChild(loginLink);
+    } else {
+      const userId = session.user.id;
+      let selectedStatus = "want_to_watch";
+      let selectedRating = 0;
+
+      const statusOptions = document.createElement("div");
+      statusOptions.className = "list-status-options";
+
+      const statuses = [
+        { value: "want_to_watch", label: "♡ Quero assistir" },
+        { value: "watching", label: "▶ Assistindo" },
+        { value: "completed", label: "✓ Concluído" }
+      ];
+
+      const statusButtons = [];
+
+      const ratingArea = document.createElement("div");
+      ratingArea.className = "rating-area";
+      ratingArea.hidden = true;
+      addText(ratingArea, "p", "", "Sua avaliação");
+
+      const stars = document.createElement("div");
+      stars.className = "rating-stars";
+      const starButtons = [];
+
+      function updateStars() {
+        starButtons.forEach((button, index) => {
+          button.textContent = index < selectedRating ? "★" : "☆";
+        });
+      }
+
+      for (let i = 1; i <= 5; i++) {
+        const star = document.createElement("button");
+        star.type = "button";
+        star.textContent = "☆";
+        star.setAttribute("aria-label", i + " estrelas");
+        star.addEventListener("click", () => {
+          selectedRating = i;
+          updateStars();
+        });
+        starButtons.push(star);
+        stars.appendChild(star);
+      }
+      ratingArea.appendChild(stars);
+
+      statuses.forEach((status) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.textContent = status.label;
+        button.addEventListener("click", () => {
+          selectedStatus = status.value;
+          statusButtons.forEach((item) => item.classList.toggle("active", item === button));
+          ratingArea.hidden = selectedStatus !== "completed";
+          if (selectedStatus !== "completed") {
+            selectedRating = 0;
+            updateStars();
+          }
+        });
+        statusButtons.push(button);
+        statusOptions.appendChild(button);
+      });
+
+      const saveButton = document.createElement("button");
+      saveButton.type = "button";
+      saveButton.className = "save-list-button";
+      saveButton.textContent = "＋ Salvar na Minha Lista";
+
+      const message = document.createElement("p");
+      message.className = "list-message";
+
+      const { data: existing } = await db
+        .from("user_drama_list")
+        .select("status, rating")
+        .eq("user_id", userId)
+        .eq("drama_id", data.id)
+        .maybeSingle();
+
+      if (existing) {
+        selectedStatus = existing.status;
+        selectedRating = existing.rating || 0;
+        saveButton.textContent = "✓ Atualizar Minha Lista";
+      }
+
+      statusButtons.forEach((button, index) => {
+        button.classList.toggle("active", statuses[index].value === selectedStatus);
+      });
+      ratingArea.hidden = selectedStatus !== "completed";
+      updateStars();
+
+      saveButton.addEventListener("click", async () => {
+        saveButton.disabled = true;
+        saveButton.textContent = "Salvando...";
+        message.textContent = "";
+
+        const { error: saveErr } = await db
+          .from("user_drama_list")
+          .upsert(
+            {
+              user_id: userId,
+              drama_id: data.id,
+              status: selectedStatus,
+              rating: selectedStatus === "completed" && selectedRating ? selectedRating : null,
+              updated_at: new Date().toISOString()
+            },
+            { onConflict: "user_id,drama_id" }
+          );
+
+        saveButton.disabled = false;
+        saveButton.textContent = "✓ Atualizar Minha Lista";
+
+        if (saveErr) {
+          console.error("Erro ao salvar:", saveErr);
+          message.textContent = "Não foi possível salvar. Tente novamente.";
+          return;
+        }
+        message.textContent = "Drama salvo na sua lista! 🌷";
+      });
+
+      listSection.append(statusOptions, ratingArea, saveButton, message);
+    }
+
+    info.appendChild(listSection);
+    layout.appendChild(info);
+    details.appendChild(layout);
+
+    // Trailer
+    if (data.trailer_url) {
+      const videoId = data.trailer_url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+      if (videoId) {
+        const trailerSection = document.createElement("section");
+        trailerSection.className = "synopsis";
+        addText(trailerSection, "h2", "", "Trailer oficial");
+
+        const video = document.createElement("iframe");
+        video.src = "https://www.youtube.com/embed/" + videoId[1];
+        video.title = "Trailer de " + data.title;
+        video.width = "100%";
+        video.height = "315";
+        video.style.border = "0";
+        video.style.borderRadius = "14px";
+        video.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+        video.allowFullscreen = true;
+
+        trailerSection.appendChild(video);
+        details.appendChild(trailerSection);
+      }
+    }
+
+    // Elenco
+    if (data.main_cast) {
+      const castSection = document.createElement("section");
+      castSection.className = "synopsis";
+      addText(castSection, "h2", "", "Elenco principal");
+      const castText = addText(castSection, "p", "", data.main_cast);
+      castText.style.whiteSpace = "pre-line";
+      details.appendChild(castSection);
+    }
+
+    // Personagens
+    if (data.characters) {
+      const charactersSection = document.createElement("section");
+      charactersSection.className = "synopsis";
+      addText(charactersSection, "h2", "", "Personagens");
+      const charactersText = addText(charactersSection, "p", "", data.characters);
+      charactersText.style.whiteSpace = "pre-line";
+      details.appendChild(charactersSection);
+    }
+
+    // Sinopse
+    if (data.synopsis) {
+      const synopsis = document.createElement("section");
+      synopsis.className = "synopsis";
+      addText(synopsis, "h2", "", "Sinopse");
+      addText(synopsis, "p", "", data.synopsis);
+      details.appendChild(synopsis);
+    }
+
+    // Exibir formulário de comentário ou prompt de login
+    if (commentForm && loginPrompt) {
+      commentForm.hidden = !loggedUser;
+      loginPrompt.hidden = !!loggedUser;
+    }
+
+    // Carrega comentários de forma isolada para nunca travar a página
+    await loadDramaComments(data.id);
+
+  } catch (err) {
+    console.error("Erro inesperado ao carregar detalhes:", err);
+    details.textContent = "Erro ao carregar os detalhes do drama. Verifique o console (F12).";
   }
 }
 
-</style>
+// ========================================
+// 2. COMENTÁRIOS E AVALIAÇÕES
+// ========================================
+function paintCommentStars(rating) {
+  starPickerButtons.forEach((btn) => {
+    const val = Number(btn.dataset.value);
+    btn.classList.toggle("active", val <= rating);
+  });
+}
+
+starPickerButtons.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const clicked = Number(btn.dataset.value);
+    selectedCommentRating = selectedCommentRating === clicked ? 0 : clicked;
+    paintCommentStars(selectedCommentRating);
+  });
+});
+
+async function loadDramaComments(dramaId) {
+  if (!commentsListEl || !dramaId) return;
+
+  try {
+    const { data: comments, error } = await db
+      .from("drama_comments")
+      .select("id, user_id, rating, content, has_spoiler, created_at")
+      .eq("drama_id", dramaId)
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.warn("Tabela drama_comments ainda indisponível ou bloqueada:", error);
+      commentsListEl.innerHTML = `<p style="color:#b8a9c9; margin:0;">Nenhum comentário disponível no momento.</p>`;
+      return;
+    }
+
+    const ratedItems = (comments || []).filter((c) => c.rating >= 1 && c.rating <= 5);
+    if (ratedItems.length > 0 && averageRatingEl) {
+      const sum = ratedItems.reduce((acc, item) => acc + Number(item.rating), 0);
+      const avg = (sum / ratedItems.length).toFixed(1);
+      averageRatingEl.textContent = `★ ${avg} (${ratedItems.length} ${ratedItems.length === 1 ? "avaliação" : "avaliações"})`;
+    }
+
+    if (!comments || comments.length === 0) {
+      commentsListEl.innerHTML = `<p style="color:#b8a9c9; margin:0;">Nenhum comentário ainda. Seja a primeira a avaliar! 🌷</p>`;
+      return;
+    }
+
+    const userIds = [...new Set(comments.map((c) => c.user_id))];
+    const { data: profiles } = await db
+      .from("profiles")
+      .select("id, display_name, avatar_url")
+      .in("id", userIds);
+
+    const profileMap = new Map((profiles || []).map((p) => [p.id, p]));
+    commentsListEl.innerHTML = "";
+
+    comments.forEach((comment) => {
+      const profile = profileMap.get(comment.user_id);
+      const authorName = profile?.display_name || "Fã do ThaiGList";
+
+      const card = document.createElement("article");
+      card.className = "comment-card";
+
+      const top = document.createElement("div");
+      top.className = "comment-top";
+
+      const authorWrap = document.createElement("div");
+      authorWrap.className = "comment-author";
+
+      if (profile?.avatar_url) {
+        const img = document.createElement("img");
+        img.className = "comment-avatar";
+        img.src = profile.avatar_url;
+        img.alt = authorName;
+        authorWrap.appendChild(img);
+      } else {
+        const fallbackAvatar = document.createElement("div");
+        fallbackAvatar.className = "comment-avatar";
+        fallbackAvatar.textContent = "🌷";
+        authorWrap.appendChild(fallbackAvatar);
+      }
+
+      const nameDate = document.createElement("div");
+      const nameEl = document.createElement("div");
+      nameEl.className = "comment-author-name";
+      nameEl.textContent = authorName;
+
+      const dateEl = document.createElement("div");
+      dateEl.className = "comment-date";
+      dateEl.textContent = new Date(comment.created_at).toLocaleDateString("pt-BR", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+      });
+
+      nameDate.appendChild(nameEl);
+      nameDate.appendChild(dateEl);
+      authorWrap.appendChild(nameDate);
+      top.appendChild(authorWrap);
+
+      if (comment.rating) {
+        const ratingEl = document.createElement("div");
+        ratingEl.className = "comment-rating";
+        ratingEl.textContent = "★".repeat(comment.rating) + "☆".repeat(5 - comment.rating);
+        top.appendChild(ratingEl);
+      }
+
+      card.appendChild(top);
+
+      const bodyEl = document.createElement("p");
+      bodyEl.className = "comment-body";
+      bodyEl.textContent = comment.content;
+
+      if (comment.has_spoiler) {
+        bodyEl.hidden = true;
+        const shield = document.createElement("div");
+        shield.className = "spoiler-shield";
+
+        const warnText = document.createElement("span");
+        warnText.textContent = "🚨 Este comentário contém spoilers";
+
+        const revealBtn = document.createElement("button");
+        revealBtn.type = "button";
+        revealBtn.className = "reveal-spoiler-btn";
+        revealBtn.textContent = "Mostrar spoiler";
+
+        revealBtn.addEventListener("click", () => {
+          const isHidden = bodyEl.hidden;
+          bodyEl.hidden = !isHidden;
+          revealBtn.textContent = isHidden ? "Ocultar spoiler" : "Mostrar spoiler";
+        });
+
+        shield.appendChild(warnText);
+        shield.appendChild(revealBtn);
+        card.appendChild(shield);
+      }
+
+      card.appendChild(bodyEl);
+
+      if (loggedUser && loggedUser.id === comment.user_id) {
+        const delBtn = document.createElement("button");
+        delBtn.type = "button";
+        delBtn.className = "delete-comment-btn";
+        delBtn.textContent = "🗑️ Excluir meu comentário";
+
+        delBtn.addEventListener("click", async () => {
+          if (!confirm("Deseja excluir seu comentário?")) return;
+          const { error: delErr } = await db
+            .from("drama_comments")
+            .delete()
+            .eq("id", comment.id);
+          if (!delErr) loadDramaComments(dramaId);
+        });
+
+        card.appendChild(delBtn);
+      }
+
+      commentsListEl.appendChild(card);
+    });
+  } catch (err) {
+    console.warn("Erro ao renderizar comentários:", err);
+  }
+}
+
+if (commentForm) {
+  commentForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!loggedUser || !currentDramaId) return;
+
+    const content = document.getElementById("comment-content").value.trim();
+    const hasSpoiler = document.getElementById("comment-has-spoiler").checked;
+    const submitBtn = document.getElementById("submit-comment-btn");
+
+    if (!content) return;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Publicando...";
+
+    const { error } = await db.from("drama_comments").insert([
+      {
+        drama_id: Number(currentDramaId),
+        user_id: loggedUser.id,
+        rating: selectedCommentRating > 0 ? selectedCommentRating : null,
+        content,
+        has_spoiler: hasSpoiler
+      }
+    ]);
+
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Publicar comentário 🌷";
+
+    if (error) {
+      console.error("Erro ao publicar:", error);
+      alert("Não foi possível publicar o comentário: " + error.message);
+      return;
+    }
+
+    commentForm.reset();
+    selectedCommentRating = 0;
+    paintCommentStars(0);
+    await loadDramaComments(Number(currentDramaId));
+  });
+}
+
+loadDrama();
+</script>
 </head>
 
 <body>

@@ -101,6 +101,37 @@ nav.top-nav a.active {
   color: #ffffff;
 }
 
+.visit-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: linear-gradient(120deg, #2b183d, #1e172c);
+  border: 1px solid var(--purple);
+  margin-bottom: 18px;
+}
+
+.visit-bio-box {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--surface-light);
+  border: 1px solid var(--border);
+  font-size: 14px;
+  color: var(--text);
+  white-space: pre-line;
+}
+
+.visit-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
 /* Cards principais */
 .card {
   padding: 24px;
@@ -563,13 +594,25 @@ footer {
 
     <nav class="top-nav" aria-label="Navegação principal">
       <a href="index.html">Catálogo</a>
-      <a href="conta.html" class="active">Minha conta</a>
+      <a href="minha-lista.html">Minha lista</a>
+      <a href="conta.html" class="active" id="nav-my-account">Minha conta</a>
       <a href="#sec-stats">Estatísticas</a>
       <a href="#sec-quests">Conquistas</a>
-      <a href="#sec-alerts">Alertas</a>
-      <a href="#sec-profile">Editar perfil</a>
+      <a href="#sec-alerts" class="owner-only">Alertas</a>
+      <a href="#sec-profile" class="owner-only">Editar perfil</a>
     </nav>
   </header>
+
+  <!-- MENSAGEM DE PERFIL PRIVADO (QUANDO VISITANDO OUTRO MEMBRO COM public_profile = false) -->
+  <section id="private-profile-card" class="card" style="text-align:center;" hidden>
+    <h2>Perfil privado 🔒</h2>
+    <p class="muted" style="margin-bottom: 16px;">
+      Este membro optou por manter o perfil privado no ThaiGList.
+    </p>
+    <a href="index.html" style="color: var(--pink); font-weight: bold; text-decoration: none;">
+      ← Voltar ao catálogo
+    </a>
+  </section>
 
   <!-- AUTENTICAÇÃO -->
   <section id="auth-forms" class="card" hidden>
@@ -600,14 +643,25 @@ footer {
     </form>
   </section>
 
-  <!-- PAINEL DA CONTA -->
+  <!-- PAINEL DA CONTA / VISITAÇÃO -->
   <div id="account-panel" hidden>
+
+    <div id="visit-mode-banner" class="visit-banner" hidden>
+      <div>
+        <strong style="color: var(--pink);">👀 Visitando perfil público</strong>
+        <div class="small-muted">Visualização pública de membro da comunidade ThaiGList</div>
+      </div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <a href="conta.html" class="chip-btn" style="text-decoration:none; display:inline-flex; align-items:center;">Minha conta</a>
+        <a href="minha-lista.html" class="chip-btn" style="text-decoration:none; display:inline-flex; align-items:center;">Minha lista</a>
+      </div>
+    </div>
 
     <!-- CABEÇALHO DO PERFIL E FOTO -->
     <section class="card">
       <div class="profile-header">
         <div class="avatar-container">
-          <img id="account-avatar" src="" alt="Minha foto de perfil">
+          <img id="account-avatar" src="" alt="Foto de perfil">
           <span id="avatar-fallback">👤</span>
         </div>
 
@@ -618,29 +672,34 @@ footer {
             <span class="status-chip" id="display-couple-chip">💜 Casal favorito não definido</span>
             <span class="status-chip" id="display-country-chip">🌏 Brasil</span>
           </div>
+          <div id="visit-extra-meta" class="visit-meta-row" hidden></div>
         </div>
       </div>
 
-      <p class="small-muted" style="margin-top: 14px;">
-        Escolha uma foto para personalizar seu perfil (JPG, PNG ou WebP até 5 MB).
-      </p>
+      <div id="visit-bio-display" class="visit-bio-box" hidden></div>
 
-      <input id="photo-input" type="file" accept="image/jpeg,image/png,image/webp">
+      <div class="owner-only">
+        <p class="small-muted" style="margin-top: 14px;">
+          Escolha uma foto para personalizar seu perfil (JPG, PNG ou WebP até 5 MB).
+        </p>
 
-      <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
-        <button type="button" id="change-photo-button" class="secondary-button btn-inline">
-          📷 Alterar foto
-        </button>
-        <button type="button" id="save-photo-button" class="btn-inline" hidden>
-          Salvar foto
-        </button>
+        <input id="photo-input" type="file" accept="image/jpeg,image/png,image/webp">
+
+        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
+          <button type="button" id="change-photo-button" class="secondary-button btn-inline">
+            📷 Alterar foto
+          </button>
+          <button type="button" id="save-photo-button" class="btn-inline" hidden>
+            Salvar foto
+          </button>
+        </div>
       </div>
     </section>
 
     <!-- ESTATÍSTICAS -->
     <section id="sec-stats" class="card">
-      <h2>Resumo da sua lista</h2>
-      <p class="muted">Sincronizado com suas séries salvas no ThaiGList.</p>
+      <h2 id="stats-heading">Resumo da sua lista</h2>
+      <p class="muted" id="stats-subtitle">Sincronizado com suas séries salvas no ThaiGList.</p>
 
       <div class="stats-grid">
         <div class="stat-box">
@@ -669,7 +728,7 @@ footer {
     <!-- CONQUISTAS E BADGES -->
     <section id="sec-quests" class="card">
       <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 10px;">
-        <h2>🏅 Minhas conquistas e badges</h2>
+        <h2 id="quests-heading">🏅 Minhas conquistas e badges</h2>
         <span class="status-chip" id="quests-counter">1/6</span>
       </div>
       <p class="muted">
@@ -734,7 +793,7 @@ footer {
     </section>
 
     <!-- ALERTAS DE NOVOS EPISÓDIOS -->
-    <section id="sec-alerts" class="card">
+    <section id="sec-alerts" class="card owner-only">
       <h2>🔔 Alertas de novos episódios</h2>
       <p class="muted">
         Receba lembretes quando uma série da sua lista tiver novo episódio no ar.
@@ -752,7 +811,7 @@ footer {
     </section>
 
     <!-- EDIÇÃO DE PERFIL -->
-    <section id="sec-profile" class="card">
+    <section id="sec-profile" class="card owner-only">
       <h2>Personalizar perfil</h2>
       <p class="muted">Seu nome e foto aparecem junto às suas resenhas. Seu e-mail nunca é exibido publicamente.</p>
 
@@ -778,7 +837,7 @@ footer {
         <input id="display_name" type="text" maxlength="60" placeholder="Como você quer ser chamada">
 
         <label for="bio">Sobre você (máx. 300 caracteres)</label>
-        <textarea id="bio" maxlength="300" placeholder="Ex.: Fã de GL desde GAP, amo romances de escritório e dramas intensos"></textarea>
+        <textarea id="bio" maxlength="300" placeholder="Ex.: Fã de GL pra vida 💜, amo romances de escritório e dramas intensos"></textarea>
         <div class="small-muted" id="bio-counter" style="text-align: right;">0/300</div>
 
         <div class="chips-wrap" id="bio-presets">
@@ -868,8 +927,14 @@ const SUPABASE_KEY = "sb_publishable_DyikY0WSJJ4apDc0_ZwfOw_x6LvfqM-";
 
 const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+const visitedUserId = new URLSearchParams(window.location.search).get("user");
+
 const authForms = document.getElementById("auth-forms");
 const accountPanel = document.getElementById("account-panel");
+const privateProfileCard = document.getElementById("private-profile-card");
+const visitModeBanner = document.getElementById("visit-mode-banner");
+const visitBioDisplay = document.getElementById("visit-bio-display");
+const visitExtraMeta = document.getElementById("visit-extra-meta");
 const avatar = document.getElementById("account-avatar");
 const fallback = document.getElementById("avatar-fallback");
 const photoInput = document.getElementById("photo-input");
@@ -887,8 +952,15 @@ const publicProfileInput = document.getElementById("public_profile");
 const toggleAlertsButton = document.getElementById("toggle-alerts-button");
 
 let activeUserId = null;
+let isVisitingOtherUser = false;
 let selectedPhoto = null;
 let currentAvatarPath = null;
+
+function setOwnerControlsVisible(visible) {
+  document.querySelectorAll(".owner-only").forEach((el) => {
+    el.hidden = !visible;
+  });
+}
 
 function showPopup(title, text, icon = "🌷") {
   document.getElementById("popup-title").textContent = title;
@@ -982,7 +1054,7 @@ function renderAlertsState(userId) {
 }
 
 toggleAlertsButton.addEventListener("click", async () => {
-  if (!activeUserId) return;
+  if (!activeUserId || isVisitingOtherUser) return;
   const current = localStorage.getItem(`thaiglist_alerts_${activeUserId}`) === "true";
   const next = !current;
 
@@ -1078,7 +1150,6 @@ async function loadUserListAndDramas(userId, savedFavoriteSeries) {
   document.getElementById("stat-favorites").textContent = favorites;
   document.getElementById("stat-episodes").textContent = episodesWatched;
 
-  // Atualizar conquistas (1 já vem desbloqueada: Membro fundadora)
   let unlockedTotal = 1;
   unlockedTotal += updateQuestCard("card-rookie", "q-rookie", completed, 5);
   unlockedTotal += updateQuestCard("card-truefan", "q-truefan", completed, 15);
@@ -1087,7 +1158,6 @@ async function loadUserListAndDramas(userId, savedFavoriteSeries) {
   unlockedTotal += updateQuestCard("card-collector", "q-collector", userRows.length, 20);
   document.getElementById("quests-counter").textContent = `${unlockedTotal}/6`;
 
-  // Atualizar destaque no card de alertas com uma série "Em andamento" do catálogo
   const ongoing = allDramas.find((d) =>
     (d.status || "").trim().toLowerCase() === "em andamento"
   );
@@ -1096,7 +1166,6 @@ async function loadUserListAndDramas(userId, savedFavoriteSeries) {
       `📺 Em andamento no catálogo: ${ongoing.title}`;
   }
 
-  // Popular <select> de Série GL favorita (primeiro as da lista da usuária, depois todo o catálogo)
   const currentSelection = savedFavoriteSeries || seriesSelect.value;
   seriesSelect.innerHTML = `<option value="">— Selecione uma série —</option>`;
 
@@ -1141,6 +1210,78 @@ async function loadUserListAndDramas(userId, savedFavoriteSeries) {
   updateProfileCompletion();
 }
 
+// ========================================
+// VISITAÇÃO DO PERFIL DE OUTRA MEMBRA
+// ========================================
+
+async function showVisitedProfile(targetUserId) {
+  isVisitingOtherUser = true;
+  activeUserId = targetUserId;
+  authForms.hidden = true;
+  privateProfileCard.hidden = true;
+  accountPanel.hidden = true;
+  setOwnerControlsVisible(false);
+  visitModeBanner.hidden = false;
+
+  const { data: profile, error } = await client
+    .from("profiles")
+    .select("*")
+    .eq("id", targetUserId)
+    .maybeSingle();
+
+  if (error || !profile || profile.public_profile === false) {
+    privateProfileCard.hidden = false;
+    return;
+  }
+
+  const memberName = profile.display_name || "Fã do ThaiGList";
+  document.title = `${memberName} | ThaiGList`;
+  document.getElementById("account-name").textContent = memberName;
+  document.getElementById("account-email").textContent = "Perfil público no ThaiGList";
+  document.getElementById("stats-heading").textContent = `Resumo da lista de ${memberName}`;
+  document.getElementById("stats-subtitle").textContent = "Estatísticas públicas da lista deste membro.";
+  document.getElementById("quests-heading").textContent = `🏅 Conquistas de ${memberName}`;
+
+  if (profile.created_at) {
+    const d = new Date(profile.created_at);
+    const formatted = d.toLocaleDateString("pt-BR", { month: "short", year: "numeric" });
+    document.getElementById("member-since-chip").textContent = `Membro desde ${formatted}`;
+  }
+
+  document.getElementById("display-couple-chip").textContent =
+    profile.favorite_couple ? `💜 ${profile.favorite_couple}` : "💜 Casal favorito não definido";
+
+  document.getElementById("display-country-chip").textContent =
+    `🌏 ${profile.country || "Brasil"}`;
+
+  displayAvatar(profile.avatar_url || null);
+
+  if (profile.bio) {
+    visitBioDisplay.textContent = profile.bio;
+    visitBioDisplay.hidden = false;
+  } else {
+    visitBioDisplay.hidden = true;
+  }
+
+  visitExtraMeta.innerHTML = "";
+  if (profile.favorite_series) {
+    const seriesChip = document.createElement("span");
+    seriesChip.className = "status-chip";
+    seriesChip.textContent = `🎬 Favorita: ${profile.favorite_series}`;
+    visitExtraMeta.appendChild(seriesChip);
+  }
+  if (profile.social_handle) {
+    const socialChip = document.createElement("span");
+    socialChip.className = "status-chip";
+    socialChip.textContent = `✨ ${profile.social_handle}`;
+    visitExtraMeta.appendChild(socialChip);
+  }
+  visitExtraMeta.hidden = visitExtraMeta.children.length === 0;
+
+  accountPanel.hidden = false;
+  await loadUserListAndDramas(targetUserId, profile.favorite_series || "");
+}
+
 // Presets de bio e casal
 document.querySelectorAll("#bio-presets .chip-btn").forEach((btn) => {
   btn.addEventListener("click", () => {
@@ -1178,6 +1319,18 @@ document.querySelectorAll("#couple-chips .chip-btn").forEach((btn) => {
 
 async function showAccount(user) {
   if (!user) return;
+  if (visitedUserId && visitedUserId !== user.id) {
+    await showVisitedProfile(visitedUserId);
+    return;
+  }
+
+  isVisitingOtherUser = false;
+  visitModeBanner.hidden = true;
+  visitBioDisplay.hidden = true;
+  visitExtraMeta.hidden = true;
+  privateProfileCard.hidden = true;
+  setOwnerControlsVisible(true);
+
   activeUserId = user.id;
   selectedPhoto = null;
   currentAvatarPath = null;
@@ -1254,238 +1407,15 @@ async function showAccount(user) {
   await loadUserListAndDramas(user.id, savedSeries);
 }
 
-function showLogin() {
+async function showLogin() {
+  if (visitedUserId) {
+    await showVisitedProfile(visitedUserId);
+    return;
+  }
+
   activeUserId = null;
+  isVisitingOtherUser = false;
   selectedPhoto = null;
   currentAvatarPath = null;
+  privateProfileCard.hidden = true;
   accountPanel.hidden = true;
-  authForms.hidden = false;
-  photoInput.value = "";
-  savePhotoButton.hidden = true;
-}
-
-// Salvar detalhes do perfil
-document.getElementById("profile-details-form").addEventListener("submit", async (event) => {
-  event.preventDefault();
-  if (!activeUserId) return;
-
-  const btn = document.getElementById("save-profile-button");
-  btn.disabled = true;
-  btn.textContent = "Salvando...";
-
-  const payload = {
-    display_name: displayNameInput.value.trim() || null,
-    bio: bioInput.value.trim() || null,
-    favorite_couple: coupleInput.value.trim() || null,
-    favorite_series: seriesSelect.value.trim() || null,
-    country: countryInput.value.trim() || null,
-    social_handle: socialInput.value.trim() || null,
-    show_on_reviews: showOnReviewsInput.checked,
-    public_profile: publicProfileInput.checked
-  };
-
-  saveLocalPrefs(activeUserId, payload);
-
-  const { error } = await client
-    .from("profiles")
-    .update(payload)
-    .eq("id", activeUserId);
-
-  btn.disabled = false;
-  btn.textContent = "Salvar perfil 🌷";
-
-  if (payload.display_name) {
-    document.getElementById("account-name").textContent = payload.display_name;
-  }
-  updateProfileCompletion();
-
-  if (error) {
-    console.warn("Atualização parcial/local salva:", error);
-    showPopup(
-      "Preferências salvas!",
-      "Suas informações foram salvas com sucesso no navegador. 🌷",
-      "🌷"
-    );
-    return;
-  }
-
-  showPopup("Perfil atualizado!", "Suas informações foram salvas com sucesso. 🌷", "🎉");
-});
-
-// Foto de perfil
-changePhotoButton.addEventListener("click", () => photoInput.click());
-
-photoInput.addEventListener("change", (event) => {
-  const file = event.target.files[0];
-  if (!file) return;
-
-  const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
-  if (!allowedTypes.includes(file.type)) {
-    showPopup("Formato inválido", "Escolha uma imagem JPG, PNG ou WebP.", "⚠️");
-    photoInput.value = "";
-    return;
-  }
-
-  if (file.size > 5 * 1024 * 1024) {
-    showPopup("Imagem muito grande", "A foto precisa ter no máximo 5 MB.", "⚠️");
-    photoInput.value = "";
-    return;
-  }
-
-  selectedPhoto = file;
-  displayAvatar(URL.createObjectURL(file));
-  savePhotoButton.hidden = false;
-});
-
-savePhotoButton.addEventListener("click", async function () {
-  if (!selectedPhoto || !activeUserId) return;
-
-  const button = this;
-  const userId = activeUserId;
-  button.disabled = true;
-  button.textContent = "Salvando foto...";
-
-  try {
-    const extension = selectedPhoto.name.split(".").pop().toLowerCase();
-    const filePath = `${userId}/avatar-${Date.now()}.${extension}`;
-
-    const { error: uploadError } = await client.storage
-      .from("avatars")
-      .upload(filePath, selectedPhoto, {
-        cacheControl: "3600",
-        upsert: false,
-        contentType: selectedPhoto.type
-      });
-
-    if (uploadError) throw uploadError;
-
-    const { data: publicData } = client.storage.from("avatars").getPublicUrl(filePath);
-    const publicURL = publicData.publicUrl;
-
-    const { error: updateError } = await client
-      .from("profiles")
-      .update({ avatar_url: publicURL })
-      .eq("id", userId);
-
-    if (updateError) {
-      await client.storage.from("avatars").remove([filePath]);
-      throw updateError;
-    }
-
-    const previousPath = currentAvatarPath;
-    currentAvatarPath = filePath;
-    displayAvatar(publicURL);
-    selectedPhoto = null;
-    photoInput.value = "";
-    savePhotoButton.hidden = true;
-
-    showPopup("Foto atualizada!", "Sua nova foto de perfil foi salva com sucesso. 🌷", "🎉");
-
-    if (previousPath) {
-      await client.storage.from("avatars").remove([previousPath]);
-    }
-  } catch (error) {
-    console.error("Erro ao salvar foto:", error);
-    showPopup("Não foi possível salvar", error.message || "Erro no envio da foto.", "⚠️");
-  } finally {
-    button.disabled = false;
-    button.textContent = "Salvar foto";
-  }
-});
-
-async function checkSession() {
-  const { data, error } = await client.auth.getSession();
-  if (error || !data.session) {
-    showLogin();
-    return;
-  }
-  await showAccount(data.session.user);
-}
-
-client.auth.onAuthStateChange((event, session) => {
-  if (event === "SIGNED_OUT" || !session) {
-    showLogin();
-  } else {
-    showAccount(session.user);
-  }
-});
-
-document.getElementById("signup-form").addEventListener("submit", async (event) => {
-  event.preventDefault();
-  const button = document.getElementById("signup-button");
-  const email = document.getElementById("signup-email").value.trim();
-  const password = document.getElementById("signup-password").value;
-
-  button.disabled = true;
-  button.textContent = "Criando conta...";
-
-  const { data, error } = await client.auth.signUp({
-    email,
-    password,
-    options: { emailRedirectTo: "https://danielegbittencourt-cloud.github.io/thaiglist/" }
-  });
-
-  button.disabled = false;
-  button.textContent = "Criar conta";
-
-  if (error) {
-    showPopup("Ops!", "Não foi possível criar a conta: " + error.message, "⚠️");
-    return;
-  }
-
-  if (data.session) {
-    await showAccount(data.session.user);
-    showPopup("Conta criada!", "Sua conta foi criada e você já está conectada. 🌷", "🎉");
-  } else {
-    showPopup("Cadastro realizado!", "Confira seu e-mail para confirmar sua conta no ThaiGList.", "💌");
-  }
-});
-
-document.getElementById("login-form").addEventListener("submit", async (event) => {
-  event.preventDefault();
-  const button = document.getElementById("login-button");
-  const email = document.getElementById("login-email").value.trim();
-  const password = document.getElementById("login-password").value;
-
-  button.disabled = true;
-  button.textContent = "Entrando...";
-
-  const { error } = await client.auth.signInWithPassword({ email, password });
-
-  button.disabled = false;
-  button.textContent = "Entrar";
-
-  if (error) {
-    showPopup("Ops!", "E-mail ou senha incorretos.", "⚠️");
-    return;
-  }
-
-  window.location.href = "index.html";
-});
-
-document.getElementById("back-catalog").addEventListener("click", () => {
-  window.location.href = "index.html";
-});
-
-document.getElementById("logout-button").addEventListener("click", async function () {
-  const button = this;
-  button.disabled = true;
-  button.textContent = "Saindo...";
-
-  const { error } = await client.auth.signOut();
-
-  button.disabled = false;
-  button.textContent = "Sair da conta";
-
-  if (error) {
-    showPopup("Ops!", "Não foi possível sair da conta.", "⚠️");
-    return;
-  }
-
-  window.location.href = "index.html";
-});
-
-checkSession();
-</script>
-</body>
-</html>

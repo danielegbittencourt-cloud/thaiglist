@@ -25,7 +25,7 @@
 
 body {
   margin: 0;
-  padding: 25px 15px;
+  padding: 20px 15px;
   background: var(--background);
   color: var(--text);
   font-family: Arial, sans-serif;
@@ -36,21 +36,21 @@ body {
   margin: auto;
 }
 
-/* CABEÇALHO COM PÔSTER DE FUNDO */
+/* FAIXA DE CABEÇALHO DISCRETA */
 header {
   position: relative;
-  min-height: 270px;
+  min-height: 112px;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
   align-items: center;
-  text-align: center;
-  padding: 35px 20px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 18px 22px;
   overflow: hidden;
-  background: linear-gradient(120deg, #21132f, #392047);
-  border: 1px solid #71428c;
-  border-radius: 20px;
-  box-shadow: 0 8px 30px #00000044;
+  background: linear-gradient(120deg, #1d1329, #2b1938);
+  border: 1px solid #49335c;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px #00000038;
 }
 
 .header-backdrop {
@@ -66,8 +66,9 @@ header {
   display: block;
   object-fit: cover;
   object-position: center 35%;
-  filter: blur(1px);
-  transform: scale(1.03);
+  filter: blur(4px) saturate(0.8);
+  transform: scale(1.06);
+  opacity: 0.35;
 }
 
 header::after {
@@ -76,53 +77,86 @@ header::after {
   inset: 0;
   z-index: 1;
   background: linear-gradient(
-    to top,
-    rgba(16, 10, 25, 0.95) 0%,
-    rgba(16, 10, 25, 0.65) 45%,
-    rgba(16, 10, 25, 0.25) 100%
+    90deg,
+    rgba(16, 11, 24, 0.92) 0%,
+    rgba(24, 15, 34, 0.82) 55%,
+    rgba(16, 11, 24, 0.92) 100%
   );
 }
 
-.header-content {
+.header-brand {
   position: relative;
   z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 header h1 {
-  color: white;
+  color: #ffffff;
   margin: 0;
-  font-size: 38px;
-  letter-spacing: 1px;
-  text-shadow: 0 3px 12px #000000aa;
+  font-size: 24px;
+  letter-spacing: 0.5px;
 }
 
 header p {
-  color: #f1dcef;
-  margin: 10px 0 0;
-  font-size: 16px;
-  text-shadow: 0 2px 8px #000000aa;
+  color: var(--muted);
+  margin: 0;
+  font-size: 13px;
+}
+
+.header-nav {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.nav-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: transform 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.nav-pill-secondary {
+  color: var(--text);
+  background: rgba(36, 29, 50, 0.9);
+  border: 1px solid #493956;
+}
+
+.nav-pill-secondary:hover {
+  border-color: var(--purple);
+  transform: translateY(-1px);
+}
+
+.nav-pill-primary {
+  color: #ffffff;
+  background: linear-gradient(120deg, rgba(240, 91, 168, 0.24), rgba(168, 117, 245, 0.24));
+  border: 1px solid rgba(240, 91, 168, 0.55);
+}
+
+.nav-pill-primary:hover {
+  background: linear-gradient(120deg, var(--pink), var(--purple));
+  border-color: transparent;
+  transform: translateY(-1px);
 }
 
 /* CONTEÚDO */
 main {
-  margin-top: 25px;
+  margin-top: 20px;
   padding: 30px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 20px;
   box-shadow: 0 8px 30px #00000033;
-}
-
-.back {
-  display: inline-block;
-  margin-bottom: 25px;
-  color: var(--pink);
-  font-weight: bold;
-  text-decoration: none;
-}
-
-.back:hover {
-  color: var(--purple);
 }
 
 /* DETALHES E COLUNA DO PÔSTER ESTILO STREAMING */
@@ -199,6 +233,7 @@ main {
 h2 {
   color: var(--pink);
   font-size: 28px;
+  margin-top: 0;
 }
 
 .original-title {
@@ -263,25 +298,6 @@ iframe {
   background: linear-gradient(135deg, #f05ba8, #a875f5);
   border-color: transparent;
   color: white;
-}
-
-.rating-area {
-  margin: 20px 0;
-}
-
-.rating-stars {
-  display: flex;
-  gap: 7px;
-  margin-top: 10px;
-}
-
-.rating-stars button {
-  background: transparent;
-  border: none;
-  color: #f5bd54;
-  font-size: 30px;
-  cursor: pointer;
-  padding: 2px;
 }
 
 .save-list-button {
@@ -588,24 +604,27 @@ footer {
 
 @media (max-width: 600px) {
   body {
-    padding: 15px 10px;
+    padding: 14px 10px;
   }
 
   header {
-    min-height: 220px;
-    padding: 25px 15px;
+    padding: 14px 16px;
+    gap: 12px;
   }
 
   header h1 {
-    font-size: 30px;
+    font-size: 20px;
   }
 
-  header p {
-    font-size: 14px;
+  .header-nav {
+    width: 100%;
   }
 
-  .header-backdrop img {
-    object-position: center center;
+  .nav-pill {
+    flex: 1;
+    justify-content: center;
+    padding: 9px 10px;
+    font-size: 12px;
   }
 
   main {
@@ -650,15 +669,17 @@ footer {
   <div class="header-backdrop">
     <img id="header-poster" src="" alt="">
   </div>
-  <div class="header-content">
+  <div class="header-brand">
     <h1>ThaiGList 🌷</h1>
     <p>Detalhe do drama</p>
   </div>
+  <nav class="header-nav" aria-label="Navegação rápida">
+    <a class="nav-pill nav-pill-secondary" href="index.html">← Catálogo</a>
+    <a class="nav-pill nav-pill-primary" href="conta.html">Minha lista</a>
+  </nav>
 </header>
 
 <main>
-  <a class="back" href="index.html">← Voltar ao catálogo</a>
-
   <div id="details">
     <p>Carregando informações... 🌷</p>
   </div>
@@ -850,7 +871,6 @@ async function loadDrama() {
     } else {
       const userId = session.user.id;
       let selectedStatus = "want_to_watch";
-      let selectedRating = 0;
 
       const statusOptions = document.createElement("div");
       statusOptions.className = "list-status-options";
@@ -863,35 +883,6 @@ async function loadDrama() {
 
       const statusButtons = [];
 
-      const ratingArea = document.createElement("div");
-      ratingArea.className = "rating-area";
-      ratingArea.hidden = true;
-      addText(ratingArea, "p", "", "Sua avaliação");
-
-      const stars = document.createElement("div");
-      stars.className = "rating-stars";
-      const starButtons = [];
-
-      function updateStars() {
-        starButtons.forEach((button, index) => {
-          button.textContent = index < selectedRating ? "★" : "☆";
-        });
-      }
-
-      for (let i = 1; i <= 5; i++) {
-        const star = document.createElement("button");
-        star.type = "button";
-        star.textContent = "☆";
-        star.setAttribute("aria-label", i + " estrelas");
-        star.addEventListener("click", () => {
-          selectedRating = i;
-          updateStars();
-        });
-        starButtons.push(star);
-        stars.appendChild(star);
-      }
-      ratingArea.appendChild(stars);
-
       statuses.forEach((status) => {
         const button = document.createElement("button");
         button.type = "button";
@@ -899,11 +890,6 @@ async function loadDrama() {
         button.addEventListener("click", () => {
           selectedStatus = status.value;
           statusButtons.forEach((item) => item.classList.toggle("active", item === button));
-          ratingArea.hidden = selectedStatus !== "completed";
-          if (selectedStatus !== "completed") {
-            selectedRating = 0;
-            updateStars();
-          }
         });
         statusButtons.push(button);
         statusOptions.appendChild(button);
@@ -919,22 +905,19 @@ async function loadDrama() {
 
       const { data: existing } = await db
         .from("user_drama_list")
-        .select("status, rating")
+        .select("status")
         .eq("user_id", userId)
         .eq("drama_id", data.id)
         .maybeSingle();
 
-      if (existing) {
+      if (existing?.status) {
         selectedStatus = existing.status;
-        selectedRating = existing.rating || 0;
         saveButton.textContent = "✓ Atualizar Minha Lista";
       }
 
       statusButtons.forEach((button, index) => {
         button.classList.toggle("active", statuses[index].value === selectedStatus);
       });
-      ratingArea.hidden = selectedStatus !== "completed";
-      updateStars();
 
       saveButton.addEventListener("click", async () => {
         saveButton.disabled = true;
@@ -948,7 +931,6 @@ async function loadDrama() {
               user_id: userId,
               drama_id: data.id,
               status: selectedStatus,
-              rating: selectedStatus === "completed" && selectedRating ? selectedRating : null,
               updated_at: new Date().toISOString()
             },
             { onConflict: "user_id,drama_id" }
@@ -965,7 +947,7 @@ async function loadDrama() {
         message.textContent = "Drama salvo na sua lista! 🌷";
       });
 
-      listSection.append(statusOptions, ratingArea, saveButton, message);
+      listSection.append(statusOptions, saveButton, message);
     }
 
     info.appendChild(listSection);

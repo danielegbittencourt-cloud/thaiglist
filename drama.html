@@ -6,8 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Detalhes do drama | ThaiGList</title>
 
-</head>
-
 <style>
 * {
   box-sizing: border-box;
@@ -37,21 +35,81 @@ body {
   margin: auto;
 }
 
-/* CABEÇALHO */
+/* CABEÇALHO COM PÔSTER DE FUNDO */
 
 header {
+  position: relative;
+  min-height: 270px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
   text-align: center;
   padding: 35px 20px;
+  overflow: hidden;
+
   background: linear-gradient(120deg, #21132f, #392047);
+
   border: 1px solid #71428c;
   border-radius: 20px;
   box-shadow: 0 8px 30px #00000044;
 }
 
+/* IMAGEM DE FUNDO */
+
+.header-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.header-backdrop img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center 35%;
+  filter: blur(1px);
+  transform: scale(1.03);
+}
+
+/* CAMADA ESCURA SOBRE A IMAGEM */
+
+header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+
+  background: linear-gradient(
+    to top,
+    rgba(16, 10, 25, 0.95) 0%,
+    rgba(16, 10, 25, 0.65) 45%,
+    rgba(16, 10, 25, 0.25) 100%
+  );
+}
+
+/* TEXTO DO CABEÇALHO */
+
+.header-content {
+  position: relative;
+  z-index: 2;
+}
+
 header h1 {
   color: white;
   margin: 0;
-  font-size: 32px;
+  font-size: 38px;
+  letter-spacing: 1px;
+  text-shadow: 0 3px 12px #000000aa;
+}
+
+header p {
+  color: #f1dcef;
+  margin: 10px 0 0;
+  font-size: 16px;
+  text-shadow: 0 2px 8px #000000aa;
 }
 
 /* CONTEÚDO */
@@ -151,48 +209,8 @@ iframe {
   border: 1px solid var(--border);
 }
 
-/* RODAPÉ */
+/* MINHA LISTA */
 
-footer {
-  text-align: center;
-  padding: 20px;
-  color: var(--muted);
-}
-
-/* CELULAR */
-
-@media (max-width: 600px) {
-  body {
-    padding: 15px 10px;
-  }
-
-  main {
-    padding: 20px;
-  }
-
-  .details {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .poster {
-    width: 100%;
-    max-width: 280px;
-  }
-
-  .information {
-    width: 100%;
-  }
-
-  header h1 {
-    font-size: 26px;
-  }
-
-  h2 {
-    font-size: 24px;
-  }
-}
-  
 .my-list-controls {
   margin-top: 28px;
   padding: 22px;
@@ -276,33 +294,123 @@ footer {
   display: none !important;
 }
 
+/* RODAPÉ */
+
+footer {
+  text-align: center;
+  padding: 20px;
+  color: var(--muted);
+}
+
+/* CELULAR */
+
+@media (max-width: 600px) {
+
+  body {
+    padding: 15px 10px;
+  }
+
+  header {
+    min-height: 220px;
+    padding: 25px 15px;
+  }
+
+  header h1 {
+    font-size: 30px;
+  }
+
+  header p {
+    font-size: 14px;
+  }
+
+  .header-backdrop img {
+    object-position: center center;
+  }
+
+  main {
+    padding: 20px;
+  }
+
+  .details {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .poster {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .information {
+    width: 100%;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  .my-list-controls {
+    padding: 16px;
+  }
+
+  .list-status-options button {
+    font-size: 12px;
+    padding: 10px;
+  }
+}
+
 </style>
+</head>
 
 <body>
+
 <div class="container">
 
+<!-- CABEÇALHO DINÂMICO -->
+
 <header>
-  <h1>ThaiGList 🌷</h1>
-  <p>Detalhes da série</p>
+
+  <div class="header-backdrop">
+    <img id="header-poster" src="" alt="">
+  </div>
+
+  <div class="header-content">
+
+    <h1>ThaiGList 🌷</h1>
+
+    <p>Detalhe do drama</p>
+
+  </div>
+
 </header>
 
 <main>
-  <a class="back" href="index.html">← Voltar ao catálogo</a>
+
+  <a class="back" href="index.html">
+    ← Voltar ao catálogo
+  </a>
 
   <div id="details">
     <p>Carregando informações... 🌷</p>
   </div>
+
 </main>
 
-<footer>ThaiGList © 2026</footer>
+<footer>
+  ThaiGList © 2026
+</footer>
 
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-const SUPABASE_URL = "https://jjybnidhwfimcdwygafk.supabase.co";
-const SUPABASE_KEY = "sb_publishable_DyikY0WSJJ4apDc0_ZwfOw_x6LvfqM-";
+
+const SUPABASE_URL =
+  "https://jjybnidhwfimcdwygafk.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_DyikY0WSJJ4apDc0_ZwfOw_x6LvfqM-";
 
 const db = window.supabase.createClient(
   SUPABASE_URL,
@@ -311,78 +419,216 @@ const db = window.supabase.createClient(
 
 const details = document.getElementById("details");
 
+
+// ========================================
+// FUNÇÃO PARA CRIAR ELEMENTOS
+// ========================================
+
 function addText(parent, tag, className, value) {
+
   const element = document.createElement(tag);
+
   element.className = className;
+
   element.textContent = value;
+
   parent.appendChild(element);
+
   return element;
+
 }
 
+
+// ========================================
+// CARREGAR DRAMA
+// ========================================
+
 async function loadDrama() {
-  const id = new URLSearchParams(window.location.search).get("id");
+
+  const id = new URLSearchParams(
+    window.location.search
+  ).get("id");
 
   if (!id) {
+
     details.textContent = "Série não encontrada.";
+
     return;
+
   }
 
   const { data, error } = await db
+
     .from("dramas")
+
     .select("*")
+
     .eq("id", id)
+
     .single();
 
   if (error || !data) {
-    details.textContent = "Não foi possível carregar esta série.";
+
+    details.textContent =
+      "Não foi possível carregar esta série.";
+
     console.error(error);
+
     return;
+
   }
+
+
+  // ========================================
+  // ATUALIZAR BANNER COM O PÔSTER DO DRAMA
+  // ========================================
+
+  const headerPoster =
+    document.getElementById("header-poster");
+
+  if (data.poster_url) {
+
+    headerPoster.src = data.poster_url;
+
+    headerPoster.onerror = () => {
+
+      headerPoster.style.display = "none";
+
+    };
+
+  } else {
+
+    headerPoster.style.display = "none";
+
+  }
+
 
   details.innerHTML = "";
 
   const layout = document.createElement("div");
+
   layout.className = "details";
 
+
+  // ========================================
+  // PÔSTER DO DRAMA
+  // ========================================
+
   if (data.poster_url) {
+
     const image = document.createElement("img");
+
     image.className = "poster";
+
     image.src = data.poster_url;
-    image.alt = "Pôster de " + (data.title || "drama");
+
+    image.alt =
+      "Pôster de " + (data.title || "drama");
+
     image.onerror = () => {
+
       image.remove();
+
     };
+
     layout.appendChild(image);
+
   }
+
+
+  // ========================================
+  // INFORMAÇÕES PRINCIPAIS
+  // ========================================
 
   const info = document.createElement("div");
+
   info.className = "information";
 
-  addText(info, "h2", "", data.title || "Sem título");
+  addText(
+    info,
+    "h2",
+    "",
+    data.title || "Sem título"
+  );
 
   if (data.original_title) {
-    addText(info, "p", "original-title", data.original_title);
+
+    addText(
+      info,
+      "p",
+      "original-title",
+      data.original_title
+    );
+
   }
 
-  if (data.year) addText(info, "p", "", "Ano: " + data.year);
-  if (data.country) addText(info, "p", "", "País: " + data.country);
-  if (data.episodes) addText(info, "p", "", "Episódios: " + data.episodes);
-  if (data.genre) addText(info, "p", "", "Gênero: " + data.genre);
+  if (data.year) {
+
+    addText(
+      info,
+      "p",
+      "",
+      "Ano: " + data.year
+    );
+
+  }
+
+  if (data.country) {
+
+    addText(
+      info,
+      "p",
+      "",
+      "País: " + data.country
+    );
+
+  }
+
+  if (data.episodes) {
+
+    addText(
+      info,
+      "p",
+      "",
+      "Episódios: " + data.episodes
+    );
+
+  }
+
+  if (data.genre) {
+
+    addText(
+      info,
+      "p",
+      "",
+      "Gênero: " + data.genre
+    );
+
+  }
 
 
-  layout.appendChild(info);
-  
+  // ========================================
+  // MINHA LISTA
+  // ========================================
 
-  // Minha Lista: controles visuais
   const listSection = document.createElement("section");
+
   listSection.className = "my-list-controls";
 
-  addText(listSection, "h3", "", "Minha Lista 🌷");
+  addText(
+    listSection,
+    "h3",
+    "",
+    "Minha Lista 🌷"
+  );
 
-  const { data: sessionData } = await db.auth.getSession();
+  const { data: sessionData } =
+    await db.auth.getSession();
+
   const session = sessionData.session;
 
   if (!session) {
+
     addText(
       listSection,
       "p",
@@ -391,141 +637,254 @@ async function loadDrama() {
     );
 
     const loginLink = document.createElement("a");
+
     loginLink.href = "conta.html";
+
     loginLink.textContent = "Entrar / Cadastrar";
+
     listSection.appendChild(loginLink);
 
   } else {
+
     const userId = session.user.id;
 
     let selectedStatus = "want_to_watch";
+
     let selectedRating = 0;
 
-    const statusOptions = document.createElement("div");
-    statusOptions.className = "list-status-options";
+    const statusOptions =
+      document.createElement("div");
+
+    statusOptions.className =
+      "list-status-options";
 
     const statuses = [
-      { value: "want_to_watch", label: "♡ Quero assistir" },
-      { value: "watching", label: "▶ Assistindo" },
-      { value: "completed", label: "✓ Concluído" }
+
+      {
+        value: "want_to_watch",
+        label: "♡ Quero assistir"
+      },
+
+      {
+        value: "watching",
+        label: "▶ Assistindo"
+      },
+
+      {
+        value: "completed",
+        label: "✓ Concluído"
+      }
+
     ];
 
     const statusButtons = [];
 
     statuses.forEach(status => {
-      const button = document.createElement("button");
+
+      const button =
+        document.createElement("button");
+
       button.type = "button";
+
       button.textContent = status.label;
 
       button.addEventListener("click", () => {
+
         selectedStatus = status.value;
 
         statusButtons.forEach(item => {
-          item.classList.toggle("active", item === button);
+
+          item.classList.toggle(
+            "active",
+            item === button
+          );
+
         });
 
-        ratingArea.hidden = selectedStatus !== "completed";
+        ratingArea.hidden =
+          selectedStatus !== "completed";
 
         if (selectedStatus !== "completed") {
+
           selectedRating = 0;
+
           updateStars();
+
         }
+
       });
 
       statusButtons.push(button);
+
       statusOptions.appendChild(button);
+
     });
 
-    const ratingArea = document.createElement("div");
+
+    // AVALIAÇÃO
+
+    const ratingArea =
+      document.createElement("div");
+
     ratingArea.className = "rating-area";
+
     ratingArea.hidden = true;
 
-    addText(ratingArea, "p", "", "Sua avaliação");
+    addText(
+      ratingArea,
+      "p",
+      "",
+      "Sua avaliação"
+    );
 
-    const stars = document.createElement("div");
+    const stars =
+      document.createElement("div");
+
     stars.className = "rating-stars";
 
     const starButtons = [];
 
     function updateStars() {
+
       starButtons.forEach((button, index) => {
+
         button.textContent =
           index < selectedRating ? "★" : "☆";
+
       });
+
     }
 
     for (let i = 1; i <= 5; i++) {
-      const star = document.createElement("button");
+
+      const star =
+        document.createElement("button");
+
       star.type = "button";
+
       star.textContent = "☆";
-      star.setAttribute("aria-label", i + " estrelas");
+
+      star.setAttribute(
+        "aria-label",
+        i + " estrelas"
+      );
 
       star.addEventListener("click", () => {
+
         selectedRating = i;
+
         updateStars();
+
       });
 
       starButtons.push(star);
+
       stars.appendChild(star);
+
     }
 
     ratingArea.appendChild(stars);
 
-    const saveButton = document.createElement("button");
-    saveButton.type = "button";
-    saveButton.className = "save-list-button";
-    saveButton.textContent = "＋ Salvar na Minha Lista";
 
-    const message = document.createElement("p");
+    // BOTÃO SALVAR
+
+    const saveButton =
+      document.createElement("button");
+
+    saveButton.type = "button";
+
+    saveButton.className = "save-list-button";
+
+    saveButton.textContent =
+      "＋ Salvar na Minha Lista";
+
+    const message =
+      document.createElement("p");
+
     message.className = "list-message";
 
-    // Recupera os dados já salvos
-    const { data: existing, error: readError } = await db
+
+    // RECUPERAR DADOS JÁ SALVOS
+
+    const {
+      data: existing,
+      error: readError
+    } = await db
+
       .from("user_drama_list")
+
       .select("status, rating")
+
       .eq("user_id", userId)
+
       .eq("drama_id", data.id)
+
       .maybeSingle();
 
     if (readError) {
-      console.error("Erro ao consultar Minha Lista:", readError);
-      message.textContent = "Não foi possível consultar sua lista.";
+
+      console.error(
+        "Erro ao consultar Minha Lista:",
+        readError
+      );
+
+      message.textContent =
+        "Não foi possível consultar sua lista.";
+
     }
 
     if (existing) {
+
       selectedStatus = existing.status;
+
       selectedRating = existing.rating || 0;
 
-      saveButton.textContent = "✓ Atualizar Minha Lista";
+      saveButton.textContent =
+        "✓ Atualizar Minha Lista";
+
     }
 
     statusButtons.forEach((button, index) => {
+
       button.classList.toggle(
         "active",
         statuses[index].value === selectedStatus
       );
+
     });
 
-    ratingArea.hidden = selectedStatus !== "completed";
+    ratingArea.hidden =
+      selectedStatus !== "completed";
+
     updateStars();
 
+
+    // SALVAR NA MINHA LISTA
+
     saveButton.addEventListener("click", async () => {
+
       saveButton.disabled = true;
+
       saveButton.textContent = "Salvando...";
 
       message.textContent = "";
 
       const { error } = await db
+
         .from("user_drama_list")
+
         .upsert(
           {
             user_id: userId,
             drama_id: data.id,
             status: selectedStatus,
+
             rating:
-              selectedStatus === "completed" && selectedRating
+              selectedStatus === "completed" &&
+              selectedRating
                 ? selectedRating
                 : null,
+
             updated_at: new Date().toISOString()
           },
           {
@@ -534,17 +893,26 @@ async function loadDrama() {
         );
 
       saveButton.disabled = false;
-      saveButton.textContent = "✓ Atualizar Minha Lista";
+
+      saveButton.textContent =
+        "✓ Atualizar Minha Lista";
 
       if (error) {
+
         console.error("Erro ao salvar:", error);
+
         message.textContent =
           "Não foi possível salvar. Tente novamente.";
+
         return;
+
       }
 
-      message.textContent = "Drama salvo na sua lista! 🌷";
+      message.textContent =
+        "Drama salvo na sua lista! 🌷";
+
     });
+
 
     listSection.append(
       statusOptions,
@@ -552,81 +920,173 @@ async function loadDrama() {
       saveButton,
       message
     );
+
   }
 
   info.appendChild(listSection);
 
+  layout.appendChild(info);
 
   details.appendChild(layout);
-  
+
+
+  // ========================================
+  // TRAILER OFICIAL
+  // ========================================
+
   if (data.trailer_url) {
-    const trailerSection = document.createElement("section");
+
+    const trailerSection =
+      document.createElement("section");
+
     trailerSection.className = "synopsis";
 
-    addText(trailerSection, "h2", "", "Trailer oficial");
+    addText(
+      trailerSection,
+      "h2",
+      "",
+      "Trailer oficial"
+    );
 
-    const video = document.createElement("iframe");
+    const video =
+      document.createElement("iframe");
 
     const videoId = data.trailer_url.match(
       /(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/
     );
 
     if (videoId) {
-      video.src = "https://www.youtube.com/embed/" + videoId[1];
-      video.title = "Trailer de " + data.title;
+
+      video.src =
+        "https://www.youtube.com/embed/" + videoId[1];
+
+      video.title =
+        "Trailer de " + data.title;
+
       video.width = "100%";
+
       video.height = "315";
+
       video.style.border = "0";
+
       video.style.borderRadius = "14px";
+
       video.allow =
         "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+
       video.allowFullscreen = true;
 
       trailerSection.appendChild(video);
+
       details.appendChild(trailerSection);
+
     }
+
   }
 
-  
+
+  // ========================================
+  // ELENCO PRINCIPAL
+  // ========================================
+
   if (data.main_cast) {
-    const castSection = document.createElement("section");
+
+    const castSection =
+      document.createElement("section");
+
     castSection.className = "synopsis";
 
-    addText(castSection, "h2", "", "Elenco principal");
+    addText(
+      castSection,
+      "h2",
+      "",
+      "Elenco principal"
+    );
 
     const castText = addText(
-      castSection, "p", "", data.main_cast
+      castSection,
+      "p",
+      "",
+      data.main_cast
     );
+
     castText.style.whiteSpace = "pre-line";
 
     details.appendChild(castSection);
+
   }
 
+
+  // ========================================
+  // PERSONAGENS
+  // ========================================
+
   if (data.characters) {
-    const charactersSection = document.createElement("section");
+
+    const charactersSection =
+      document.createElement("section");
+
     charactersSection.className = "synopsis";
 
-    addText(charactersSection, "h2", "", "Personagens");
+    addText(
+      charactersSection,
+      "h2",
+      "",
+      "Personagens"
+    );
 
     const charactersText = addText(
-      charactersSection, "p", "", data.characters
+      charactersSection,
+      "p",
+      "",
+      data.characters
     );
+
     charactersText.style.whiteSpace = "pre-line";
 
     details.appendChild(charactersSection);
+
   }
 
+
+  // ========================================
+  // SINOPSE
+  // ========================================
 
   if (data.synopsis) {
-    const synopsis = document.createElement("section");
+
+    const synopsis =
+      document.createElement("section");
+
     synopsis.className = "synopsis";
-    addText(synopsis, "h2", "", "Sinopse");
-    addText(synopsis, "p", "", data.synopsis);
+
+    addText(
+      synopsis,
+      "h2",
+      "",
+      "Sinopse"
+    );
+
+    addText(
+      synopsis,
+      "p",
+      "",
+      data.synopsis
+    );
+
     details.appendChild(synopsis);
+
   }
+
 }
 
+
+// ========================================
+// INICIALIZAÇÃO
+// ========================================
+
 loadDrama();
+
 </script>
 
 </body>

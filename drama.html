@@ -508,6 +508,12 @@ iframe {
   display: flex;
   align-items: center;
   gap: 10px;
+  color: inherit;
+}
+
+a.comment-author:hover .comment-author-name {
+  color: #f05ba8;
+  text-decoration: underline;
 }
 
 .comment-avatar {
@@ -742,13 +748,46 @@ footer {
 
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 
 <script>
 const SUPABASE_URL = "https://jjybnidhwfimcdwygafk.supabase.co";
 const SUPABASE_KEY = "sb_publishable_DyikY0WSJJ4apDc0_ZwfOw_x6LvfqM-";
 
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const memoryStorage = new Map();
+const safeStorage = {
+  getItem: (key) => {
+    try {
+      return window.localStorage.getItem(key);
+    } catch {
+      return memoryStorage.get(key) ?? null;
+    }
+  },
+  setItem: (key, value) => {
+    try {
+      window.localStorage.setItem(key, value);
+    } catch {
+      memoryStorage.set(key, value);
+    }
+  },
+  removeItem: (key) => {
+    try {
+      window.localStorage.removeItem(key);
+    } catch {
+      memoryStorage.delete(key);
+    }
+  }
+};
+
+const db = window.supabase
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+      auth: {
+        storage: safeStorage,
+        persistSession: true,
+        autoRefreshToken: true
+      }
+    })
+  : null;
 
 const details = document.getElementById("details");
 const currentDramaId = new URLSearchParams(window.location.search).get("id");
@@ -773,6 +812,11 @@ function addText(parent, tag, className, value) {
 async function loadDrama() {
   if (!currentDramaId) {
     details.textContent = "Série não encontrada.";
+    return;
+  }
+
+  if (!db) {
+    details.textContent = "Não foi possível conectar ao serviço agora.";
     return;
   }
 
@@ -812,7 +856,6 @@ async function loadDrama() {
     const layout = document.createElement("div");
     layout.className = "details";
 
-    // COLUNA DO PÔSTER EM DEGRADÊ + ELENCO DISCRETO ABAIXO
     const posterCol = document.createElement("div");
     posterCol.className = "poster-column";
 
@@ -842,7 +885,6 @@ async function loadDrama() {
 
     layout.appendChild(posterCol);
 
-    // INFORMAÇÕES PRINCIPAIS
     const info = document.createElement("div");
     info.className = "information";
 
@@ -853,7 +895,6 @@ async function loadDrama() {
     if (data.episodes) addText(info, "p", "", "Episódios: " + data.episodes);
     if (data.genre) addText(info, "p", "", "Gênero: " + data.genre);
 
-    // MINHA LISTA
     const listSection = document.createElement("section");
     listSection.className = "my-list-controls";
     addText(listSection, "h3", "", "Minha Lista 🌷");
@@ -954,7 +995,6 @@ async function loadDrama() {
     layout.appendChild(info);
     details.appendChild(layout);
 
-    // TRAILER OFICIAL
     if (data.trailer_url) {
       const videoId = data.trailer_url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
       if (videoId) {
@@ -977,7 +1017,6 @@ async function loadDrama() {
       }
     }
 
-    // SINOPSE
     if (data.synopsis) {
       const synopsis = document.createElement("section");
       synopsis.className = "synopsis";
@@ -1014,7 +1053,7 @@ starPickerButtons.forEach((btn) => {
 });
 
 async function loadDramaComments(dramaId) {
-  if (!commentsListEl || !dramaId) return;
+  if (!commentsListEl || !dramaId || !db) return;
 
   try {
     const { data: comments, error } = await db
@@ -1042,23 +1081,17 @@ async function loadDramaComments(dramaId) {
 
     const userIds = [...new Set(comments.map((c) => c.user_id))];
     const { data: profiles } = await db
-  .from("profiles")
-  .select("id, display_name, avatar_url, public_profile")
-  .in("id", userIds);
+      .from("profiles")
+      .select("id, display_name, avatar_url, public_profile")
+      .in("id", userIds);
 
     const profileMap = new Map((profiles || []).map((p) => [p.id, p]));
     commentsListEl.innerHTML = "";
 
-    comments.forEach((comment) => {const isPublicAuthor = !profile || profile.public_profile !== false;
-const authorWrap = document.createElement(isPublicAuthor ? "a" : "div");
-authorWrap.className = "comment-author";
-if (isPublicAuthor) {
-  authorWrap.href = `conta.html?user=${comment.user_id}`;
-  authorWrap.style.textDecoration = "none";
-  authorWrap.title = `Ver perfil de ${authorName}`;
-}
+    comments.forEach((comment) => {
       const profile = profileMap.get(comment.user_id);
       const authorName = profile?.display_name || "Fã do ThaiGList";
+      const isPublicAuthor = !profile || profile.public_profile !== false;
 
       const card = document.createElement("article");
       card.className = "comment-card";
@@ -1066,8 +1099,13 @@ if (isPublicAuthor) {
       const top = document.createElement("div");
       top.className = "comment-top";
 
-      const authorWrap = document.createElement("div");
+      const authorWrap = document.createElement(isPublicAuthor ? "a" : "div");
       authorWrap.className = "comment-author";
+      if (isPublicAuthor) {
+        authorWrap.href = `conta.html?user=${comment.user_id}`;
+        authorWrap.style.textDecoration = "none";
+        authorWrap.title = `Ver perfil de ${authorName}`;
+      }
 
       if (profile?.avatar_url) {
         const img = document.createElement("img");
@@ -1167,7 +1205,7 @@ if (isPublicAuthor) {
 if (commentForm) {
   commentForm.addEventListener("submit", async (event) => {
     event.preventDefault();
-    if (!loggedUser || !currentDramaId) return;
+    if (!loggedUser || !currentDramaId || !db) return;
 
     const content = document.getElementById("comment-content").value.trim();
     const hasSpoiler = document.getElementById("comment-has-spoiler").checked;

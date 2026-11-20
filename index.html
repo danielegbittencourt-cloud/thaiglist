@@ -14,6 +14,7 @@
   --background: #100d18;
   --surface: #1b1626;
   --surface-light: #241d32;
+  --surface-hover: #2c233d;
   --pink: #f05ba8;
   --purple: #a875f5;
   --text: #f7efff;
@@ -189,7 +190,7 @@ h2 {
   font-size: 25px;
 }
 
-/* PESQUISA E ORDENAÇÃO */
+/* PESQUISA, ORDENAÇÃO E MODO DE EXIBIÇÃO */
 
 .catalog-controls {
   display: flex;
@@ -217,6 +218,49 @@ h2 {
 #sort-select:focus {
   border-color: var(--pink);
   box-shadow: 0 0 0 3px #f05ba822;
+}
+
+.controls-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.view-switcher {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.view-switcher span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.view-btn {
+  padding: 9px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface-light);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.view-btn:hover {
+  color: white;
+  border-color: var(--purple);
+}
+
+.view-btn.active {
+  color: white;
+  background: linear-gradient(100deg, #f05ba8, #a875f5);
+  border-color: transparent;
 }
 
 .sort-container {
@@ -252,6 +296,31 @@ h2 {
   color: var(--muted);
   font-size: 13px;
   margin: 0;
+}
+
+/* SELOS DE SITUAÇÃO */
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+.status-pill.ongoing {
+  background: rgba(255, 92, 138, 0.2);
+  color: #ffa6c0;
+  border: 1px solid rgba(255, 92, 138, 0.55);
+}
+
+.status-pill.upcoming {
+  background: rgba(168, 117, 245, 0.2);
+  color: #d6baff;
+  border: 1px solid rgba(168, 117, 245, 0.5);
 }
 
 /* BANNER DE DESTAQUE */
@@ -412,16 +481,16 @@ h2 {
   background: var(--pink);
 }
 
-/* CATÁLOGO */
+/* CATÁLOGO — MODO CARDS (PADRÃO) */
 
-#series-list {
+#series-list.view-cards {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 22px;
   margin-top: 25px;
 }
 
-.series-card {
+#series-list.view-cards .series-card {
   overflow: hidden;
   position: relative;
   aspect-ratio: 2 / 3;
@@ -433,13 +502,13 @@ h2 {
   cursor: pointer;
 }
 
-.series-card:hover {
+#series-list.view-cards .series-card:hover {
   transform: translateY(-5px);
   border-color: var(--pink);
   box-shadow: 0 8px 25px #f05ba822;
 }
 
-.poster {
+#series-list.view-cards .poster {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -454,9 +523,7 @@ h2 {
   padding: 0;
 }
 
-/* AJUSTE DOS PÔSTERES DO CATÁLOGO */
-
-.poster img {
+#series-list.view-cards .poster img {
   display: block;
   width: 100%;
   height: 100%;
@@ -465,12 +532,12 @@ h2 {
   background: transparent;
 }
 
-.card-content {
+#series-list.view-cards .card-content {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  height: 50%;
+  min-height: 52%;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -479,30 +546,208 @@ h2 {
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    rgba(16, 13, 24, 0.75) 35%,
+    rgba(16, 13, 24, 0.82) 30%,
     rgba(16, 13, 24, 0.98) 100%
   );
   z-index: 1;
 }
 
-.series-card h3 {
+#series-list.view-cards .series-card h3 {
   color: #fff;
   font-size: 15px;
   line-height: 1.25;
-  margin: 0 0 5px;
+  margin: 4px 0;
 }
 
-.series-card p {
+#series-list.view-cards .series-card p {
   color: #f7efff;
   font-size: 12px;
-  line-height: 1.5;
-  margin: 3px 0;
+  line-height: 1.4;
+  margin: 2px 0;
+}
+
+/* CATÁLOGO — MODO LISTA */
+
+#series-list.view-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+#series-list.view-list .series-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  background: var(--surface-light);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: border-color .2s;
+}
+
+#series-list.view-list .series-card:hover {
+  border-color: var(--pink);
+}
+
+#series-list.view-list .poster {
+  width: 58px;
+  height: 82px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #30213e;
+  font-size: 11px;
+  text-align: center;
+}
+
+#series-list.view-list .poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+#series-list.view-list .card-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+#series-list.view-list .card-info {
+  flex: 1 1 260px;
+  min-width: 0;
+}
+
+#series-list.view-list .series-card h3 {
+  margin: 4px 0;
+  font-size: 16px;
+  color: #fff;
+}
+
+#series-list.view-list .series-card p {
+  margin: 2px 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ATALHO RÁPIDO PARA MINHA LISTA */
+
+.quick-list-box {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.quick-list-select {
+  flex: 1;
+  min-width: 105px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid #4d3b66;
+  background: rgba(20, 15, 30, 0.92);
+  color: #f7efff;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.quick-list-btn {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(100deg, #f05ba8, #a875f5);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.quick-list-btn.in-list {
+  background: #273d33;
+  border: 1px solid #49a67a;
+}
+
+.quick-list-status {
+  width: 100%;
+  font-size: 11px;
+  color: #ff9dd0;
+  min-height: 14px;
+}
+
+/* CATÁLOGO — MODO TABELA */
+
+.catalog-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 25px;
+  background: var(--surface-light);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+table.catalog-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 14px;
+}
+
+table.catalog-table thead {
+  background: #171222;
+  color: var(--muted);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+table.catalog-table th,
+table.catalog-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+table.catalog-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+table.catalog-table tbody tr:hover {
+  background: var(--surface-hover);
+}
+
+.table-thumb {
+  width: 42px;
+  height: 60px;
+  border-radius: 6px;
+  object-fit: cover;
+  display: block;
+  background: #30213e;
+}
+
+.table-title-link {
+  color: #ffffff;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.table-title-link:hover {
+  color: var(--pink);
 }
 
 /* TABLETS */
 
 @media (max-width: 900px) {
-  #series-list {
+  #series-list.view-cards {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
@@ -585,6 +830,10 @@ h2 {
     font-size: 29px;
   }
 
+  .controls-toolbar {
+    align-items: stretch;
+  }
+
   .sort-container {
     justify-content: space-between;
   }
@@ -593,21 +842,21 @@ h2 {
     max-width: 65%;
   }
 
-  #series-list {
+  #series-list.view-cards {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 14px;
   }
 
-  .series-card h3 {
-    font-size: 16px;
+  #series-list.view-cards .series-card h3 {
+    font-size: 15px;
   }
 
-  .series-card p {
-    font-size: 12px;
+  #series-list.view-cards .series-card p {
+    font-size: 11px;
   }
 
-  .card-content {
-    height: 50%;
+  #series-list.view-cards .card-content {
+    min-height: 55%;
     padding: 10px;
   }
 
@@ -700,7 +949,7 @@ footer {
 
   <h2 id="catalog-title">Explore o catálogo</h2>
 
-  <!-- PESQUISA E ORDENAÇÃO -->
+  <!-- PESQUISA, ORDENAÇÃO E MODO DE EXIBIÇÃO -->
 
   <section class="catalog-controls">
 
@@ -712,27 +961,38 @@ footer {
       autocomplete="off"
     >
 
-    <div class="sort-container">
+    <div class="controls-toolbar">
 
-      <label for="sort-select">
-        Organizar por:
-      </label>
+      <div class="view-switcher" id="view-switcher">
+        <span>Exibir como:</span>
+        <button type="button" class="view-btn active" data-view="cards">⊞ Cards</button>
+        <button type="button" class="view-btn" data-view="list">☰ Lista</button>
+        <button type="button" class="view-btn" data-view="table">▤ Tabela</button>
+      </div>
 
-      <select id="sort-select">
+      <div class="sort-container">
 
-        <option value="year">
-          Ano (mais recentes)
-        </option>
+        <label for="sort-select">
+          Organizar por:
+        </label>
 
-        <option value="title">
-          Título (A–Z)
-        </option>
+        <select id="sort-select">
 
-        <option value="cast">
-          Elenco principal (A–Z)
-        </option>
+          <option value="year">
+            Ano (mais recentes)
+          </option>
 
-      </select>
+          <option value="title">
+            Título (A–Z)
+          </option>
+
+          <option value="cast">
+            Elenco principal (A–Z)
+          </option>
+
+        </select>
+
+      </div>
 
     </div>
 
@@ -808,7 +1068,7 @@ footer {
 
   <section id="catalog-section">
 
-    <div id="series-list">
+    <div id="series-list" class="view-cards">
       <p>Carregando catálogo... 🌷</p>
     </div>
 
@@ -822,9 +1082,40 @@ footer {
 
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 
 <script>
+
+// ========================================
+// STORAGE SEGURO (COM FALLBACK EM MEMÓRIA)
+// ========================================
+
+const memoryStorage = new Map();
+
+const safeStorage = {
+  getItem: (key) => {
+    try {
+      return window.localStorage.getItem(key);
+    } catch {
+      return memoryStorage.get(key) ?? null;
+    }
+  },
+  setItem: (key, value) => {
+    try {
+      window.localStorage.setItem(key, value);
+    } catch {
+      memoryStorage.set(key, value);
+    }
+  },
+  removeItem: (key) => {
+    try {
+      window.localStorage.removeItem(key);
+    } catch {
+      memoryStorage.delete(key);
+    }
+  }
+};
+
 
 // ========================================
 // CONEXÃO SUPABASE
@@ -838,16 +1129,26 @@ const SUPABASE_KEY =
 
 const db = window.supabase.createClient(
   SUPABASE_URL,
-  SUPABASE_KEY
+  SUPABASE_KEY,
+  {
+    auth: {
+      storage: safeStorage,
+      persistSession: true,
+      autoRefreshToken: true
+    }
+  }
 );
 
 let series = [];
 let activeUserId = null;
+let userListMap = new Map();
+let currentView = "cards";
 
 const list = document.getElementById("series-list");
 const search = document.getElementById("search");
 const sortSelect = document.getElementById("sort-select");
 const searchResults = document.getElementById("search-results");
+const viewButtons = document.querySelectorAll("#view-switcher .view-btn");
 
 const collator = new Intl.Collator("pt-BR", {
   sensitivity: "base",
@@ -884,6 +1185,127 @@ function getMainCast(item) {
   }
 
   return cast || "";
+
+}
+
+
+// ========================================
+// SELOS DE SITUAÇÃO (EM ANDAMENTO / EM BREVE)
+// ========================================
+
+function getReleaseBadgeInfo(item) {
+
+  const status = (item.status || "").trim().toLowerCase();
+  const year = Number(item.year) || 0;
+
+  if (status === "em andamento") {
+    return {
+      type: "ongoing",
+      label: "📺 Em andamento"
+    };
+  }
+
+  if (
+    status === "teaser / piloto" ||
+    status === "em breve" ||
+    status === "previsto" ||
+    year > 2026
+  ) {
+    return {
+      type: "upcoming",
+      label: "⏳ Em breve"
+    };
+  }
+
+  return null;
+
+}
+
+
+// ========================================
+// ATALHO RÁPIDO PARA ADICIONAR NA LISTA
+// ========================================
+
+function buildQuickListControl(item) {
+
+  const existingStatus = userListMap.get(item.id) || "want_to_watch";
+  const isInList = userListMap.has(item.id);
+
+  const wrapper = document.createElement("div");
+  wrapper.className = "quick-list-box";
+
+  const stopNav = (ev) => ev.stopPropagation();
+  wrapper.addEventListener("click", stopNav);
+  wrapper.addEventListener("keydown", stopNav);
+
+  const select = document.createElement("select");
+  select.className = "quick-list-select";
+  select.setAttribute("aria-label", "Status na lista para " + (item.title || "drama"));
+
+  const options = [
+    { value: "want_to_watch", label: "♡ Quero ver" },
+    { value: "watching", label: "▶ Assistindo" },
+    { value: "completed", label: "✓ Concluído" }
+  ];
+
+  options.forEach(opt => {
+    const optionEl = document.createElement("option");
+    optionEl.value = opt.value;
+    optionEl.textContent = opt.label;
+    if (opt.value === existingStatus) optionEl.selected = true;
+    select.appendChild(optionEl);
+  });
+
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "quick-list-btn" + (isInList ? " in-list" : "");
+  btn.textContent = isInList ? "✓ Na lista" : "+ Lista";
+
+  const statusMsg = document.createElement("div");
+  statusMsg.className = "quick-list-status";
+
+  btn.addEventListener("click", async () => {
+
+    if (!activeUserId) {
+      window.location.href = "conta.html";
+      return;
+    }
+
+    btn.disabled = true;
+    const prevLabel = btn.textContent;
+    btn.textContent = "...";
+    statusMsg.textContent = "";
+
+    const { error } = await db
+      .from("user_drama_list")
+      .upsert(
+        {
+          user_id: activeUserId,
+          drama_id: item.id,
+          status: select.value,
+          updated_at: new Date().toISOString()
+        },
+        { onConflict: "user_id,drama_id" }
+      );
+
+    btn.disabled = false;
+
+    if (error) {
+      console.error("Erro ao salvar na lista:", error);
+      btn.textContent = prevLabel;
+      statusMsg.textContent = "Não foi possível salvar.";
+      return;
+    }
+
+    userListMap.set(item.id, select.value);
+    btn.textContent = "✓ Na lista";
+    btn.classList.add("in-list");
+    statusMsg.textContent = "Salvo na sua lista!";
+
+  });
+
+  wrapper.append(select, btn, statusMsg);
+  return wrapper;
 
 }
 
@@ -944,7 +1366,7 @@ function sortSeries(items) {
 
 
 // ========================================
-// EXIBIR CATÁLOGO
+// EXIBIR CATÁLOGO (CARDS, LISTA E TABELA)
 // ========================================
 
 function showSeries(items) {
@@ -953,6 +1375,8 @@ function showSeries(items) {
 
   if (!items.length) {
 
+    list.className = "view-cards";
+
     list.appendChild(
       createText("p", "", "Nenhuma série encontrada 🌷")
     );
@@ -960,6 +1384,94 @@ function showSeries(items) {
     return;
 
   }
+
+  // MODO TABELA
+  if (currentView === "table") {
+
+    list.className = "";
+
+    const wrap = document.createElement("div");
+    wrap.className = "catalog-table-wrap";
+
+    const table = document.createElement("table");
+    table.className = "catalog-table";
+    table.innerHTML = `
+      <thead>
+        <tr>
+          <th>Capa</th>
+          <th>Título</th>
+          <th>Ano</th>
+          <th>Situação</th>
+          <th>Minha lista</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    `;
+
+    const tbody = table.querySelector("tbody");
+
+    items.forEach(item => {
+
+      const tr = document.createElement("tr");
+
+      const tdThumb = document.createElement("td");
+      if (item.poster_url) {
+        const img = document.createElement("img");
+        img.className = "table-thumb";
+        img.src = item.poster_url;
+        img.alt = "Pôster de " + (item.title || "drama");
+        img.loading = "lazy";
+        img.onerror = () => { img.style.display = "none"; };
+        tdThumb.appendChild(img);
+      } else {
+        tdThumb.textContent = "🌷";
+      }
+
+      const tdTitle = document.createElement("td");
+      const link = document.createElement("a");
+      link.className = "table-title-link";
+      link.href = "drama.html?id=" + encodeURIComponent(item.id);
+      link.textContent = item.title || "Sem título";
+      tdTitle.appendChild(link);
+
+      if (item.genre) {
+        const g = document.createElement("div");
+        g.style.fontSize = "12px";
+        g.style.color = "var(--muted)";
+        g.textContent = item.genre;
+        tdTitle.appendChild(g);
+      }
+
+      const tdYear = document.createElement("td");
+      tdYear.textContent = item.year || "—";
+
+      const tdStatus = document.createElement("td");
+      const badgeInfo = getReleaseBadgeInfo(item);
+      if (badgeInfo) {
+        const span = document.createElement("span");
+        span.className = "status-pill " + badgeInfo.type;
+        span.textContent = badgeInfo.label;
+        tdStatus.appendChild(span);
+      } else {
+        tdStatus.textContent = item.status || "—";
+      }
+
+      const tdAction = document.createElement("td");
+      tdAction.appendChild(buildQuickListControl(item));
+
+      tr.append(tdThumb, tdTitle, tdYear, tdStatus, tdAction);
+      tbody.appendChild(tr);
+
+    });
+
+    wrap.appendChild(table);
+    list.appendChild(wrap);
+    return;
+
+  }
+
+  // MODOS CARDS E LISTA
+  list.className = "view-" + currentView;
 
   items.forEach(item => {
 
@@ -997,7 +1509,6 @@ function showSeries(items) {
 
     });
 
-
     // PÔSTER
 
     const poster = document.createElement("div");
@@ -1030,20 +1541,30 @@ function showSeries(items) {
 
     }
 
-
     // INFORMAÇÕES DO CARD
 
     const content = document.createElement("div");
 
     content.className = "card-content";
 
-    content.appendChild(
+    const infoWrap = document.createElement("div");
+    infoWrap.className = "card-info";
+
+    const badgeInfo = getReleaseBadgeInfo(item);
+    if (badgeInfo) {
+      const badgeEl = document.createElement("span");
+      badgeEl.className = "status-pill " + badgeInfo.type;
+      badgeEl.textContent = badgeInfo.label;
+      infoWrap.appendChild(badgeEl);
+    }
+
+    infoWrap.appendChild(
       createText("h3", "", item.title || "Sem título")
     );
 
     if (item.year) {
 
-      content.appendChild(
+      infoWrap.appendChild(
         createText("p", "", "Ano: " + item.year)
       );
 
@@ -1051,11 +1572,14 @@ function showSeries(items) {
 
     if (item.genre) {
 
-      content.appendChild(
+      infoWrap.appendChild(
         createText("p", "", "Gênero: " + item.genre)
       );
 
     }
+
+    content.appendChild(infoWrap);
+    content.appendChild(buildQuickListControl(item));
 
     card.append(poster, content);
 
@@ -1083,6 +1607,7 @@ function filterSeries() {
       item.title,
       item.original_title,
       item.genre,
+      item.status,
       getMainCast(item)
 
     ]
@@ -1112,6 +1637,35 @@ function filterSeries() {
       series.length + " dramas no catálogo";
 
   }
+
+}
+
+
+// ========================================
+// CARREGAR LISTA DO USUÁRIO
+// ========================================
+
+async function loadUserListStatuses(userId) {
+
+  userListMap.clear();
+
+  if (!userId) {
+    filterSeries();
+    return;
+  }
+
+  const { data, error } = await db
+    .from("user_drama_list")
+    .select("drama_id, status")
+    .eq("user_id", userId);
+
+  if (!error && Array.isArray(data)) {
+    data.forEach(row => {
+      userListMap.set(row.drama_id, row.status);
+    });
+  }
+
+  filterSeries();
 
 }
 
@@ -1303,6 +1857,27 @@ function showWeeklySeries(items) {
 
 
 // ========================================
+// SELETOR DE MODO DE EXIBIÇÃO
+// ========================================
+
+viewButtons.forEach(btn => {
+
+  btn.addEventListener("click", () => {
+
+    currentView = btn.dataset.view;
+
+    viewButtons.forEach(b =>
+      b.classList.toggle("active", b === btn)
+    );
+
+    filterSeries();
+
+  });
+
+});
+
+
+// ========================================
 // NAVEGAÇÃO DO CARROSSEL
 // ========================================
 
@@ -1442,9 +2017,10 @@ function updateUserMenu(session) {
 
     profileAvatar.removeAttribute("src");
 
-    // Carrega os dados do perfil
+    // Carrega os dados do perfil e lista
 
     loadProfileAvatar(user.id);
+    loadUserListStatuses(user.id);
 
   } else {
 
@@ -1463,6 +2039,8 @@ function updateUserMenu(session) {
     profileLink.classList.remove("has-photo");
 
     profileAvatar.removeAttribute("src");
+
+    loadUserListStatuses(null);
 
   }
 
@@ -1622,4 +2200,3 @@ loadSeries();
 
 </body>
 </html>
-```

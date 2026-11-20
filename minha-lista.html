@@ -1,284 +1,654 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Minha Lista | ThaiGList</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Minha lista | ThaiGList</title>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
-  <style>
-    :root {
-      --background: #100d18;
-      --surface: #1b1626;
-      --pink: #f05ba8;
-      --purple: #a875f5;
-      --text: #f7efff;
-      --muted: #b8a9c9;
-      --border: #382b49;
-    }
+:root {
+  --background: #100d18;
+  --surface: #1b1626;
+  --surface-light: #241d32;
+  --surface-hover: #2c233d;
+  --pink: #f05ba8;
+  --pink-soft: #f05ba822;
+  --purple: #a875f5;
+  --purple-soft: #a875f522;
+  --text: #f7efff;
+  --muted: #b8a9c9;
+  --border: #382b49;
+  --border-glow: #71428c;
+}
 
-    * {
-      box-sizing: border-box;
-    }
+body {
+  margin: 0;
+  padding: 20px 14px 48px;
+  background: var(--background);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+  line-height: 1.5;
+}
 
-    body {
-      margin: 0;
-      padding: 24px;
-      background: var(--background);
-      color: var(--text);
-      font-family: Arial, sans-serif;
-    }
+.container {
+  max-width: 1020px;
+  margin: 0 auto;
+}
 
-    header {
-      max-width: 1100px;
-      margin: 0 auto 35px;
-    }
+/* Cabeçalho */
+header.top-banner {
+  padding: 20px 24px;
+  background: linear-gradient(120deg, #21132f, #392047);
+  border: 1px solid var(--border-glow);
+  border-radius: 20px;
+  box-shadow: 0 8px 30px #00000044;
+  margin-bottom: 20px;
+}
 
-    .top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 15px;
-    }
+.brand-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
 
-    h1 {
-      color: var(--pink);
-      margin: 0;
-    }
+.brand-title {
+  margin: 0;
+  font-size: 26px;
+  color: #ffffff;
+}
 
-    a {
-      color: var(--text);
-      text-decoration: none;
-    }
+.brand-subtitle {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+}
 
-    .back {
-      background: var(--surface);
-      padding: 10px 16px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-    }
+nav.top-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid #ffffff1a;
+}
 
-    main {
-      max-width: 1100px;
-      margin: auto;
-    }
+nav.top-nav a {
+  display: inline-block;
+  padding: 7px 13px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--text);
+  background: #171122aa;
+  border: 1px solid transparent;
+  text-decoration: none;
+  transition: border-color .15s, background .15s;
+}
 
-    .welcome {
-      margin-bottom: 25px;
-      color: var(--muted);
-    }
+nav.top-nav a:hover,
+nav.top-nav a.active {
+  border-color: var(--pink);
+  background: var(--pink-soft);
+  color: #ffffff;
+}
 
-    .tabs {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 25px;
-    }
+/* Barra de controles: filtros de status + seletor de modo */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 16px 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  margin-bottom: 20px;
+}
 
-    .tabs button {
-      background: var(--surface);
-      color: var(--text);
-      border: 1px solid var(--border);
-      padding: 12px 16px;
-      border-radius: 10px;
-      cursor: pointer;
-    }
+.filter-group,
+.view-switcher {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
 
-    .tabs button.active {
-      background: linear-gradient(135deg, var(--pink), var(--purple));
-      border: none;
-      color: white;
-    }
+.tool-btn {
+  padding: 8px 13px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface-light);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all .15s ease;
+}
 
-    #drama-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-      gap: 20px;
-    }
+.tool-btn:hover {
+  color: var(--text);
+  border-color: var(--purple);
+}
 
-    .drama-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      overflow: hidden;
-    }
+.tool-btn.active {
+  color: #ffffff;
+  background: linear-gradient(120deg, var(--pink), var(--purple));
+  border-color: transparent;
+}
 
-    .drama-card img {
-      width: 100%;
-      height: 245px;
-      object-fit: cover;
-      display: block;
-    }
+.view-label {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: bold;
+  margin-right: 4px;
+}
 
-    .drama-info {
-      padding: 13px;
-    }
+/* MODO 1: CARDS */
+.items-container.view-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 18px;
+}
 
-    .drama-info h3 {
-      margin: 0 0 12px;
-      font-size: 16px;
-    }
+.items-container.view-cards .drama-item {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform .15s, border-color .15s;
+}
 
-    .empty {
-      color: var(--muted);
-      padding: 25px 0;
-    }
+.items-container.view-cards .drama-item:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-glow);
+}
 
-    [hidden] {
-      display: none !important;
-    }
+.items-container.view-cards .drama-poster {
+  width: 100%;
+  height: 290px;
+  object-fit: cover;
+  display: block;
+  background: var(--surface-light);
+}
 
-    @media (max-width: 600px) {
-      body {
-        padding: 16px;
-      }
-    }
-  </style>
+.items-container.view-cards .drama-content {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.items-container.view-cards .drama-title {
+  margin: 0;
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.items-container.view-cards .drama-meta {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.items-container.view-cards .drama-actions {
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+/* MODO 2: LISTA */
+.items-container.view-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.items-container.view-list .drama-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.items-container.view-list .drama-poster {
+  width: 56px;
+  height: 78px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: var(--surface-light);
+}
+
+.items-container.view-list .drama-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.items-container.view-list .drama-title {
+  margin: 0;
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.items-container.view-list .drama-meta {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* MODO 3: TABELA */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+table.list-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 14px;
+}
+
+table.list-table thead {
+  background: var(--surface-light);
+  color: var(--muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+table.list-table th,
+table.list-table td {
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+table.list-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+table.list-table tbody tr:hover {
+  background: var(--surface-hover);
+}
+
+.table-thumb {
+  width: 38px;
+  height: 54px;
+  border-radius: 6px;
+  object-fit: cover;
+  display: block;
+  background: var(--surface-light);
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: bold;
+  background: var(--purple-soft);
+  color: var(--text);
+  border: 1px solid #a875f555;
+}
+
+.open-link {
+  display: inline-block;
+  padding: 7px 12px;
+  border-radius: 8px;
+  background: var(--pink-soft);
+  border: 1px solid #f05ba866;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: bold;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.open-link:hover {
+  background: linear-gradient(120deg, var(--pink), var(--purple));
+  border-color: transparent;
+}
+
+.empty-state {
+  padding: 36px 20px;
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  color: var(--muted);
+}
+
+.empty-state a {
+  display: inline-block;
+  margin-top: 12px;
+  color: var(--pink);
+  font-weight: bold;
+  text-decoration: none;
+}
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 32px;
+}
+
+@media (max-width: 600px) {
+  .items-container.view-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .items-container.view-cards .drama-poster {
+    height: 210px;
+  }
+}
+</style>
 </head>
 
 <body>
+<div class="container">
 
-<header>
-  <div class="top">
-    <h1>ThaiGList 🌷</h1>
-    <a class="back" href="index.html">← Voltar ao catálogo</a>
+  <header class="top-banner">
+    <div class="brand-row">
+      <div>
+        <h1 class="brand-title">Minha Lista 🌷</h1>
+        <p class="brand-subtitle">Acompanhe os dramas GL que você quer ver, está assistindo ou já concluiu.</p>
+      </div>
+    </div>
+
+    <nav class="top-nav" aria-label="Navegação principal">
+      <a href="index.html">Catálogo</a>
+      <a href="minha-lista.html" class="active">Minha lista</a>
+      <a href="conta.html">Minha conta</a>
+    </nav>
+  </header>
+
+  <section class="toolbar" aria-label="Filtros e modo de visualização">
+    <div class="filter-group" id="status-filters">
+      <button type="button" class="tool-btn active" data-filter="all">Todos</button>
+      <button type="button" class="tool-btn" data-filter="want_to_watch">♡ Quero assistir</button>
+      <button type="button" class="tool-btn" data-filter="watching">▶ Assistindo</button>
+      <button type="button" class="tool-btn" data-filter="completed">✓ Concluído</button>
+    </div>
+
+    <div class="view-switcher" id="view-switcher">
+      <span class="view-label">Visualização:</span>
+      <button type="button" class="tool-btn active" data-view="cards">⊞ Cards</button>
+      <button type="button" class="tool-btn" data-view="list">☰ Lista</button>
+      <button type="button" class="tool-btn" data-view="table">▤ Tabela</button>
+    </div>
+  </section>
+
+  <div id="list-container" class="items-container view-cards">
+    <div class="empty-state">Carregando sua lista... 🌷</div>
   </div>
-</header>
 
-<main>
-  <h2>Minha Lista</h2>
-  <p class="welcome" id="welcome">Sua coleção pessoal de dramas.</p>
+  <footer>ThaiGList © 2026</footer>
+</div>
 
-  <div class="tabs">
-    <button class="active" data-status="want_to_watch">Quero assistir</button>
-    <button data-status="watching">Assistindo</button>
-    <button data-status="completed">Concluídos</button>
-  </div>
-
-  <div id="drama-list">
-    <p class="empty">Carregando sua lista... 🌷</p>
-  </div>
-</main>
-
+<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
-  const SUPABASE_URL = "https://jjybnidhwfimcdwygafk.supabase.co";
-  const SUPABASE_KEY = "sb_publishable_DyikY0WSJJ4apDc0_ZwfOw_x6LvfqM-";
+const SUPABASE_URL = "https://jjybnidhwfimcdwygafk.supabase.co";
+const SUPABASE_KEY = "sb_publishable_DyikY0WSJJ4apDc0_ZwfOw_x6LvfqM-";
 
-  const db = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
-
-  let currentStatus = "want_to_watch";
-  let userId = null;
-
-  const dramaList = document.getElementById("drama-list");
-
-  async function startPage() {
-    const { data, error } = await db.auth.getSession();
-
-    if (error || !data.session) {
-      window.location.href = "conta.html";
-      return;
+const memoryStorage = new Map();
+const safeStorage = {
+  getItem: (key) => {
+    try {
+      return window.localStorage.getItem(key);
+    } catch {
+      return memoryStorage.get(key) ?? null;
     }
-
-    userId = data.session.user.id;
-
-    const email = data.session.user.email || "";
-    document.getElementById("welcome").textContent =
-      "Olá, " + email.split("@")[0] + "! Esta é sua coleção pessoal. 🌷";
-
-    loadMyList();
+  },
+  setItem: (key, value) => {
+    try {
+      window.localStorage.setItem(key, value);
+    } catch {
+      memoryStorage.set(key, value);
+    }
+  },
+  removeItem: (key) => {
+    try {
+      window.localStorage.removeItem(key);
+    } catch {
+      memoryStorage.delete(key);
+    }
   }
+};
 
-  async function loadMyList() {
-    dramaList.innerHTML =
-      '<p class="empty">Carregando... 🌷</p>';
-
-    const { data, error } = await db
-      .from("user_drama_list")
-      .select(`
-        id,
-        status,
-        rating,
-        dramas (
-          id,
-          title,
-          poster_url
-        )
-      `)
-      .eq("user_id", userId)
-      .eq("status", currentStatus);
-
-    if (error) {
-      console.error("Erro ao carregar lista:", error);
-      dramaList.innerHTML =
-        '<p class="empty">Não foi possível carregar sua lista.</p>';
-      return;
-    }
-
-    dramaList.innerHTML = "";
-
-    if (!data || data.length === 0) {
-      dramaList.innerHTML =
-        '<p class="empty">Nenhum drama nesta categoria ainda. 🌷</p>';
-      return;
-    }
-
-    data.forEach(item => {
-      if (!item.dramas) return;
-
-      const card = document.createElement("article");
-      card.className = "drama-card";
-
-      if (item.dramas.poster_url) {
-        const image = document.createElement("img");
-        image.src = item.dramas.poster_url;
-        image.alt = "Pôster de " + item.dramas.title;
-        card.appendChild(image);
+const db = window.supabase
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+      auth: {
+        storage: safeStorage,
+        persistSession: true,
+        autoRefreshToken: true
       }
+    })
+  : null;
 
-      const info = document.createElement("div");
-      info.className = "drama-info";
+const VIEW_STORAGE_KEY = "thaiglist_my_list_view";
+let currentView = safeStorage.getItem(VIEW_STORAGE_KEY) || "cards";
+if (!["cards", "list", "table"].includes(currentView)) {
+  currentView = "cards";
+}
 
-      const title = document.createElement("h3");
-      title.textContent = item.dramas.title;
+let currentFilter = "all";
+let combinedItems = [];
 
-      info.appendChild(title);
+const listContainer = document.getElementById("list-container");
+const viewButtons = document.querySelectorAll("#view-switcher .tool-btn");
+const filterButtons = document.querySelectorAll("#status-filters .tool-btn");
 
-      if (item.status === "completed" && item.rating) {
-        const rating = document.createElement("p");
-        rating.textContent = "⭐".repeat(item.rating);
-        info.appendChild(rating);
-      }
+function formatStatusLabel(status) {
+  const normalized = (status || "").trim().toLowerCase();
+  if (normalized === "watching" || normalized === "assistindo") return "▶ Assistindo";
+  if (normalized === "completed" || normalized === "concluida" || normalized === "concluída") return "✓ Concluído";
+  return "♡ Quero assistir";
+}
 
-      card.appendChild(info);
+function matchesFilter(status, filter) {
+  if (filter === "all") return true;
+  const normalized = (status || "").trim().toLowerCase();
+  if (filter === "want_to_watch") return ["want_to_watch", "plan_to_watch", "quero assistir", "quero ver", ""].includes(normalized);
+  if (filter === "watching") return ["watching", "assistindo"].includes(normalized);
+  if (filter === "completed") return ["completed", "concluida", "concluída"].includes(normalized);
+  return true;
+}
 
-      card.addEventListener("click", () => {
-        window.location.href =
-          "drama.html?id=" + encodeURIComponent(item.dramas.id);
-      });
-
-      dramaList.appendChild(card);
-    });
-  }
-
-  document.querySelectorAll(".tabs button").forEach(button => {
-    button.addEventListener("click", () => {
-      document.querySelector(".tabs button.active")
-        .classList.remove("active");
-
-      button.classList.add("active");
-      currentStatus = button.dataset.status;
-      loadMyList();
-    });
+function syncViewButtons() {
+  viewButtons.forEach((btn) => {
+    btn.classList.toggle("active", btn.dataset.view === currentView);
   });
+}
 
-  startPage();
+function renderList() {
+  syncViewButtons();
+
+  const filtered = combinedItems.filter((item) => matchesFilter(item.status, currentFilter));
+
+  if (filtered.length === 0) {
+    listContainer.className = "items-container view-cards";
+    listContainer.innerHTML = `
+      <div class="empty-state" style="grid-column: 1 / -1;">
+        <p style="margin: 0;">Nenhuma série encontrada neste filtro.</p>
+        <a href="index.html">Explorar catálogo do ThaiGList →</a>
+      </div>
+    `;
+    return;
+  }
+
+  if (currentView === "table") {
+    listContainer.className = "";
+    const rowsHtml = filtered.map((item) => {
+      const posterCell = item.poster_url
+        ? `<img class="table-thumb" src="${item.poster_url}" alt="${item.title}">`
+        : `<div class="table-thumb" style="display:flex;align-items:center;justify-content:center;">🌷</div>`;
+
+      return `
+        <tr>
+          <td>${posterCell}</td>
+          <td><strong>${item.title}</strong></td>
+          <td>${item.year || "—"}</td>
+          <td>${item.episodes ? `${item.episodes} eps` : "—"}</td>
+          <td><span class="status-badge">${formatStatusLabel(item.status)}</span></td>
+          <td><a class="open-link" href="drama.html?id=${item.drama_id}">Ver detalhes</a></td>
+        </tr>
+      `;
+    }).join("");
+
+    listContainer.innerHTML = `
+      <div class="table-wrapper">
+        <table class="list-table">
+          <thead>
+            <tr>
+              <th>Pôster</th>
+              <th>Título</th>
+              <th>Ano</th>
+              <th>Episódios</th>
+              <th>Status</th>
+              <th>Ação</th>
+            </tr>
+          </thead>
+          <tbody>${rowsHtml}</tbody>
+        </table>
+      </div>
+    `;
+    return;
+  }
+
+  listContainer.className = `items-container view-${currentView}`;
+  listContainer.innerHTML = "";
+
+  filtered.forEach((item) => {
+    const article = document.createElement("article");
+    article.className = "drama-item";
+
+    if (item.poster_url) {
+      const img = document.createElement("img");
+      img.className = "drama-poster";
+      img.src = item.poster_url;
+      img.alt = `Pôster de ${item.title}`;
+      img.onerror = () => { img.style.display = "none"; };
+      article.appendChild(img);
+    }
+
+    const content = document.createElement("div");
+    content.className = "drama-content";
+
+    const infoWrap = document.createElement("div");
+
+    const titleEl = document.createElement("h3");
+    titleEl.className = "drama-title";
+    titleEl.textContent = item.title;
+
+    const metaEl = document.createElement("div");
+    metaEl.className = "drama-meta";
+    const parts = [formatStatusLabel(item.status)];
+    if (item.year) parts.push(`${item.year}`);
+    if (item.episodes) parts.push(`${item.episodes} eps`);
+    metaEl.textContent = parts.join(" · ");
+
+    infoWrap.append(titleEl, metaEl);
+
+    const actions = document.createElement("div");
+    actions.className = "drama-actions";
+
+    const link = document.createElement("a");
+    link.className = "open-link";
+    link.href = `drama.html?id=${item.drama_id}`;
+    link.textContent = "Abrir drama →";
+    actions.appendChild(link);
+
+    content.append(infoWrap, actions);
+    article.appendChild(content);
+    listContainer.appendChild(article);
+  });
+}
+
+viewButtons.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    currentView = btn.dataset.view;
+    safeStorage.setItem(VIEW_STORAGE_KEY, currentView);
+    renderList();
+  });
+});
+
+filterButtons.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    currentFilter = btn.dataset.filter;
+    filterButtons.forEach((b) => b.classList.toggle("active", b === btn));
+    renderList();
+  });
+});
+
+async function loadMyList() {
+  if (!db) {
+    listContainer.innerHTML = `<div class="empty-state">Não foi possível conectar ao serviço.</div>`;
+    return;
+  }
+
+  const { data: sessionData } = await db.auth.getSession();
+  const session = sessionData?.session;
+
+  if (!session?.user) {
+    listContainer.innerHTML = `
+      <div class="empty-state">
+        <p style="margin: 0;">Faça login para ver e organizar a sua lista de dramas GL.</p>
+        <a href="conta.html">Entrar na minha conta →</a>
+      </div>
+    `;
+    return;
+  }
+
+  const [listRes, dramasRes] = await Promise.all([
+    db.from("user_drama_list").select("drama_id, status").eq("user_id", session.user.id),
+    db.from("dramas").select("id, title, poster_url, year, episodes")
+  ]);
+
+  const userRows = listRes.data || [];
+  const dramasMap = new Map((dramasRes.data || []).map((d) => [d.id, d]));
+
+  combinedItems = userRows
+    .map((row) => {
+      const drama = dramasMap.get(row.drama_id);
+      if (!drama) return null;
+      return {
+        drama_id: row.drama_id,
+        status: row.status,
+        title: drama.title || "Sem título",
+        poster_url: drama.poster_url || "",
+        year: drama.year || "",
+        episodes: drama.episodes || ""
+      };
+    })
+    .filter(Boolean);
+
+  renderList();
+}
+
+loadMyList();
 </script>
-
 </body>
 </html>

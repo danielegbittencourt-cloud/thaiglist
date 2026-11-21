@@ -3,12 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Minha conta | ThaiGList</title>
+<title>ThaiGList 🌷</title>
 
 <style>
-*,
-*::before,
-*::after {
+* {
   box-sizing: border-box;
 }
 
@@ -18,962 +16,1356 @@
   --surface-light: #241d32;
   --surface-hover: #2c233d;
   --pink: #f05ba8;
-  --pink-soft: #f05ba822;
   --purple: #a875f5;
-  --purple-soft: #a875f522;
   --text: #f7efff;
   --muted: #b8a9c9;
   --border: #382b49;
-  --border-glow: #71428c;
 }
 
 body {
   margin: 0;
-  padding: 24px 14px 48px;
+  padding: 30px 20px;
   background: var(--background);
   color: var(--text);
   font-family: Arial, sans-serif;
-  line-height: 1.5;
 }
 
 .container {
-  max-width: 780px;
-  margin: 0 auto;
+  max-width: 1200px;
+  margin: auto;
 }
 
-/* Cabeçalho e navegação */
-header.top-banner {
-  padding: 22px 24px;
-  background: linear-gradient(120deg, #21132f, #392047);
-  border: 1px solid var(--border-glow);
-  border-radius: 20px;
-  box-shadow: 0 8px 30px #00000044;
-  margin-bottom: 20px;
-}
+/* MENU DO USUÁRIO */
 
-.brand-row {
+.user-nav {
   display: flex;
-  flex-wrap: wrap;
+  justify-content: flex-end;
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
-}
-
-.brand-title {
-  margin: 0;
-  font-size: 26px;
-  color: #ffffff;
-}
-
-.brand-subtitle {
-  margin: 4px 0 0;
-  color: var(--muted);
-  font-size: 14px;
-}
-
-nav.top-nav {
-  display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 16px;
-  padding-top: 14px;
-  border-top: 1px solid #ffffff1a;
+  margin-bottom: 12px;
 }
 
-nav.top-nav a {
+.user-nav a {
   display: inline-block;
-  margin: 0;
-  padding: 7px 12px;
-  border-radius: 999px;
-  font-size: 13px;
-  font-weight: bold;
-  color: var(--text);
-  background: #171122aa;
-  border: 1px solid transparent;
+  padding: 11px 20px;
+  border-radius: 10px;
   text-decoration: none;
-  transition: border-color .15s, background .15s;
-}
-
-nav.top-nav a:hover,
-nav.top-nav a.active {
-  border-color: var(--pink);
-  background: var(--pink-soft);
-  color: #ffffff;
-}
-
-.visit-banner {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 14px 18px;
-  border-radius: 14px;
-  background: linear-gradient(120deg, #2b183d, #1e172c);
-  border: 1px solid var(--purple);
-  margin-bottom: 18px;
-}
-
-.visit-bio-box {
-  margin-top: 12px;
-  padding: 12px 14px;
-  border-radius: 12px;
-  background: var(--surface-light);
-  border: 1px solid var(--border);
   font-size: 14px;
-  color: var(--text);
-  white-space: pre-line;
-}
-
-.visit-meta-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 10px;
-}
-
-/* Cards principais */
-.card {
-  padding: 24px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  box-shadow: 0 8px 28px #00000033;
-  margin-bottom: 18px;
-}
-
-h2 {
-  margin: 0 0 8px;
-  color: var(--pink);
-  font-size: 20px;
-}
-
-h3 {
-  margin: 0 0 8px;
-  color: var(--text);
-  font-size: 16px;
-}
-
-.muted {
-  color: var(--muted);
-  font-size: 14px;
-  margin: 0;
-}
-
-.small-muted {
-  color: var(--muted);
-  font-size: 12px;
-}
-
-label {
-  display: block;
-  margin: 14px 0 6px;
-  color: var(--muted);
   font-weight: bold;
+  color: white;
+  background: #7653a5;
+  transition: 0.2s;
+}
+
+.user-nav a:last-child {
+  background: linear-gradient(100deg, #f05ba8, #a875f5);
+}
+
+.user-nav a:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+#user-name {
+  color: #f1dcef;
   font-size: 14px;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="url"],
-textarea,
-select {
-  width: 100%;
-  padding: 12px 14px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--surface-light);
-  color: var(--text);
-  font-size: 15px;
-  font-family: Arial, sans-serif;
-}
+/* ÍCONE DE PERFIL */
 
-input:focus,
-textarea:focus,
-select:focus {
-  outline: none;
-  border-color: var(--pink);
-  box-shadow: 0 0 0 2px #f05ba833;
-}
-
-textarea {
-  min-height: 90px;
-  resize: vertical;
-}
-
-button {
-  width: 100%;
-  margin-top: 16px;
-  padding: 13px 16px;
-  border: none;
-  border-radius: 10px;
-  background: linear-gradient(100deg, var(--pink), var(--purple));
-  color: #ffffff;
-  font-size: 15px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: opacity .2s, transform .15s;
-}
-
-button:hover {
-  opacity: .92;
-  transform: translateY(-1px);
-}
-
-button:disabled {
-  opacity: .55;
-  cursor: wait;
-  transform: none;
-}
-
-.btn-inline {
-  width: auto;
-  margin-top: 0;
-  padding: 9px 14px;
-  font-size: 13px;
-}
-
-.secondary-button {
-  background: #30213e;
-  border: 1px solid var(--border-glow);
-}
-
-#logout-button {
-  background: #493044;
-}
-
-.google-signin-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  width: 100%;
-  margin-top: 14px;
-  padding: 12px 16px;
-  background: #ffffff;
-  color: #24212a;
-  border: 1px solid #d9d5df;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.google-signin-button:hover {
-  background: #f5f2f7;
-  opacity: 1;
-}
-
-.google-signin-button:disabled {
-  color: #6f6876;
-  background: #e9e6ec;
-}
-
-.google-signin-button svg {
-  width: 18px;
-  height: 18px;
-  flex: 0 0 18px;
-}
-
-.auth-or-label {
-  margin: 18px 0 2px;
-  color: var(--muted);
-  text-align: center;
-  font-size: 12px;
-}
-
-.divider {
-  margin: 26px 0;
-  border-top: 1px solid var(--border);
-}
-
-/* Cabeçalho do perfil */
-.profile-header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 20px;
-}
-
-.avatar-container {
-  width: 104px;
-  height: 104px;
-  border-radius: 50%;
+.profile-link {
+  width: 46px;
+  height: 46px;
+  padding: 0 !important;
+  border-radius: 50% !important;
   overflow: hidden;
-  border: 3px solid var(--pink);
-  background: linear-gradient(135deg, var(--pink), var(--purple));
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: center;
+  background: linear-gradient(135deg, #f05ba8, #a875f5) !important;
+  border: 2px solid #d99aff;
+  box-shadow: 0 0 12px #a875f555;
   flex-shrink: 0;
-  box-shadow: 0 0 20px #f05ba844;
 }
 
-#account-avatar {
+.profile-link:hover {
+  transform: scale(1.08) !important;
+  box-shadow: 0 0 18px #f05ba888;
+}
+
+.profile-link img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 50%;
   display: none;
 }
 
-#avatar-fallback {
-  font-size: 40px;
-}
-
-.profile-identity {
-  flex: 1 1 260px;
-}
-
-#account-name {
-  margin: 0;
-  font-size: 22px;
-  color: #ffffff;
-}
-
-#account-email {
-  margin: 4px 0 10px;
-  color: var(--muted);
-  font-size: 13px;
-  word-break: break-word;
-}
-
-.badge-pill-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.status-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: bold;
-  background: var(--purple-soft);
-  color: var(--text);
-  border: 1px solid #a875f555;
-}
-
-/* Estatísticas */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
-  margin-top: 14px;
-}
-
-.stat-box {
-  background: var(--surface-light);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 12px 8px;
-  text-align: center;
-}
-
-.stat-value {
-  font-size: 20px;
-  font-weight: bold;
-  color: var(--pink);
-}
-
-.stat-label {
-  font-size: 12px;
-  color: var(--muted);
-  margin-top: 2px;
-}
-
-/* Barra de progresso do perfil */
-.progress-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 8px;
-  font-size: 13px;
-}
-
-.progress-track {
-  width: 100%;
-  height: 10px;
-  background: var(--surface-light);
-  border-radius: 999px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-}
-
-.progress-fill {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, var(--pink), var(--purple));
-  transition: width .25s ease;
-}
-
-.checklist-mini {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 10px;
-  font-size: 12px;
-  color: var(--muted);
-}
-
-.checklist-mini span.done {
-  color: var(--pink);
-  font-weight: bold;
-}
-
-/* Quests e Badges */
-.quests-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  margin-top: 12px;
-}
-
-.quest-card {
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-  padding: 12px;
-  border-radius: 12px;
-  background: var(--surface-light);
-  border: 1px solid var(--border);
-}
-
-.quest-card.unlocked {
-  border-color: var(--pink);
-  background: linear-gradient(135deg, #271836, #241d32);
-}
-
-.quest-icon {
-  font-size: 24px;
+.profile-fallback {
+  color: white;
+  font-size: 23px;
   line-height: 1;
 }
 
-.quest-title {
-  font-weight: bold;
-  font-size: 14px;
-  color: var(--text);
+.profile-link.has-photo img {
+  display: block;
 }
 
-.quest-desc {
-  font-size: 12px;
-  color: var(--muted);
-  margin-top: 2px;
+.profile-link.has-photo .profile-fallback {
+  display: none;
 }
 
-.quest-progress {
-  display: inline-block;
-  margin-top: 6px;
-  font-size: 11px;
-  font-weight: bold;
-  color: var(--purple);
-}
+/* BANNER PRINCIPAL */
 
-.quest-card.unlocked .quest-progress {
-  color: var(--pink);
-}
-
-/* Alertas de novos episódios */
-.alert-banner {
+header {
+  width: 100%;
+  min-height: 380px;
+  position: relative;
   display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 30px 20px;
+
+  background-image:
+    linear-gradient(
+      to top,
+      rgba(16, 10, 25, 0.85),
+      rgba(25, 12, 35, 0.05) 65%
+    ),
+    url("./banner.jpeg");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  color: white;
+  text-align: center;
+}
+
+header h1 {
+  color: white;
+  font-size: 46px;
+  margin: 0 0 8px;
+  letter-spacing: 1px;
+}
+
+header p {
+  color: #f1dcef;
+  font-size: 15px;
+  margin: 0;
+}
+
+/* BANNER DE IDENTIDADE */
+
+.brand-banner {
+  width: 100%;
+  margin: 0 0 30px;
+  overflow: hidden;
+  border-radius: 20px;
+  border: 1px solid #75418b;
+  box-shadow: 0 10px 35px #00000066;
+}
+
+.brand-banner img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* ÁREA PRINCIPAL */
+
+main {
+  background: var(--surface);
+  padding: 30px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: 0 8px 30px #00000033;
+}
+
+h2 {
+  color: var(--pink);
+  font-size: 25px;
+}
+
+/* BANNER NO AR (AO VIVO AGORA) */
+
+.on-air-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
   flex-wrap: wrap;
+  padding: 14px 18px;
+  margin-bottom: 22px;
+  border-radius: 14px;
+  background: linear-gradient(100deg, rgba(255, 62, 120, 0.22), rgba(168, 117, 245, 0.2));
+  border: 1px solid #ff5c93;
+  box-shadow: 0 0 22px rgba(255, 75, 130, 0.22);
+}
+
+.on-air-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.on-air-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: #ff3b7f;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  animation: pulseLive 1.8s infinite;
+}
+
+@keyframes pulseLive {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 59, 127, 0.65); }
+  50% { box-shadow: 0 0 0 7px rgba(255, 59, 127, 0); }
+}
+
+.on-air-text {
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.on-air-text strong {
+  color: #ff9fd0;
+}
+
+.on-air-btn {
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(100deg, #f05ba8, #a875f5);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+/* PESQUISA E BARRA DO CATÁLOGO */
+
+.search-top-box {
+  margin-bottom: 25px;
+}
+
+#search {
+  width: 100%;
+  padding: 15px 18px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-light);
+  color: white;
+  font-size: 16px;
+  outline: none;
+}
+
+#search::placeholder {
+  color: var(--muted);
+}
+
+#search:focus,
+#sort-select:focus {
+  border-color: var(--pink);
+  box-shadow: 0 0 0 3px #f05ba822;
+}
+
+.catalog-toolbar-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+
+.controls-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.view-switcher {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.view-switcher span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.view-btn {
+  padding: 9px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface-light);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.view-btn:hover {
+  color: white;
+  border-color: var(--purple);
+}
+
+.view-btn.active {
+  color: white;
+  background: linear-gradient(100deg, #f05ba8, #a875f5);
+  border-color: transparent;
+}
+
+.sort-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.sort-container label {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+#sort-select {
+  padding: 11px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-light);
+  color: white;
+  font-size: 14px;
+  outline: none;
+  cursor: pointer;
+}
+
+#sort-select option {
+  background: var(--surface);
+  color: white;
+}
+
+#search-results {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 0;
+}
+
+/* SELOS DE SITUAÇÃO */
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: bold;
+  line-height: 1.2;
+  width: fit-content;
+}
+
+.status-pill.ongoing {
+  background: rgba(255, 92, 138, 0.22);
+  color: #ffa6c0;
+  border: 1px solid rgba(255, 92, 138, 0.55);
+}
+
+.status-pill.upcoming {
+  background: rgba(168, 117, 245, 0.22);
+  color: #d6baff;
+  border: 1px solid rgba(168, 117, 245, 0.5);
+}
+
+.status-pill.completed {
+  background: rgba(84, 194, 141, 0.14);
+  color: #8ee0b7;
+  border: 1px solid rgba(84, 194, 141, 0.35);
+}
+
+/* BANNER DE DESTAQUE */
+
+.featured-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  min-height: 350px;
+  padding: 35px 45px;
+  margin-bottom: 35px;
+  overflow: hidden;
+  border-radius: 20px;
+  border: 1px solid #71428c;
+  background: linear-gradient(120deg, #21132f, #30203f);
+  box-shadow: 0 10px 35px #00000066;
+}
+
+.featured-content {
+  flex: 1;
+  max-width: 550px;
+  position: relative;
+  z-index: 2;
+}
+
+.featured-image {
+  flex: 0 0 220px;
+  width: 220px;
+}
+
+.featured-image img {
+  display: block;
+  width: 100%;
+  height: 310px;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 1px solid #a875f5;
+  box-shadow: 0 8px 25px #00000088;
+}
+
+.featured-label {
+  display: inline-block;
+  color: #ff91cb;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  margin-bottom: 15px;
+}
+
+#featured-title {
+  color: white;
+  font-size: 38px;
+  margin: 0 0 15px;
+}
+
+#featured-synopsis {
+  color: #e0d3eb;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+#featured-button {
+  margin-top: 15px;
+  padding: 13px 25px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(100deg, #f05ba8, #a875f5);
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: .2s;
+}
+
+#featured-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 20px #f05ba855;
+}
+
+/* AGENDA SEMANAL DE LANÇAMENTOS */
+
+.schedule-section {
+  margin-bottom: 30px;
+  padding: 22px;
+  border-radius: 18px;
+  background: var(--surface-light);
+  border: 1px solid var(--border);
+}
+
+.schedule-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.schedule-header h2 {
+  margin: 0;
+}
+
+.schedule-subtitle {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 0;
+}
+
+.day-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.day-tab {
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.18s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.day-tab:hover {
+  color: #ffffff;
+  border-color: var(--purple);
+}
+
+.day-tab.today {
+  border-color: rgba(240, 91, 168, 0.55);
+}
+
+.day-tab.active {
+  background: linear-gradient(100deg, #f05ba8, #a875f5);
+  color: #ffffff;
+  border-color: transparent;
+}
+
+.day-count {
+  font-size: 11px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.schedule-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.schedule-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  text-decoration: none;
+  color: var(--text);
+  transition: transform 0.18s, border-color 0.18s;
+}
+
+.schedule-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--pink);
+}
+
+.schedule-card.live-now {
+  border-color: #ff4785;
+  box-shadow: 0 0 18px rgba(255, 71, 133, 0.25);
+}
+
+.schedule-poster {
+  width: 54px;
+  height: 76px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: #30213e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.schedule-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.schedule-top-tags {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.schedule-time {
+  font-size: 11.5px;
+  font-weight: bold;
+  color: #ff9dd0;
+}
+
+.schedule-ep {
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(168, 117, 245, 0.2);
+  color: #d9c2ff;
+  font-weight: bold;
+}
+
+.schedule-title {
+  margin: 0;
+  font-size: 14.5px;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.schedule-platform {
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.schedule-empty {
+  color: var(--muted);
+  font-size: 14px;
+  margin: 6px 0;
+}
+
+/* CATÁLOGO — MODO CARDS (PADRÃO) */
+
+#series-list.view-cards {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 22px;
+  margin-top: 20px;
+}
+
+#series-list.view-cards .series-card {
+  overflow: visible;
+  position: relative;
+  aspect-ratio: 2 / 3;
+  height: auto;
+  background: var(--surface-light);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  transition: .25s ease;
+  cursor: pointer;
+}
+
+#series-list.view-cards .series-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--pink);
+  box-shadow: 0 8px 25px #f05ba822;
+}
+
+#series-list.view-cards .series-card.menu-open {
+  z-index: 30;
+}
+
+#series-list.view-cards .poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, #30213e, #522b63);
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  padding: 0;
+}
+
+#series-list.view-cards .poster img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  background: transparent;
+}
+
+#series-list.view-cards .card-content {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  min-height: 46%;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 12px 46px 12px 12px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(16, 13, 24, 0.8) 32%,
+    rgba(16, 13, 24, 0.98) 100%
+  );
+  z-index: 1;
+}
+
+#series-list.view-cards .series-card h3 {
+  color: #fff;
+  font-size: 14px;
+  line-height: 1.25;
+  margin: 4px 0 3px;
+}
+
+#series-list.view-cards .series-card p.card-meta {
+  color: #d9cae8;
+  font-size: 10.5px;
+  line-height: 1.3;
+  margin: 1px 0;
+}
+
+/* BOTÃO + FLUTUANTE NO CANTO INFERIOR DIREITO DO CARD */
+
+#series-list.view-cards .quick-plus-wrapper {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 5;
+}
+
+.quick-plus-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.quick-plus-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: linear-gradient(135deg, #f05ba8, #a875f5);
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.55);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.quick-plus-btn:hover {
+  transform: scale(1.08);
+}
+
+.quick-plus-btn.in-list {
+  background: #2b4a3c;
+  border-color: #54c28d;
+  font-size: 14px;
+}
+
+.quick-plus-popover {
+  position: absolute;
+  right: 0;
+  bottom: 40px;
+  width: 158px;
+  padding: 6px;
+  border-radius: 12px;
+  background: #1b1528;
+  border: 1px solid #71428c;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.78);
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 50;
+}
+
+.quick-plus-popover.open {
+  display: flex;
+}
+
+.quick-option-btn {
+  width: 100%;
+  padding: 7px 10px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+  font-size: 12px;
+  font-weight: bold;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.quick-option-btn:hover {
+  background: var(--surface-hover);
+  color: #ffffff;
+}
+
+.quick-option-btn.selected {
+  background: rgba(240, 91, 168, 0.22);
+  color: #ff9dd0;
+}
+
+/* CATÁLOGO — MODO LISTA */
+
+#series-list.view-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+#series-list.view-list .series-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  background: var(--surface-light);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: border-color .2s;
+}
+
+#series-list.view-list .series-card:hover {
+  border-color: var(--pink);
+}
+
+#series-list.view-list .poster {
+  width: 56px;
+  height: 80px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #30213e;
+  font-size: 11px;
+  text-align: center;
+}
+
+#series-list.view-list .poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+#series-list.view-list .card-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 14px;
-  border-radius: 12px;
-  background: linear-gradient(120deg, #281738, #1e182c);
-  border: 1px solid var(--border-glow);
-  margin-top: 12px;
 }
 
-.alert-preview-title {
-  font-weight: bold;
-  color: var(--pink);
-  font-size: 14px;
+#series-list.view-list .card-info {
+  flex: 1;
+  min-width: 0;
 }
 
-/* Chips de sugestão e seleção */
-.chips-wrap {
+#series-list.view-list .upcoming-cols {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 8px;
-}
-
-.chip-btn {
-  width: auto;
-  margin-top: 0;
-  padding: 6px 11px;
-  font-size: 12px;
-  font-weight: bold;
-  border-radius: 999px;
-  background: var(--surface-light);
-  color: var(--muted);
-  border: 1px solid var(--border);
-}
-
-.chip-btn:hover {
-  color: var(--text);
-  border-color: var(--pink);
-}
-
-.chip-btn.selected {
-  background: var(--pink-soft);
-  color: #ffffff;
-  border-color: var(--pink);
-}
-
-.checkbox-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  margin-top: 14px;
-  padding: 12px;
-  border-radius: 10px;
-  background: var(--surface-light);
-  border: 1px solid var(--border);
-  cursor: pointer;
-  font-weight: normal;
-}
-
-.checkbox-row input[type="checkbox"] {
-  width: auto;
-  margin-top: 3px;
-  cursor: pointer;
-}
-
-#photo-input {
-  display: none;
-}
-
-/* Popup */
-.popup-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: #000000bb;
-  z-index: 9999;
+  gap: 12px;
   align-items: center;
-  justify-content: center;
-  padding: 20px;
+  flex-shrink: 0;
 }
 
-.popup-overlay.active {
+#series-list.view-list .upcoming-col {
+  width: 195px;
+}
+
+#series-list.view-list .upcoming-col.date-col {
+  width: 155px;
+}
+
+#series-list.view-list .upcoming-col {
   display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: rgba(16, 13, 24, 0.55);
+  border: 1px solid var(--border);
 }
 
-.popup-box {
-  width: 100%;
-  max-width: 390px;
-  padding: 28px 24px;
-  text-align: center;
-  background: var(--surface);
-  border: 1px solid var(--border-glow);
-  border-radius: 18px;
-  box-shadow: 0 10px 40px #00000088;
-}
-
-.popup-icon {
-  font-size: 40px;
-  margin-bottom: 10px;
-}
-
-.popup-box h3 {
-  color: var(--pink);
-  font-size: 20px;
-}
-
-.popup-box p {
+#series-list.view-list .upcoming-col-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   color: var(--muted);
+  font-weight: bold;
+}
+
+#series-list.view-list .upcoming-col-value {
+  font-size: 12.5px;
+  color: #ffffff;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 780px) {
+  #series-list.view-list .card-content {
+    flex-wrap: wrap;
+  }
+  #series-list.view-list .upcoming-cols {
+    width: 100%;
+    flex-wrap: wrap;
+    order: 3;
+  }
+  #series-list.view-list .upcoming-col,
+  #series-list.view-list .upcoming-col.date-col {
+    flex: 1 1 140px;
+    width: auto;
+  }
+}
+
+#series-list.view-list .series-card h3 {
+  margin: 4px 0 2px;
+  font-size: 15px;
+  color: #fff;
+}
+
+#series-list.view-list .series-card p.card-meta {
+  margin: 1px 0;
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+/* CATÁLOGO — MODO TABELA */
+
+.catalog-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 20px;
+  background: var(--surface-light);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+table.catalog-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
   font-size: 14px;
+}
+
+table.catalog-table thead {
+  background: #171222;
+  color: var(--muted);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+table.catalog-table th,
+table.catalog-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+table.catalog-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+table.catalog-table tbody tr:hover {
+  background: var(--surface-hover);
+}
+
+.table-thumb {
+  width: 42px;
+  height: 60px;
+  border-radius: 6px;
+  object-fit: cover;
+  display: block;
+  background: #30213e;
+}
+
+.table-title-link {
+  color: #ffffff;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.table-title-link:hover {
+  color: var(--pink);
+}
+
+/* TABLETS */
+
+@media (max-width: 900px) {
+  #series-list.view-cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* CELULARES */
+
+@media (max-width: 600px) {
+  body {
+    padding: 16px 12px;
+  }
+
+  .user-nav {
+    justify-content: flex-end;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .user-nav a {
+    padding: 9px 13px;
+    font-size: 12px;
+  }
+
+  .profile-link {
+    width: 42px;
+    height: 42px;
+    padding: 0 !important;
+  }
+
+  .profile-fallback {
+    font-size: 21px;
+  }
+
+  header {
+    min-height: 340px;
+    padding: 22px 15px;
+    background-size: auto 100%;
+    background-position: right center;
+  }
+
+  header h1 {
+    font-size: 34px;
+  }
+
+  header p {
+    font-size: 13px;
+    max-width: 300px;
+    line-height: 1.5;
+  }
+
+  main {
+    padding: 19px;
+  }
+
+  .featured-banner {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    min-height: auto;
+    padding: 25px 18px;
+    text-align: center;
+  }
+
+  .featured-content {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .featured-image {
+    flex: none;
+    width: 180px;
+  }
+
+  .featured-image img {
+    width: 100%;
+    height: 260px;
+    object-fit: contain;
+  }
+
+  #featured-title {
+    font-size: 29px;
+  }
+
+  .schedule-section {
+    padding: 16px;
+  }
+
+  .controls-toolbar {
+    align-items: stretch;
+  }
+
+  .sort-container {
+    justify-content: space-between;
+  }
+
+  #sort-select {
+    max-width: 65%;
+  }
+
+  #series-list.view-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  #series-list.view-cards .series-card h3 {
+    font-size: 13.5px;
+  }
+
+  #series-list.view-cards .series-card p.card-meta {
+    font-size: 10px;
+  }
+
+  #series-list.view-cards .card-content {
+    padding: 10px 42px 10px 10px;
+  }
+
+  .quick-plus-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+  }
+}
+
+/* RODAPÉ */
+
+footer {
+  text-align: center;
+  padding: 25px;
+  color: var(--muted);
 }
 
 [hidden] {
   display: none !important;
 }
-
-footer {
-  text-align: center;
-  color: var(--muted);
-  font-size: 13px;
-  margin-top: 24px;
-}
-
-@media (max-width: 680px) {
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .quests-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .card {
-    padding: 18px;
-  }
-}
 </style>
 </head>
 
 <body>
+
 <div class="container">
 
-  <header class="top-banner">
-    <div class="brand-row">
-      <div>
-        <h1 class="brand-title">ThaiGList 🌷</h1>
-        <p class="brand-subtitle">Seu espaço pessoal no universo Girls' Love.</p>
-      </div>
-      <span class="status-chip" id="member-since-chip">Membro desde Nov 2026</span>
+<!-- MENU DO USUÁRIO -->
+
+<nav class="user-nav">
+
+  <a href="conta.html" id="login-link">
+    Entrar / Cadastrar
+  </a>
+
+  <span id="user-name" hidden></span>
+
+  <a
+    href="conta.html"
+    id="profile-link"
+    class="profile-link"
+    title="Meu perfil"
+    aria-label="Acessar meu perfil"
+    hidden
+  >
+    <img id="profile-avatar" src="" alt="Foto do perfil">
+    <span class="profile-fallback">👤</span>
+  </a>
+
+  <a href="minha-lista.html" id="my-list-link" hidden>
+    Minha Lista
+  </a>
+
+  <a href="#" id="logout-link" hidden>
+    Sair
+  </a>
+
+</nav>
+
+<!-- BANNER PRINCIPAL -->
+
+<header>
+
+  <h1>ThaiGList 🌷</h1>
+
+  <p>
+   Sua coleção de GL de forma fácil e organizada
+  </p>
+
+</header>
+
+<section class="brand-banner"></section>
+
+<main>
+
+  <!-- AVISO AO VIVO ("NO AR") QUANDO HÁ EPISÓDIO PASSANDO NO HORÁRIO -->
+
+  <div id="on-air-banner" class="on-air-banner" hidden>
+    <div class="on-air-left">
+      <span class="on-air-badge">🔴 NO AR</span>
+      <span class="on-air-text" id="on-air-text"></span>
     </div>
-
-    <nav class="top-nav" aria-label="Navegação principal">
-      <a href="index.html">Catálogo</a>
-      <a href="minha-lista.html">Minha lista</a>
-      <a href="conta.html" class="active" id="nav-my-account">Minha conta</a>
-      <a href="#sec-stats">Estatísticas</a>
-      <a href="#sec-quests">Conquistas</a>
-      <a href="#sec-alerts" class="owner-only">Alertas</a>
-      <a href="#sec-profile" class="owner-only">Editar perfil</a>
-    </nav>
-  </header>
-
-  <!-- MENSAGEM DE PERFIL PRIVADO -->
-  <section id="private-profile-card" class="card" style="text-align:center;" hidden>
-    <h2>Perfil privado 🔒</h2>
-    <p class="muted" style="margin-bottom: 16px;">
-      Este membro optou por manter o perfil privado no ThaiGList.
-    </p>
-    <a href="index.html" style="color: var(--pink); font-weight: bold; text-decoration: none;">
-      ← Voltar ao catálogo
-    </a>
-  </section>
-
-  <!-- AUTENTICAÇÃO -->
-  <section id="auth-forms" class="card" hidden>
-    <h2>Criar minha conta</h2>
-    <p class="muted">Entre ou cadastre-se para acompanhar seus GLs e personalizar seu perfil.</p>
-
-    <form id="signup-form">
-      <label for="signup-email">E-mail</label>
-      <input id="signup-email" type="email" required>
-
-      <label for="signup-password">Senha</label>
-      <input id="signup-password" type="password" minlength="6" required>
-
-      <button id="signup-button" type="submit">Criar conta</button>
-    </form>
-
-    <div class="divider"></div>
-
-    <h2>Já tenho uma conta</h2>
-    <form id="login-form">
-      <label for="login-email">E-mail</label>
-      <input id="login-email" type="email" required>
-
-      <label for="login-password">Senha</label>
-      <input id="login-password" type="password" required>
-
-      <button id="login-button" type="submit">Entrar</button>
-    </form>
-
-    <p class="auth-or-label">Ou use sua conta Google</p>
-    <button type="button" id="google-signin-button" class="google-signin-button">
-      <svg viewBox="0 0 48 48" aria-hidden="true" focusable="false">
-        <path fill="#4285F4" d="M43.6 24.5c0-1.4-.1-2.8-.4-4.1H24v7.8h11a9.4 9.4 0 0 1-4.1 6.2v5.1h6.6c3.9-3.6 6.1-8.8 6.1-15Z"/>
-        <path fill="#34A853" d="M24 44c5.5 0 10.1-1.8 13.5-4.8l-6.6-5.1c-1.8 1.2-4.1 2-6.9 2-5.3 0-9.8-3.6-11.4-8.4H5.8v5.3A20 20 0 0 0 24 44Z"/>
-        <path fill="#FBBC05" d="M12.6 27.7a12 12 0 0 1 0-7.4V15H5.8a20 20 0 0 0 0 18l6.8-5.3Z"/>
-        <path fill="#EA4335" d="M24 11.9c3 0 5.7 1 7.8 3.1l5.8-5.8C34.1 5.9 29.5 4 24 4A20 20 0 0 0 5.8 15l6.8 5.3c1.6-4.8 6.1-8.4 11.4-8.4Z"/>
-      </svg>
-      Continuar com Google
-    </button>
-  </section>
-
-  <!-- PAINEL DA CONTA / VISITAÇÃO -->
-  <div id="account-panel" hidden>
-
-    <div id="visit-mode-banner" class="visit-banner" hidden>
-      <div>
-        <strong style="color: var(--pink);">👀 Visitando perfil público</strong>
-        <div class="small-muted">Visualização pública de membro da comunidade ThaiGList</div>
-      </div>
-      <div style="display:flex; gap:8px; flex-wrap:wrap;">
-        <a href="conta.html" class="chip-btn" style="text-decoration:none; display:inline-flex; align-items:center;">Minha conta</a>
-        <a href="minha-lista.html" class="chip-btn" style="text-decoration:none; display:inline-flex; align-items:center;">Minha lista</a>
-      </div>
-    </div>
-
-    <!-- CABEÇALHO DO PERFIL E FOTO -->
-    <section class="card">
-      <div class="profile-header">
-        <div class="avatar-container">
-          <img id="account-avatar" src="" alt="Foto de perfil">
-          <span id="avatar-fallback">👤</span>
-        </div>
-
-        <div class="profile-identity">
-          <h2 id="account-name">Carregando...</h2>
-          <p id="account-email"></p>
-          <div class="badge-pill-row">
-            <span class="status-chip" id="display-couple-chip">💜 Casal favorito não definido</span>
-            <span class="status-chip" id="display-country-chip">🌏 Brasil</span>
-          </div>
-          <div id="visit-extra-meta" class="visit-meta-row" hidden></div>
-        </div>
-      </div>
-
-      <div id="visit-bio-display" class="visit-bio-box" hidden></div>
-
-      <div class="owner-only">
-        <p class="small-muted" style="margin-top: 14px;">
-          Escolha uma foto para personalizar seu perfil (JPG, PNG ou WebP até 5 MB).
-        </p>
-
-        <input id="photo-input" type="file" accept="image/jpeg,image/png,image/webp">
-
-        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
-          <button type="button" id="change-photo-button" class="secondary-button btn-inline">
-            📷 Alterar foto
-          </button>
-          <button type="button" id="save-photo-button" class="btn-inline" hidden>
-            Salvar foto
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ESTATÍSTICAS -->
-    <section id="sec-stats" class="card">
-      <h2 id="stats-heading">Resumo da sua lista</h2>
-      <p class="muted" id="stats-subtitle">Sincronizado com suas séries salvas no ThaiGList.</p>
-
-      <div class="stats-grid">
-        <div class="stat-box">
-          <div class="stat-value" id="stat-watching">0</div>
-          <div class="stat-label">👁 Assistindo</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-value" id="stat-completed">0</div>
-          <div class="stat-label">✅ Concluídas</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-value" id="stat-plan">0</div>
-          <div class="stat-label">⏳ Quero ver</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-value" id="stat-favorites">0</div>
-          <div class="stat-label">♥ Nota 4–5★</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-value" id="stat-episodes">0</div>
-          <div class="stat-label">📺 EPs vistos</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONQUISTAS E BADGES -->
-    <section id="sec-quests" class="card">
-      <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 10px;">
-        <h2 id="quests-heading">🏅 Minhas conquistas e badges</h2>
-        <span class="status-chip" id="quests-counter">1/6</span>
-      </div>
-      <p class="muted">
-        Complete missões na sua lista para desbloquear badges no seu perfil e nos seus comentários.
-      </p>
-
-      <div class="quests-grid">
-        <div class="quest-card unlocked" id="card-founder">
-          <div class="quest-icon">🌟</div>
-          <div>
-            <div class="quest-title">Membro fundadora</div>
-            <div class="quest-desc">Entrou na comunidade ThaiGList</div>
-            <span class="quest-progress">Desbloqueada 🌷</span>
-          </div>
-        </div>
-
-        <div class="quest-card" id="card-rookie">
-          <div class="quest-icon">🌱</div>
-          <div>
-            <div class="quest-title">Novata no GL</div>
-            <div class="quest-desc">Conclua 5 séries GL</div>
-            <span class="quest-progress" id="q-rookie">0/5</span>
-          </div>
-        </div>
-
-        <div class="quest-card" id="card-truefan">
-          <div class="quest-icon">💜</div>
-          <div>
-            <div class="quest-title">Fã de carteirinha</div>
-            <div class="quest-desc">Conclua 15 séries GL</div>
-            <span class="quest-progress" id="q-truefan">0/15</span>
-          </div>
-        </div>
-
-        <div class="quest-card" id="card-superfan">
-          <div class="quest-icon">👑</div>
-          <div>
-            <div class="quest-title">Superfã GL</div>
-            <div class="quest-desc">Conclua 30 séries GL</div>
-            <span class="quest-progress" id="q-superfan">0/30</span>
-          </div>
-        </div>
-
-        <div class="quest-card" id="card-stars">
-          <div class="quest-icon">⭐</div>
-          <div>
-            <div class="quest-title">Avaliadora de estrelas</div>
-            <div class="quest-desc">Avalie 10 séries com nota</div>
-            <span class="quest-progress" id="q-stars">0/10</span>
-          </div>
-        </div>
-
-        <div class="quest-card" id="card-collector">
-          <div class="quest-icon">📚</div>
-          <div>
-            <div class="quest-title">Colecionadora</div>
-            <div class="quest-desc">Adicione 20 séries na sua lista</div>
-            <span class="quest-progress" id="q-collector">0/20</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ALERTAS DE NOVOS EPISÓDIOS -->
-    <section id="sec-alerts" class="card owner-only">
-      <h2>🔔 Alertas de novos episódios</h2>
-      <p class="muted">
-        Receba lembretes quando uma série da sua lista tiver novo episódio no ar.
-      </p>
-
-      <div class="alert-banner">
-        <div>
-          <div class="alert-preview-title" id="alert-preview-title">📺 Em andamento no catálogo: Built in Love · EP 5</div>
-          <div class="small-muted" id="alert-preview-sub">Confira as séries em exibição no catálogo do ThaiGList</div>
-        </div>
-        <button type="button" id="toggle-alerts-button" class="btn-inline">
-          Ativar alertas
-        </button>
-      </div>
-    </section>
-
-    <!-- EDIÇÃO DE PERFIL -->
-    <section id="sec-profile" class="card owner-only">
-      <h2>Personalizar perfil</h2>
-      <p class="muted">Seu nome e foto aparecem junto às suas resenhas. Seu e-mail nunca é exibido publicamente.</p>
-
-      <div style="margin-top: 14px;">
-        <div class="progress-header">
-          <span>Perfil <strong id="profile-percent">0%</strong> completo</span>
-          <span class="small-muted" id="profile-steps">0/5 campos</span>
-        </div>
-        <div class="progress-track">
-          <div class="progress-fill" id="profile-progress-bar"></div>
-        </div>
-        <div class="checklist-mini">
-          <span id="chk-bio">○ Sobre você</span>
-          <span id="chk-couple">○ Casal favorito</span>
-          <span id="chk-series">○ Série favorita</span>
-          <span id="chk-country">○ País</span>
-          <span id="chk-social">○ X / IG</span>
-        </div>
-      </div>
-
-      <form id="profile-details-form">
-        <label for="display_name">Nome de exibição</label>
-        <input id="display_name" type="text" maxlength="60" placeholder="Como você quer ser chamada">
-
-        <label for="bio">Sobre você (máx. 300 caracteres)</label>
-        <textarea id="bio" maxlength="300" placeholder="Ex.: Fã de GL pra vida 💜, amo romances de escritório e dramas intensos"></textarea>
-        <div class="small-muted" id="bio-counter" style="text-align: right;">0/300</div>
-
-        <div class="chips-wrap" id="bio-presets">
-          <button type="button" class="chip-btn" data-bio="Fã de GL pra vida 💜">+ Fã de GL pra vida 💜</button>
-          <button type="button" class="chip-btn" data-bio="Maratono uma série inteira numa noite 🌙">+ Maratono numa noite 🌙</button>
-          <button type="button" class="chip-btn" data-bio="Apaixonada por romance no escritório 💼">+ Romance no escritório 💼</button>
-          <button type="button" class="chip-btn" data-bio="Amo casal caótico e engraçado 😆">+ Casal caótico e engraçado 😆</button>
-          <button type="button" class="chip-btn" data-bio="Aqui pelos dramas que fazem chorar 🥲">+ Dramas emocionantes 🥲</button>
-        </div>
-
-        <label for="favorite_couple">Casal favorito</label>
-        <input id="favorite_couple" type="text" list="couples-datalist" placeholder="Ex.: Freen × Becky, Milk × Love, Engfa × Charlotte...">
-        <datalist id="couples-datalist">
-          <option value="Freen × Becky">
-          <option value="Milk × Love">
-          <option value="Engfa × Charlotte">
-          <option value="Lingling × Orm">
-          <option value="Lookmhee × Sonya">
-          <option value="Namtan × Film">
-          <option value="Faye × Yoko">
-          <option value="Emi × Bonnie">
-          <option value="Anda × Lookkaew">
-          <option value="Jan × JingJing">
-        </datalist>
-
-        <div class="chips-wrap" id="couple-chips">
-          <button type="button" class="chip-btn" data-couple="Freen × Becky">Freen × Becky</button>
-          <button type="button" class="chip-btn" data-couple="Milk × Love">Milk × Love</button>
-          <button type="button" class="chip-btn" data-couple="Engfa × Charlotte">Engfa × Charlotte</button>
-          <button type="button" class="chip-btn" data-couple="Lingling × Orm">Lingling × Orm</button>
-          <button type="button" class="chip-btn" data-couple="Lookmhee × Sonya">Lookmhee × Sonya</button>
-          <button type="button" class="chip-btn" data-couple="Namtan × Film">Namtan × Film</button>
-        </div>
-
-        <label for="favorite_series">Série GL favorita</label>
-        <select id="favorite_series">
-          <option value="">— Selecione uma série —</option>
-        </select>
-
-        <label for="country">País</label>
-        <input id="country" type="text" placeholder="Ex.: Brasil">
-
-        <label for="social_handle">X / Instagram</label>
-        <input id="social_handle" type="text" placeholder="@seuusuario">
-
-        <label class="checkbox-row">
-          <input type="checkbox" id="show_on_reviews" checked>
-          <span>Mostrar meu nome e foto nas minhas resenhas e comentários</span>
-        </label>
-
-        <label class="checkbox-row">
-          <input type="checkbox" id="public_profile" checked>
-          <span>Permitir que outras fãs abram meu perfil (seu e-mail nunca é mostrado)</span>
-        </label>
-
-        <button type="submit" id="save-profile-button">Salvar perfil 🌷</button>
-      </form>
-
-      <button type="button" class="secondary-button" id="back-catalog">
-        ← Voltar ao catálogo
-      </button>
-
-      <button type="button" id="logout-button">
-        Sair da conta
-      </button>
-    </section>
-
+    <a id="on-air-link" href="#" class="on-air-btn">Ver detalhes</a>
   </div>
 
-  <!-- POPUP -->
-  <div id="popup" class="popup-overlay">
-    <div class="popup-box">
-      <div id="popup-icon" class="popup-icon">🌷</div>
-      <h3 id="popup-title">Aviso</h3>
-      <p id="popup-text"></p>
-      <button id="popup-close" type="button">Entendi</button>
-    </div>
-  </div>
+  <h2 id="catalog-title">Explore o catálogo</h2>
 
-  <footer>ThaiGList © 2026</footer>
+
+
+  <!-- BANNER DE DESTAQUE -->
+
+  <section id="featured-banner" class="featured-banner">
+
+    <div class="featured-content">
+
+      <span class="featured-label">
+        🌷 DESTAQUE DA SEMANA
+      </span>
+
+      <h2 id="featured-title">
+        Carregando destaque...
+      </h2>
+
+      <p id="featured-synopsis">
+        Descubra o drama em destaque desta semana.
+      </p>
+
+      <button id="featured-button" type="button">
+        Ver detalhes
+      </button>
+
+    </div>
+
+    <div class="featured-image">
+
+      <img
+        id="featured-poster"
+        src=""
+        alt="Pôster do drama em destaque"
+      >
+
+    </div>
+
+  </section>
+
+  <!-- CALENDÁRIO SEMANAL DE LANÇAMENTOS -->
+
+  <section class="schedule-section" aria-label="Calendário semanal de GLs em andamento">
+
+    <div class="schedule-header">
+      <h2>📅 Agenda Semanal</h2>
+      <p class="schedule-subtitle">Episódios novos exibidos semanalmente nas plataformas oficiais (horário de Brasília)</p>
+    </div>
+
+    <div class="day-tabs" id="day-tabs">
+      <button type="button" class="day-tab" data-day="0">Dom <span class="day-count" id="cnt-0">0</span></button>
+      <button type="button" class="day-tab" data-day="1">Seg <span class="day-count" id="cnt-1">0</span></button>
+      <button type="button" class="day-tab" data-day="2">Ter <span class="day-count" id="cnt-2">0</span></button>
+      <button type="button" class="day-tab" data-day="3">Qua <span class="day-count" id="cnt-3">0</span></button>
+      <button type="button" class="day-tab" data-day="4">Qui <span class="day-count" id="cnt-4">0</span></button>
+      <button type="button" class="day-tab" data-day="5">Sex <span class="day-count" id="cnt-5">0</span></button>
+      <button type="button" class="day-tab" data-day="6">Sáb <span class="day-count" id="cnt-6">0</span></button>
+      <button type="button" class="day-tab" data-day="all">Todos <span class="day-count" id="cnt-all">0</span></button>
+    </div>
+
+    <div id="schedule-list" class="schedule-grid">
+      <p class="schedule-empty">Carregando agenda semanal... 🌷</p>
+    </div>
+
+  </section>
+
+  <!-- EXIBIÇÃO, ORDENAÇÃO E CATÁLOGO -->
+
+  <section id="catalog-section">
+
+    <div class="search-top-box" style="margin-top: 8px; margin-bottom: 14px;">
+
+      <input
+        type="text"
+        id="search"
+        placeholder="Pesquisar por título, gênero, elenco ou ship (casal)..."
+        aria-label="Pesquisar dramas"
+        autocomplete="off"
+      >
+
+    </div>
+
+    <div class="catalog-toolbar-section" style="margin-top: 0; padding-top: 12px; border-top: none;">
+
+      <div class="controls-toolbar">
+
+        <div class="view-switcher" id="view-switcher">
+          <span>Exibir como:</span>
+          <button type="button" class="view-btn active" data-view="cards">⊞ Cards</button>
+          <button type="button" class="view-btn" data-view="list">☰ Lista</button>
+          <button type="button" class="view-btn" data-view="table">▤ Tabela</button>
+          <button type="button" class="view-btn" data-view="upcoming">⏳ Próximos lançamentos</button>
+          <button type="button" class="view-btn" data-view="completed">✓ Finalizadas</button>
+        </div>
+
+        <div class="sort-container">
+
+          <label for="sort-select">
+            Organizar por:
+          </label>
+
+          <select id="sort-select">
+
+            <option value="year">
+              Ano (mais recentes)
+            </option>
+
+            <option value="title">
+              Título (A–Z)
+            </option>
+
+            <option value="cast">
+              Elenco principal (A–Z)
+            </option>
+
+            <option value="ship">
+              Ship / Casal (A–Z)
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+      <p id="search-results" aria-live="polite"></p>
+
+    </div>
+
+    <div id="series-list" class="view-cards">
+      <p>Carregando catálogo... 🌷</p>
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  <p>ThaiGList © 2026</p>
+</footer>
+
 </div>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+
 <script>
-const SUPABASE_URL = "https://jjybnidhwfimcdwygafk.supabase.co";
-const SUPABASE_KEY = "sb_publishable_DyikY0WSJJ4apDc0_ZwfOw_x6LvfqM-";
+
+// ========================================
+// STORAGE SEGURO (COM FALLBACK EM MEMÓRIA)
+// ========================================
 
 const memoryStorage = new Map();
 
@@ -1001,778 +1393,1421 @@ const safeStorage = {
   }
 };
 
-const client = window.supabase
-  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
-      auth: {
-        storage: safeStorage,
-        persistSession: true,
-        autoRefreshToken: true
-      }
-    })
-  : null;
 
-const visitedUserId = new URLSearchParams(window.location.search).get("user");
+// ========================================
+// CONEXÃO SUPABASE
+// ========================================
 
-const authForms = document.getElementById("auth-forms");
-const accountPanel = document.getElementById("account-panel");
-const privateProfileCard = document.getElementById("private-profile-card");
-const visitModeBanner = document.getElementById("visit-mode-banner");
-const visitBioDisplay = document.getElementById("visit-bio-display");
-const visitExtraMeta = document.getElementById("visit-extra-meta");
-const avatar = document.getElementById("account-avatar");
-const fallback = document.getElementById("avatar-fallback");
-const photoInput = document.getElementById("photo-input");
-const changePhotoButton = document.getElementById("change-photo-button");
-const savePhotoButton = document.getElementById("save-photo-button");
-const bioInput = document.getElementById("bio");
-const bioCounter = document.getElementById("bio-counter");
-const coupleInput = document.getElementById("favorite_couple");
-const seriesSelect = document.getElementById("favorite_series");
-const countryInput = document.getElementById("country");
-const socialInput = document.getElementById("social_handle");
-const displayNameInput = document.getElementById("display_name");
-const showOnReviewsInput = document.getElementById("show_on_reviews");
-const publicProfileInput = document.getElementById("public_profile");
-const toggleAlertsButton = document.getElementById("toggle-alerts-button");
+const SUPABASE_URL =
+  "https://jjybnidhwfimcdwygafk.supabase.co";
 
+const SUPABASE_KEY =
+  "sb_publishable_DyikY0WSJJ4apDc0_ZwfOw_x6LvfqM-";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY,
+  {
+    auth: {
+      storage: safeStorage,
+      persistSession: true,
+      autoRefreshToken: true
+    }
+  }
+);
+
+let series = [];
 let activeUserId = null;
-let isVisitingOtherUser = false;
-let selectedPhoto = null;
-let currentAvatarPath = null;
+let userListMap = new Map();
+let currentView = "cards";
+let selectedScheduleDay = String(new Date().getDay());
 
-function setOwnerControlsVisible(visible) {
-  document.querySelectorAll(".owner-only").forEach((el) => {
-    el.hidden = !visible;
-  });
-}
+const DAY_NAMES = [
+  "Domingo",
+  "Segunda-feira",
+  "Terça-feira",
+  "Quarta-feira",
+  "Quinta-feira",
+  "Sexta-feira",
+  "Sábado"
+];
 
-function showPopup(title, text, icon = "🌷") {
-  document.getElementById("popup-title").textContent = title;
-  document.getElementById("popup-text").textContent = text;
-  document.getElementById("popup-icon").textContent = icon;
-  document.getElementById("popup").classList.add("active");
-}
+const list = document.getElementById("series-list");
+const search = document.getElementById("search");
+const sortSelect = document.getElementById("sort-select");
+const searchResults = document.getElementById("search-results");
+const viewButtons = document.querySelectorAll("#view-switcher .view-btn");
+const dayTabButtons = document.querySelectorAll("#day-tabs .day-tab");
 
-document.getElementById("popup-close").addEventListener("click", () => {
-  document.getElementById("popup").classList.remove("active");
+const collator = new Intl.Collator("pt-BR", {
+  sensitivity: "base",
+  numeric: true
 });
 
-function displayAvatar(url) {
-  if (!url) {
-    avatar.style.display = "none";
-    avatar.removeAttribute("src");
-    fallback.style.display = "block";
-    return;
-  }
-  avatar.onload = () => {
-    avatar.style.display = "block";
-    fallback.style.display = "none";
-  };
-  avatar.onerror = () => {
-    avatar.style.display = "none";
-    fallback.style.display = "block";
-  };
-  avatar.src = url;
+
+// ========================================
+// FUNÇÃO PARA CRIAR ELEMENTOS DE TEXTO
+// ========================================
+
+function createText(tag, className, value) {
+
+  const element = document.createElement(tag);
+
+  element.className = className;
+
+  element.textContent = value;
+
+  return element;
 }
 
-function updateBioCounter() {
-  bioCounter.textContent = `${bioInput.value.length}/300`;
-}
 
-function updateProfileCompletion() {
-  const checks = {
-    bio: bioInput.value.trim().length > 0,
-    couple: coupleInput.value.trim().length > 0,
-    series: seriesSelect.value.trim().length > 0,
-    country: countryInput.value.trim().length > 0,
-    social: socialInput.value.trim().length > 0
-  };
+// ========================================
+// OBTÉM O ELENCO PRINCIPAL
+// ========================================
 
-  const completedCount = Object.values(checks).filter(Boolean).length;
-  const percent = Math.round((completedCount / 5) * 100);
+function getMainCast(item) {
 
-  document.getElementById("profile-percent").textContent = `${percent}%`;
-  document.getElementById("profile-steps").textContent = `${completedCount}/5 campos`;
-  document.getElementById("profile-progress-bar").style.width = `${percent}%`;
+  const cast = item.main_cast;
 
-  const setCheck = (id, label, done) => {
-    const el = document.getElementById(id);
-    el.textContent = `${done ? "✓" : "○"} ${label}`;
-    el.classList.toggle("done", done);
-  };
-
-  setCheck("chk-bio", "Sobre você", checks.bio);
-  setCheck("chk-couple", "Casal favorito", checks.couple);
-  setCheck("chk-series", "Série favorita", checks.series);
-  setCheck("chk-country", "País", checks.country);
-  setCheck("chk-social", "X / IG", checks.social);
-
-  document.getElementById("display-couple-chip").textContent =
-    checks.couple ? `💜 ${coupleInput.value.trim()}` : "💜 Casal favorito não definido";
-
-  document.getElementById("display-country-chip").textContent =
-    `🌏 ${countryInput.value.trim() || "Brasil"}`;
-}
-
-function loadLocalPrefs(userId) {
-  try {
-    const raw = safeStorage.getItem(`thaiglist_profile_${userId}`);
-    return raw ? JSON.parse(raw) : {};
-  } catch {
-    return {};
-  }
-}
-
-function saveLocalPrefs(userId, payload) {
-  try {
-    safeStorage.setItem(`thaiglist_profile_${userId}`, JSON.stringify(payload));
-  } catch (e) {
-    console.warn("Erro ao salvar preferências locais:", e);
-  }
-}
-
-function renderAlertsState(userId) {
-  const alertsOn = safeStorage.getItem(`thaiglist_alerts_${userId}`) === "true";
-  toggleAlertsButton.textContent = alertsOn ? "✓ Alertas ativados" : "Ativar alertas";
-  toggleAlertsButton.classList.toggle("secondary-button", alertsOn);
-}
-
-toggleAlertsButton.addEventListener("click", async () => {
-  if (!activeUserId || isVisitingOtherUser) return;
-  const current = safeStorage.getItem(`thaiglist_alerts_${activeUserId}`) === "true";
-  const next = !current;
-
-  if (next && "Notification" in window && Notification.permission === "default") {
-    try {
-      await Notification.requestPermission();
-    } catch {}
+  if (Array.isArray(cast)) {
+    return cast.join(", ");
   }
 
-  safeStorage.setItem(`thaiglist_alerts_${activeUserId}`, String(next));
-  renderAlertsState(activeUserId);
+  return cast || "";
 
-  showPopup(
-    next ? "Alertas ativados!" : "Alertas pausados",
-    next
-      ? "Você será lembrada quando saírem novos episódios das séries da sua lista."
-      : "Os lembretes de novos episódios foram desativados neste dispositivo.",
-    "🔔"
-  );
-});
-
-function normalizeUserStatus(status) {
-  const s = (status || "").trim().toLowerCase();
-  if (["watching", "assistindo"].includes(s)) return "watching";
-  if (["completed", "concluida", "concluída"].includes(s)) return "completed";
-  if (["plan_to_watch", "quero assistir", "quero ver"].includes(s)) return "plan";
-  return "other";
 }
 
-function updateQuestCard(cardId, labelId, current, target) {
-  const done = current >= target;
-  const card = document.getElementById(cardId);
-  const label = document.getElementById(labelId);
-  card.classList.toggle("unlocked", done);
-  label.textContent = done ? `Desbloqueada (${current}/${target}) 🌷` : `${current}/${target}`;
-  return done ? 1 : 0;
+
+// ========================================
+// CÁLCULO AUTOMÁTICO DE EPISÓDIO E ENCERRAMENTO
+// ========================================
+
+function parseAirDay(rawDay) {
+  if (rawDay === null || rawDay === undefined || rawDay === "") return null;
+  if (typeof rawDay === "number" && rawDay >= 0 && rawDay <= 6) return rawDay;
+
+  const str = String(rawDay).trim().toLowerCase();
+  if (/^[0-6]$/.test(str)) return Number(str);
+  if (str.startsWith("dom")) return 0;
+  if (str.startsWith("seg")) return 1;
+  if (str.startsWith("ter")) return 2;
+  if (str.startsWith("qua")) return 3;
+  if (str.startsWith("qui")) return 4;
+  if (str.startsWith("sex")) return 5;
+  if (str.startsWith("sáb") || str.startsWith("sab")) return 6;
+  return null;
 }
 
-async function loadUserListAndDramas(userId, savedFavoriteSeries) {
-  if (!client) return;
+function getEffectiveStatus(item) {
+  const rawStatus = (item.status || "").trim().toLowerCase();
+  const totalEps = Number(item.episodes) || 0;
+  const year = Number(item.year) || 0;
 
-  const [listRes, dramasRes] = await Promise.all([
-    client
-      .from("user_drama_list")
-      .select("id, drama_id, status, rating")
-      .eq("user_id", userId),
-    client
-      .from("dramas")
-      .select("id, title, episodes, status")
-      .order("title", { ascending: true })
-  ]);
-
-  if (activeUserId !== userId) return;
-
-  const userRows = listRes.data || [];
-  const allDramas = dramasRes.data || [];
-  const dramaMap = new Map(allDramas.map((d) => [d.id, d]));
-
-  let watching = 0;
-  let completed = 0;
-  let plan = 0;
-  let favorites = 0;
-  let ratedCount = 0;
-  let episodesWatched = 0;
-
-  userRows.forEach((row) => {
-    const bucket = normalizeUserStatus(row.status);
-    const dramaInfo = dramaMap.get(row.drama_id);
-    const epCount = Number(dramaInfo?.episodes) || 0;
-
-    if (bucket === "watching") {
-      watching += 1;
-    } else if (bucket === "completed") {
-      completed += 1;
-      episodesWatched += epCount;
-    } else if (bucket === "plan") {
-      plan += 1;
-    }
-
-    if (row.rating !== null && row.rating !== undefined) {
-      ratedCount += 1;
-      if (Number(row.rating) >= 4) {
-        favorites += 1;
+  if (rawStatus === "em andamento") {
+    // Se tiver data de encerramento e já passou, considera finalizada automaticamente
+    if (item.end_date) {
+      const endTs = new Date(item.end_date + "T23:59:59").getTime();
+      if (!Number.isNaN(endTs) && Date.now() > endTs) {
+        return "finalizada";
       }
     }
-  });
 
-  document.getElementById("stat-watching").textContent = watching;
-  document.getElementById("stat-completed").textContent = completed;
-  document.getElementById("stat-plan").textContent = plan;
-  document.getElementById("stat-favorites").textContent = favorites;
-  document.getElementById("stat-episodes").textContent = episodesWatched;
-
-  let unlockedTotal = 1;
-  unlockedTotal += updateQuestCard("card-rookie", "q-rookie", completed, 5);
-  unlockedTotal += updateQuestCard("card-truefan", "q-truefan", completed, 15);
-  unlockedTotal += updateQuestCard("card-superfan", "q-superfan", completed, 30);
-  unlockedTotal += updateQuestCard("card-stars", "q-stars", ratedCount, 10);
-  unlockedTotal += updateQuestCard("card-collector", "q-collector", userRows.length, 20);
-  document.getElementById("quests-counter").textContent = `${unlockedTotal}/6`;
-
-  const ongoing = allDramas.find((d) =>
-    (d.status || "").trim().toLowerCase() === "em andamento"
-  );
-  if (ongoing) {
-    document.getElementById("alert-preview-title").textContent =
-      `📺 Em andamento no catálogo: ${ongoing.title}`;
-  }
-
-  const currentSelection = savedFavoriteSeries || seriesSelect.value;
-  seriesSelect.innerHTML = `<option value="">— Selecione uma série —</option>`;
-
-  const userDramaIds = new Set(userRows.map((r) => r.drama_id));
-  const userDramas = allDramas.filter((d) => userDramaIds.has(d.id));
-
-  if (userDramas.length > 0) {
-    const groupUser = document.createElement("optgroup");
-    groupUser.label = "Da sua lista";
-    userDramas.forEach((d) => {
-      const opt = document.createElement("option");
-      opt.value = d.title;
-      opt.textContent = d.title;
-      groupUser.appendChild(opt);
-    });
-    seriesSelect.appendChild(groupUser);
-  }
-
-  if (allDramas.length > 0) {
-    const groupAll = document.createElement("optgroup");
-    groupAll.label = "Todas as séries do catálogo";
-    allDramas.forEach((d) => {
-      const opt = document.createElement("option");
-      opt.value = d.title;
-      opt.textContent = d.title;
-      groupAll.appendChild(opt);
-    });
-    seriesSelect.appendChild(groupAll);
-  }
-
-  if (currentSelection) {
-    seriesSelect.value = currentSelection;
-    if (seriesSelect.value !== currentSelection) {
-      const customOpt = document.createElement("option");
-      customOpt.value = currentSelection;
-      customOpt.textContent = currentSelection;
-      seriesSelect.appendChild(customOpt);
-      seriesSelect.value = currentSelection;
-    }
-  }
-
-  updateProfileCompletion();
-}
-
-async function showVisitedProfile(targetUserId) {
-  isVisitingOtherUser = true;
-  activeUserId = targetUserId;
-  authForms.hidden = true;
-  privateProfileCard.hidden = true;
-  accountPanel.hidden = true;
-  setOwnerControlsVisible(false);
-  visitModeBanner.hidden = false;
-
-  if (!client) {
-    privateProfileCard.hidden = false;
-    return;
-  }
-
-  const { data: profile, error } = await client
-    .from("profiles")
-    .select("*")
-    .eq("id", targetUserId)
-    .maybeSingle();
-
-  if (error || !profile || profile.public_profile === false) {
-    privateProfileCard.hidden = false;
-    return;
-  }
-
-  const memberName = profile.display_name || "Fã do ThaiGList";
-  document.title = `${memberName} | ThaiGList`;
-  document.getElementById("account-name").textContent = memberName;
-  document.getElementById("account-email").textContent = "Perfil público no ThaiGList";
-  document.getElementById("stats-heading").textContent = `Resumo da lista de ${memberName}`;
-  document.getElementById("stats-subtitle").textContent = "Estatísticas públicas da lista deste membro.";
-  document.getElementById("quests-heading").textContent = `🏅 Conquistas de ${memberName}`;
-
-  if (profile.created_at) {
-    const d = new Date(profile.created_at);
-    const formatted = d.toLocaleDateString("pt-BR", { month: "short", year: "numeric" });
-    document.getElementById("member-since-chip").textContent = `Membro desde ${formatted}`;
-  }
-
-  document.getElementById("display-couple-chip").textContent =
-    profile.favorite_couple ? `💜 ${profile.favorite_couple}` : "💜 Casal favorito não definido";
-
-  document.getElementById("display-country-chip").textContent =
-    `🌏 ${profile.country || "Brasil"}`;
-
-  displayAvatar(profile.avatar_url || null);
-
-  if (profile.bio) {
-    visitBioDisplay.textContent = profile.bio;
-    visitBioDisplay.hidden = false;
-  } else {
-    visitBioDisplay.hidden = true;
-  }
-
-  visitExtraMeta.innerHTML = "";
-  if (profile.favorite_series) {
-    const seriesChip = document.createElement("span");
-    seriesChip.className = "status-chip";
-    seriesChip.textContent = `🎬 Favorita: ${profile.favorite_series}`;
-    visitExtraMeta.appendChild(seriesChip);
-  }
-  if (profile.social_handle) {
-    const socialChip = document.createElement("span");
-    socialChip.className = "status-chip";
-    socialChip.textContent = `✨ ${profile.social_handle}`;
-    visitExtraMeta.appendChild(socialChip);
-  }
-  visitExtraMeta.hidden = visitExtraMeta.children.length === 0;
-
-  accountPanel.hidden = false;
-  await loadUserListAndDramas(targetUserId, profile.favorite_series || "");
-}
-
-document.querySelectorAll("#bio-presets .chip-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    const snippet = btn.dataset.bio;
-    const current = bioInput.value.trim();
-    if (!current.includes(snippet)) {
-      const next = current ? `${current} · ${snippet}` : snippet;
-      bioInput.value = next.slice(0, 300);
-      updateBioCounter();
-      updateProfileCompletion();
-    }
-  });
-});
-
-document.querySelectorAll("#couple-chips .chip-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    const chosen = btn.dataset.couple;
-    coupleInput.value = chosen;
-    document.querySelectorAll("#couple-chips .chip-btn").forEach((c) => c.classList.remove("selected"));
-    btn.classList.add("selected");
-    updateProfileCompletion();
-  });
-});
-
-[bioInput, coupleInput, seriesSelect, countryInput, socialInput].forEach((el) => {
-  el.addEventListener("input", () => {
-    updateBioCounter();
-    updateProfileCompletion();
-  });
-  el.addEventListener("change", () => {
-    updateBioCounter();
-    updateProfileCompletion();
-  });
-});
-
-async function showAccount(user) {
-  if (!user) return;
-  if (visitedUserId && visitedUserId !== user.id) {
-    await showVisitedProfile(visitedUserId);
-    return;
-  }
-
-  isVisitingOtherUser = false;
-  visitModeBanner.hidden = true;
-  visitBioDisplay.hidden = true;
-  visitExtraMeta.hidden = true;
-  privateProfileCard.hidden = true;
-  setOwnerControlsVisible(true);
-
-  activeUserId = user.id;
-  selectedPhoto = null;
-  currentAvatarPath = null;
-  photoInput.value = "";
-  savePhotoButton.hidden = true;
-
-  authForms.hidden = true;
-  accountPanel.hidden = false;
-  displayAvatar(null);
-
-  const email = user.email || "";
-  const fallbackName =
-    user.user_metadata?.full_name ||
-    user.user_metadata?.name ||
-    email.split("@")[0] ||
-    "Usuária";
-
-  document.getElementById("account-name").textContent = fallbackName;
-  document.getElementById("account-email").textContent = email;
-  displayNameInput.value = fallbackName;
-
-  if (user.created_at) {
-    const d = new Date(user.created_at);
-    const formatted = d.toLocaleDateString("pt-BR", { month: "short", year: "numeric" });
-    document.getElementById("member-since-chip").textContent = `Membro desde ${formatted}`;
-  }
-
-  const localPrefs = loadLocalPrefs(user.id);
-  bioInput.value = localPrefs.bio || "";
-  coupleInput.value = localPrefs.favorite_couple || "";
-  countryInput.value = localPrefs.country || "Brasil";
-  socialInput.value = localPrefs.social_handle || "";
-  showOnReviewsInput.checked = localPrefs.show_on_reviews !== false;
-  publicProfileInput.checked = localPrefs.public_profile !== false;
-  let savedSeries = localPrefs.favorite_series || "";
-
-  if (client) {
-    const { data, error } = await client
-      .from("profiles")
-      .select("*")
-      .eq("id", user.id)
-      .maybeSingle();
-
-    if (activeUserId !== user.id) return;
-
-    if (error) {
-      console.error("Erro ao carregar perfil:", error);
-    } else if (data) {
-      if (data.display_name) {
-        document.getElementById("account-name").textContent = data.display_name;
-        displayNameInput.value = data.display_name;
-      }
-      if (data.bio !== undefined && data.bio !== null) bioInput.value = data.bio;
-      if (data.favorite_couple !== undefined && data.favorite_couple !== null) coupleInput.value = data.favorite_couple;
-      if (data.favorite_series !== undefined && data.favorite_series !== null) savedSeries = data.favorite_series;
-      if (data.country !== undefined && data.country !== null) countryInput.value = data.country;
-      if (data.social_handle !== undefined && data.social_handle !== null) socialInput.value = data.social_handle;
-      if (typeof data.show_on_reviews === "boolean") showOnReviewsInput.checked = data.show_on_reviews;
-      if (typeof data.public_profile === "boolean") publicProfileInput.checked = data.public_profile;
-
-      if (data.avatar_url) {
-        displayAvatar(data.avatar_url);
-        const marker = "/storage/v1/object/public/avatars/";
-        const index = data.avatar_url.indexOf(marker);
-        if (index !== -1) {
-          currentAvatarPath = decodeURIComponent(
-            data.avatar_url.substring(index + marker.length).split("?")[0]
-          );
+    // Se tiver data de estreia e total de episódios, calcula quantos episódios já saíram
+    if (item.premiere_date && totalEps > 0) {
+      const startTs = new Date(item.premiere_date + "T00:00:00").getTime();
+      if (!Number.isNaN(startTs) && Date.now() >= startTs) {
+        const weeksElapsed = Math.floor((Date.now() - startTs) / (7 * 24 * 60 * 60 * 1000)) + 1;
+        if (weeksElapsed > totalEps) {
+          return "finalizada";
         }
       }
     }
+    return "em andamento";
   }
 
-  renderAlertsState(user.id);
-  updateBioCounter();
-  await loadUserListAndDramas(user.id, savedSeries);
+  if (
+    rawStatus.includes("finaliz") ||
+    rawStatus.includes("conclu") ||
+    rawStatus.includes("complet") ||
+    rawStatus.includes("encerrad") ||
+    rawStatus.includes("lançad") ||
+    rawStatus.includes("lancad") ||
+    rawStatus.includes("exibid") ||
+    rawStatus === "finished" ||
+    rawStatus === "completed" ||
+    rawStatus === "ended"
+  ) {
+    return "finalizada";
+  }
+
+  const isExplicitUpcoming =
+    rawStatus.includes("teaser") ||
+    rawStatus.includes("piloto") ||
+    rawStatus.includes("breve") ||
+    rawStatus.includes("previst") ||
+    rawStatus.includes("anunciad") ||
+    rawStatus.includes("upcoming") ||
+    year > 2026;
+
+  if (!isExplicitUpcoming && year > 0 && year <= 2026) {
+    return "finalizada";
+  }
+
+  return rawStatus;
 }
 
-async function showLogin() {
-  if (visitedUserId) {
-    await showVisitedProfile(visitedUserId);
-    return;
-  }
+function getCurrentEpisodeNumber(item) {
+  const totalEps = Number(item.episodes) || 0;
+  if (!item.premiere_date) return null;
 
-  activeUserId = null;
-  isVisitingOtherUser = false;
-  selectedPhoto = null;
-  currentAvatarPath = null;
-  privateProfileCard.hidden = true;
-  accountPanel.hidden = true;
-  authForms.hidden = false;
-  photoInput.value = "";
-  savePhotoButton.hidden = true;
+  const startTs = new Date(item.premiere_date + "T00:00:00").getTime();
+  if (Number.isNaN(startTs) || Date.now() < startTs) return null;
+
+  const ep = Math.floor((Date.now() - startTs) / (7 * 24 * 60 * 60 * 1000)) + 1;
+  return totalEps > 0 ? Math.min(ep, totalEps) : ep;
 }
 
-document.getElementById("profile-details-form").addEventListener("submit", async (event) => {
-  event.preventDefault();
-  if (!activeUserId || isVisitingOtherUser || !client) return;
+function isSeriesOnAirNow(item, nowDate = new Date()) {
+  if (getEffectiveStatus(item) !== "em andamento") return false;
 
-  const btn = document.getElementById("save-profile-button");
-  btn.disabled = true;
-  btn.textContent = "Salvando...";
+  const airDay = parseAirDay(item.air_day);
+  if (airDay === null || airDay !== nowDate.getDay()) return false;
 
-  const payload = {
-    display_name: displayNameInput.value.trim() || null,
-    bio: bioInput.value.trim() || null,
-    favorite_couple: coupleInput.value.trim() || null,
-    favorite_series: seriesSelect.value.trim() || null,
-    country: countryInput.value.trim() || null,
-    social_handle: socialInput.value.trim() || null,
-    show_on_reviews: showOnReviewsInput.checked,
-    public_profile: publicProfileInput.checked
-  };
+  if (!item.air_time) return false;
+  const parts = String(item.air_time).trim().split(":");
+  if (parts.length < 2) return false;
 
-  saveLocalPrefs(activeUserId, payload);
+  const startHour = Number(parts[0]);
+  const startMin = Number(parts[1]);
+  if (Number.isNaN(startHour) || Number.isNaN(startMin)) return false;
 
-  const { error } = await client
-    .from("profiles")
-    .update(payload)
-    .eq("id", activeUserId);
+  const startMinutes = startHour * 60 + startMin;
+  const nowMinutes = nowDate.getHours() * 60 + nowDate.getMinutes();
 
-  btn.disabled = false;
-  btn.textContent = "Salvar perfil 🌷";
+  // Janela de exibição: do horário de início até 60 minutos depois
+  return nowMinutes >= startMinutes && nowMinutes < startMinutes + 60;
+}
 
-  if (payload.display_name) {
-    document.getElementById("account-name").textContent = payload.display_name;
+async function syncAutoFinishedDramas(dramasList) {
+  const toFinishIds = dramasList
+    .filter(d => (d.status || "").trim().toLowerCase() === "em andamento" && getEffectiveStatus(d) === "finalizada")
+    .map(d => d.id);
+
+  if (!toFinishIds.length) return;
+
+  const { error } = await db
+    .from("dramas")
+    .update({ status: "Finalizada" })
+    .in("id", toFinishIds);
+
+  if (!error) {
+    dramasList.forEach(d => {
+      if (toFinishIds.includes(d.id)) {
+        d.status = "Finalizada";
+      }
+    });
   }
-  updateProfileCompletion();
+}
 
-  if (error) {
-    console.warn("Atualização parcial/local salva:", error);
-    showPopup(
-      "Preferências salvas!",
-      "Suas informações foram salvas com sucesso no navegador. 🌷",
-      "🌷"
-    );
+
+// ========================================
+// SELOS DE SITUAÇÃO (EM ANDAMENTO / EM BREVE / FINALIZADA)
+// ========================================
+
+function isUpcomingDrama(item) {
+  const effectiveStatus = getEffectiveStatus(item);
+  const year = Number(item.year) || 0;
+  return (
+    effectiveStatus === "teaser / piloto" ||
+    effectiveStatus === "em breve" ||
+    effectiveStatus === "previsto" ||
+    year > 2026
+  );
+}
+
+function formatPremiereDateBR(rawDate) {
+  if (!rawDate) return "";
+  const str = String(rawDate).trim();
+  const match = str.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (match) {
+    return `${match[3]}/${match[2]}/${match[1]}`;
+  }
+  return str;
+}
+
+function getReleaseBadgeInfo(item) {
+
+  const effectiveStatus = getEffectiveStatus(item);
+
+  if (effectiveStatus === "em andamento") {
+    return {
+      type: "ongoing",
+      label: "📺 Em andamento"
+    };
+  }
+
+  if (isUpcomingDrama(item)) {
+    return {
+      type: "upcoming",
+      label: "⏳ Em breve"
+    };
+  }
+
+  if (effectiveStatus === "finalizada") {
+    return {
+      type: "completed",
+      label: "✓ Finalizada"
+    };
+  }
+
+  return null;
+
+}
+
+
+// ========================================
+// AVISO "NO AR" NO TOPO DA PÁGINA
+// ========================================
+
+function updateOnAirBanner() {
+  const banner = document.getElementById("on-air-banner");
+  const textEl = document.getElementById("on-air-text");
+  const linkEl = document.getElementById("on-air-link");
+
+  const now = new Date();
+  const liveSeries = series.filter(item => isSeriesOnAirNow(item, now));
+
+  if (!liveSeries.length) {
+    banner.hidden = true;
     return;
   }
 
-  showPopup("Perfil atualizado!", "Suas informações foram salvas com sucesso. 🌷", "🎉");
+  const current = liveSeries[0];
+  const epNum = getCurrentEpisodeNumber(current);
+  const epLabel = epNum ? ` · Episódio ${epNum}` : "";
+  const platLabel = current.platform ? ` (${current.platform})` : "";
+
+  textEl.innerHTML = `<strong>${current.title}</strong>${epLabel}${platLabel}`;
+  linkEl.href = "drama.html?id=" + encodeURIComponent(current.id);
+  banner.hidden = false;
+}
+
+
+// ========================================
+// AGENDA SEMANAL DE LANÇAMENTOS
+// ========================================
+
+function renderWeeklySchedule() {
+  const scheduleList = document.getElementById("schedule-list");
+  const todayIdx = new Date().getDay();
+
+  const ongoingDramas = series.filter(item => getEffectiveStatus(item) === "em andamento");
+
+  // Atualiza contadores por dia da semana
+  for (let d = 0; d <= 6; d++) {
+    const count = ongoingDramas.filter(item => parseAirDay(item.air_day) === d).length;
+    const badge = document.getElementById("cnt-" + d);
+    if (badge) badge.textContent = count;
+  }
+  const allBadge = document.getElementById("cnt-all");
+  if (allBadge) allBadge.textContent = ongoingDramas.length;
+
+  dayTabButtons.forEach(btn => {
+    const dVal = btn.dataset.day;
+    btn.classList.toggle("active", dVal === selectedScheduleDay);
+    btn.classList.toggle("today", dVal === String(todayIdx));
+  });
+
+  let filtered = ongoingDramas;
+  if (selectedScheduleDay !== "all") {
+    const dayNum = Number(selectedScheduleDay);
+    filtered = ongoingDramas.filter(item => parseAirDay(item.air_day) === dayNum);
+  }
+
+  filtered.sort((a, b) => {
+    const dayA = parseAirDay(a.air_day) ?? 7;
+    const dayB = parseAirDay(b.air_day) ?? 7;
+    if (selectedScheduleDay === "all" && dayA !== dayB) return dayA - dayB;
+    return (a.air_time || "99:99").localeCompare(b.air_time || "99:99");
+  });
+
+  scheduleList.innerHTML = "";
+
+  if (!filtered.length) {
+    const msg = document.createElement("p");
+    msg.className = "schedule-empty";
+    msg.textContent =
+      selectedScheduleDay === "all"
+        ? "Nenhum GL em andamento cadastrado na agenda desta semana 🌷"
+        : `Nenhum lançamento agendado para ${DAY_NAMES[Number(selectedScheduleDay)]} 🌷`;
+    scheduleList.appendChild(msg);
+    return;
+  }
+
+  const now = new Date();
+
+  filtered.forEach(item => {
+    const liveNow = isSeriesOnAirNow(item, now);
+    const card = document.createElement("a");
+    card.className = "schedule-card" + (liveNow ? " live-now" : "");
+    card.href = "drama.html?id=" + encodeURIComponent(item.id);
+
+    if (item.poster_url) {
+      const img = document.createElement("img");
+      img.className = "schedule-poster";
+      img.src = item.poster_url;
+      img.alt = item.title || "Pôster";
+      img.loading = "lazy";
+      img.onerror = () => { img.style.display = "none"; };
+      card.appendChild(img);
+    } else {
+      const ph = document.createElement("div");
+      ph.className = "schedule-poster";
+      ph.textContent = "🌷";
+      card.appendChild(ph);
+    }
+
+    const info = document.createElement("div");
+    info.className = "schedule-info";
+
+    const topTags = document.createElement("div");
+    topTags.className = "schedule-top-tags";
+
+    if (liveNow) {
+      const liveTag = document.createElement("span");
+      liveTag.className = "on-air-badge";
+      liveTag.style.padding = "2px 7px";
+      liveTag.style.fontSize = "10px";
+      liveTag.textContent = "🔴 NO AR";
+      topTags.appendChild(liveTag);
+    }
+
+    const dayIdx = parseAirDay(item.air_day);
+    const dayPrefix = selectedScheduleDay === "all" && dayIdx !== null ? `${DAY_NAMES[dayIdx].slice(0, 3)} · ` : "";
+    const timeLabel = item.air_time ? `${dayPrefix}⏰ ${String(item.air_time).slice(0, 5)}` : `${dayPrefix}Horário a definir`;
+
+    const timeSpan = document.createElement("span");
+    timeSpan.className = "schedule-time";
+    timeSpan.textContent = timeLabel;
+    topTags.appendChild(timeSpan);
+
+    const epNum = getCurrentEpisodeNumber(item);
+    const totalEps = Number(item.episodes) || 0;
+    if (epNum || totalEps) {
+      const epSpan = document.createElement("span");
+      epSpan.className = "schedule-ep";
+      epSpan.textContent = epNum
+        ? (totalEps ? `EP ${epNum}/${totalEps}` : `EP ${epNum}`)
+        : `${totalEps} eps`;
+      topTags.appendChild(epSpan);
+    }
+
+    const titleEl = document.createElement("h3");
+    titleEl.className = "schedule-title";
+    titleEl.textContent = item.title || "Sem título";
+
+    const platEl = document.createElement("div");
+    platEl.className = "schedule-platform";
+    platEl.textContent = item.platform ? `📺 ${item.platform}` : "📺 Plataforma oficial";
+
+    info.append(topTags, titleEl, platEl);
+    card.appendChild(info);
+    scheduleList.appendChild(card);
+  });
+}
+
+dayTabButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    selectedScheduleDay = btn.dataset.day;
+    renderWeeklySchedule();
+  });
 });
 
-changePhotoButton.addEventListener("click", () => photoInput.click());
 
-photoInput.addEventListener("change", (event) => {
-  const file = event.target.files[0];
-  if (!file) return;
+// ========================================
+// FECHAR POPOVERS ABERTOS
+// ========================================
 
-  const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
-  if (!allowedTypes.includes(file.type)) {
-    showPopup("Formato inválido", "Escolha uma imagem JPG, PNG ou WebP.", "⚠️");
-    photoInput.value = "";
-    return;
-  }
+function closeAllQuickPopovers(exceptPopover = null) {
+  document.querySelectorAll(".quick-plus-popover.open").forEach(pop => {
+    if (pop !== exceptPopover) {
+      pop.classList.remove("open");
+      const parentCard = pop.closest(".series-card");
+      if (parentCard) parentCard.classList.remove("menu-open");
+    }
+  });
+}
 
-  if (file.size > 5 * 1024 * 1024) {
-    showPopup("Imagem muito grande", "A foto precisa ter no máximo 5 MB.", "⚠️");
-    photoInput.value = "";
-    return;
-  }
-
-  selectedPhoto = file;
-  displayAvatar(URL.createObjectURL(file));
-  savePhotoButton.hidden = false;
+document.addEventListener("click", () => {
+  closeAllQuickPopovers();
 });
 
-savePhotoButton.addEventListener("click", async function () {
-  if (!selectedPhoto || !activeUserId || isVisitingOtherUser || !client) return;
 
-  const button = this;
-  const userId = activeUserId;
-  button.disabled = true;
-  button.textContent = "Salvando foto...";
+// ========================================
+// ATALHO RÁPIDO (+) PARA ADICIONAR NA LISTA
+// ========================================
 
-  try {
-    const extension = selectedPhoto.name.split(".").pop().toLowerCase();
-    const filePath = `${userId}/avatar-${Date.now()}.${extension}`;
+function buildQuickPlusControl(item) {
 
-    const { error: uploadError } = await client.storage
-      .from("avatars")
-      .upload(filePath, selectedPhoto, {
-        cacheControl: "3600",
-        upsert: false,
-        contentType: selectedPhoto.type
+  const currentStatus = userListMap.get(item.id) || null;
+  const isInList = Boolean(currentStatus);
+
+  const wrapper = document.createElement("div");
+  wrapper.className = "quick-plus-wrapper";
+
+  const stopNav = (ev) => ev.stopPropagation();
+  wrapper.addEventListener("click", stopNav);
+  wrapper.addEventListener("keydown", stopNav);
+
+  const plusBtn = document.createElement("button");
+  plusBtn.type = "button";
+  plusBtn.className = "quick-plus-btn" + (isInList ? " in-list" : "");
+  plusBtn.textContent = isInList ? "✓" : "+";
+  plusBtn.title = isInList ? "Alterar status na sua lista" : "Adicionar à minha lista";
+  plusBtn.setAttribute("aria-label", plusBtn.title);
+
+  const popover = document.createElement("div");
+  popover.className = "quick-plus-popover";
+
+  const options = [
+    { value: "want_to_watch", label: "♡ Quero assistir" },
+    { value: "watching", label: "▶ Assistindo" },
+    { value: "completed", label: "✓ Concluído" }
+  ];
+
+  options.forEach(opt => {
+    const optBtn = document.createElement("button");
+    optBtn.type = "button";
+    optBtn.className = "quick-option-btn" + (currentStatus === opt.value ? " selected" : "");
+    optBtn.textContent = opt.label;
+
+    optBtn.addEventListener("click", async () => {
+
+      if (!activeUserId) {
+        window.location.href = "conta.html";
+        return;
+      }
+
+      plusBtn.disabled = true;
+      plusBtn.textContent = "…";
+      closeAllQuickPopovers();
+
+      const { error } = await db
+        .from("user_drama_list")
+        .upsert(
+          {
+            user_id: activeUserId,
+            drama_id: item.id,
+            status: opt.value,
+            updated_at: new Date().toISOString()
+          },
+          { onConflict: "user_id,drama_id" }
+        );
+
+      plusBtn.disabled = false;
+
+      if (error) {
+        console.error("Erro ao salvar na lista:", error);
+        plusBtn.textContent = isInList ? "✓" : "+";
+        return;
+      }
+
+      userListMap.set(item.id, opt.value);
+      plusBtn.textContent = "✓";
+      plusBtn.classList.add("in-list");
+
+      popover.querySelectorAll(".quick-option-btn").forEach(b => {
+        b.classList.toggle("selected", b === optBtn);
       });
 
-    if (uploadError) throw uploadError;
+    });
 
-    const { data: publicData } = client.storage.from("avatars").getPublicUrl(filePath);
-    const publicURL = publicData.publicUrl;
+    popover.appendChild(optBtn);
+  });
 
-    const { error: updateError } = await client
-      .from("profiles")
-      .update({ avatar_url: publicURL })
-      .eq("id", userId);
+  plusBtn.addEventListener("click", () => {
+    const willOpen = !popover.classList.contains("open");
+    closeAllQuickPopovers(popover);
+    popover.classList.toggle("open", willOpen);
+    const parentCard = wrapper.closest(".series-card");
+    if (parentCard) parentCard.classList.toggle("menu-open", willOpen);
+  });
 
-    if (updateError) {
-      await client.storage.from("avatars").remove([filePath]);
-      throw updateError;
-    }
+  wrapper.append(plusBtn, popover);
+  return wrapper;
 
-    const previousPath = currentAvatarPath;
-    currentAvatarPath = filePath;
-    displayAvatar(publicURL);
-    selectedPhoto = null;
-    photoInput.value = "";
-    savePhotoButton.hidden = true;
-
-    showPopup("Foto atualizada!", "Sua nova foto de perfil foi salva com sucesso. 🌷", "🎉");
-
-    if (previousPath) {
-      await client.storage.from("avatars").remove([previousPath]);
-    }
-  } catch (error) {
-    console.error("Erro ao salvar foto:", error);
-    showPopup("Não foi possível salvar", error.message || "Erro no envio da foto.", "⚠️");
-  } finally {
-    button.disabled = false;
-    button.textContent = "Salvar foto";
-  }
-});
-
-async function checkSession() {
-  try {
-    if (!client) {
-      await showLogin();
-      return;
-    }
-    const { data, error } = await client.auth.getSession();
-    if (error || !data?.session) {
-      await showLogin();
-      return;
-    }
-    await showAccount(data.session.user);
-  } catch (err) {
-    console.error("Erro ao verificar sessão:", err);
-    await showLogin();
-  }
 }
 
-if (client) {
-  client.auth.onAuthStateChange(async (event, session) => {
-    try {
-      if (event === "SIGNED_OUT" || !session) {
-        await showLogin();
+
+// ========================================
+// ORDENAÇÃO DO CATÁLOGO
+// ========================================
+
+function sortSeries(items) {
+
+  const sorted = [...items];
+
+  const order = sortSelect.value;
+
+  if (order === "year") {
+
+    sorted.sort((a, b) => {
+
+      const yearA = Number(a.year) || 0;
+      const yearB = Number(b.year) || 0;
+
+      return yearB - yearA ||
+        collator.compare(a.title || "", b.title || "");
+
+    });
+
+  }
+
+  else if (order === "title") {
+
+    sorted.sort((a, b) => {
+
+      return collator.compare(
+        a.title || "",
+        b.title || ""
+      );
+
+    });
+
+  }
+
+  else if (order === "cast") {
+
+    sorted.sort((a, b) => {
+
+      return collator.compare(
+        getMainCast(a),
+        getMainCast(b)
+      );
+
+    });
+
+  }
+
+  else if (order === "ship") {
+
+    sorted.sort((a, b) => {
+
+      return collator.compare(
+        a.ship || "",
+        b.ship || ""
+      );
+
+    });
+
+  }
+
+  return sorted;
+
+}
+
+
+// ========================================
+// EXIBIR CATÁLOGO (CARDS, LISTA, TABELA E FINALIZADAS)
+// ========================================
+
+function showSeries(items) {
+
+  list.innerHTML = "";
+
+  if (!items.length) {
+
+    list.className = "view-cards";
+
+    list.appendChild(
+      createText("p", "", "Nenhuma série encontrada 🌷")
+    );
+
+    return;
+
+  }
+
+  // MODO TABELA
+  if (currentView === "table") {
+
+    list.className = "";
+
+    const wrap = document.createElement("div");
+    wrap.className = "catalog-table-wrap";
+
+    const table = document.createElement("table");
+    table.className = "catalog-table";
+    table.innerHTML = `
+      <thead>
+        <tr>
+          <th>Capa</th>
+          <th>Título</th>
+          <th>Ano</th>
+          <th>Situação</th>
+          <th>Lista</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    `;
+
+    const tbody = table.querySelector("tbody");
+
+    items.forEach(item => {
+
+      const tr = document.createElement("tr");
+
+      const tdThumb = document.createElement("td");
+      if (item.poster_url) {
+        const img = document.createElement("img");
+        img.className = "table-thumb";
+        img.src = item.poster_url;
+        img.alt = "Pôster de " + (item.title || "drama");
+        img.loading = "lazy";
+        img.onerror = () => { img.style.display = "none"; };
+        tdThumb.appendChild(img);
       } else {
-        await showAccount(session.user);
+        tdThumb.textContent = "🌷";
       }
-    } catch (err) {
-      console.error("Erro na mudança de autenticação:", err);
-      await showLogin();
+
+      const tdTitle = document.createElement("td");
+      const link = document.createElement("a");
+      link.className = "table-title-link";
+      link.href = "drama.html?id=" + encodeURIComponent(item.id);
+      link.textContent = item.title || "Sem título";
+      tdTitle.appendChild(link);
+
+      if (item.genre) {
+        const g = document.createElement("div");
+        g.style.fontSize = "11px";
+        g.style.color = "var(--muted)";
+        g.textContent = item.genre;
+        tdTitle.appendChild(g);
+      }
+
+      const tdYear = document.createElement("td");
+      tdYear.textContent = item.year || "—";
+
+      const tdStatus = document.createElement("td");
+      const badgeInfo = getReleaseBadgeInfo(item);
+      if (badgeInfo) {
+        const span = document.createElement("span");
+        span.className = "status-pill " + badgeInfo.type;
+        span.textContent = badgeInfo.label;
+        tdStatus.appendChild(span);
+      } else {
+        tdStatus.textContent = item.status || "—";
+      }
+
+      const tdAction = document.createElement("td");
+      tdAction.appendChild(buildQuickPlusControl(item));
+
+      tr.append(tdThumb, tdTitle, tdYear, tdStatus, tdAction);
+      tbody.appendChild(tr);
+
+    });
+
+    wrap.appendChild(table);
+    list.appendChild(wrap);
+    return;
+
+  }
+
+  // MODOS CARDS, LISTA, PRÓXIMOS LANÇAMENTOS E FINALIZADAS
+  const isListLayout = currentView === "list" || currentView === "upcoming";
+  const layoutClass = isListLayout ? "view-list" : "view-cards";
+  list.className = layoutClass;
+
+  items.forEach(item => {
+
+    const card = document.createElement("article");
+
+    card.className = "series-card";
+
+    card.setAttribute("role", "link");
+
+    card.setAttribute(
+      "aria-label",
+      "Ver detalhes de " + (item.title || "drama")
+    );
+
+    card.tabIndex = 0;
+
+    function openDrama() {
+
+      window.location.href =
+        "drama.html?id=" + encodeURIComponent(item.id);
+
     }
+
+    card.addEventListener("click", openDrama);
+
+    card.addEventListener("keydown", event => {
+
+      if (event.key === "Enter" || event.key === " ") {
+
+        event.preventDefault();
+
+        openDrama();
+
+      }
+
+    });
+
+    // PÔSTER
+
+    const poster = document.createElement("div");
+
+    poster.className = "poster";
+
+    if (item.poster_url) {
+
+      const image = document.createElement("img");
+
+      image.src = item.poster_url;
+
+      image.alt = "Pôster de " + (item.title || "drama");
+
+      image.loading = "lazy";
+
+      image.onerror = () => {
+
+        image.remove();
+
+        poster.textContent = "Capa em breve 🌷";
+
+      };
+
+      poster.appendChild(image);
+
+    } else {
+
+      poster.textContent = "Capa em breve 🌷";
+
+    }
+
+    // INFORMAÇÕES DO CARD
+
+    const content = document.createElement("div");
+
+    content.className = "card-content";
+
+    const infoWrap = document.createElement("div");
+    infoWrap.className = "card-info";
+
+    const badgeInfo = getReleaseBadgeInfo(item);
+    // Em cards e lista, não exibe selo "Finalizada" (fica oculto na visualização geral,
+    // aparecendo apenas ao filtrar pela aba "Finalizadas").
+    if (badgeInfo && badgeInfo.type !== "completed") {
+      const badgeEl = document.createElement("span");
+      badgeEl.className = "status-pill " + badgeInfo.type;
+      badgeEl.textContent = badgeInfo.label;
+      infoWrap.appendChild(badgeEl);
+    } else if (currentView === "completed" && badgeInfo && badgeInfo.type === "completed") {
+      const badgeEl = document.createElement("span");
+      badgeEl.className = "status-pill " + badgeInfo.type;
+      badgeEl.textContent = badgeInfo.label;
+      infoWrap.appendChild(badgeEl);
+    }
+
+    if (isListLayout) {
+      const userStatus = userListMap.get(item.id);
+      const listStatusLabels = {
+        want_to_watch: "♡ Quero assistir",
+        watching: "▶ Assistindo",
+        completed: "✓ Concluído por você"
+      };
+      if (userStatus && listStatusLabels[userStatus]) {
+        const uTag = document.createElement("span");
+        uTag.className = "status-pill" + (userStatus === "completed" ? " completed" : "");
+        if (userStatus !== "completed") {
+          uTag.style.background = "rgba(168, 117, 245, 0.16)";
+          uTag.style.color = "#e5d4ff";
+          uTag.style.border = "1px solid rgba(168, 117, 245, 0.35)";
+        }
+        uTag.textContent = listStatusLabels[userStatus];
+        infoWrap.appendChild(uTag);
+      }
+    }
+
+    infoWrap.appendChild(
+      createText("h3", "", item.title || "Sem título")
+    );
+
+    if (item.year) {
+
+      infoWrap.appendChild(
+        createText("p", "card-meta", "Ano: " + item.year)
+      );
+
+    }
+
+    if (item.genre) {
+
+      infoWrap.appendChild(
+        createText("p", "card-meta", "Gênero: " + item.genre)
+      );
+
+    }
+
+    content.appendChild(infoWrap);
+
+    if (isListLayout) {
+      const upcoming = isUpcomingDrama(item);
+      const colsWrap = document.createElement("div");
+      colsWrap.className = "upcoming-cols";
+
+      if (upcoming) {
+        const formattedDate = formatPremiereDateBR(item.premiere_date);
+        const releaseText = formattedDate
+          ? formattedDate
+          : (item.year ? `Previsto para ${item.year}` : "A definir");
+
+        const dateCol = document.createElement("div");
+        dateCol.className = "upcoming-col date-col";
+        dateCol.append(
+          createText("span", "upcoming-col-label", "📅 Data prevista"),
+          createText("span", "upcoming-col-value", releaseText)
+        );
+        colsWrap.appendChild(dateCol);
+      }
+
+      const channelLabel = "📺 Canal oficial";
+      const channelText = (item.platform && String(item.platform).trim())
+        ? String(item.platform).trim()
+        : "A definir";
+
+      const channelCol = document.createElement("div");
+      channelCol.className = "upcoming-col";
+      channelCol.title = channelText;
+      channelCol.append(
+        createText("span", "upcoming-col-label", channelLabel),
+        createText("span", "upcoming-col-value", channelText)
+      );
+
+      colsWrap.appendChild(channelCol);
+      content.appendChild(colsWrap);
+    }
+
+    if (isListLayout) {
+      content.appendChild(buildQuickPlusControl(item));
+      card.append(poster, content);
+    } else {
+      card.append(poster, content, buildQuickPlusControl(item));
+    }
+
+    list.appendChild(card);
+
   });
+
 }
 
-document.getElementById("google-signin-button").addEventListener("click", async () => {
-  if (!client) {
-    showPopup("Indisponível", "Não foi possível conectar ao serviço de autenticação. Atualize a página e tente novamente.", "⚠️");
-    return;
-  }
 
-  const button = document.getElementById("google-signin-button");
-  button.disabled = true;
-  button.lastChild.textContent = " Conectando ao Google...";
+// ========================================
+// FILTRO E ATUALIZAÇÃO DO CATÁLOGO
+// ========================================
 
-  const redirectTo = window.location.href.split("?")[0].split("#")[0];
-  const { error } = await client.auth.signInWithOAuth({
-    provider: "google",
-    options: { redirectTo }
+function normalizeSearchText(value) {
+  return String(value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[#&/]/g, " ")
+    .toLocaleLowerCase("pt-BR")
+    .trim();
+}
+
+function filterSeries() {
+
+  const term = normalizeSearchText(search.value);
+
+  const filtered = series.filter(item => {
+
+    if (currentView === "upcoming" && !isUpcomingDrama(item)) {
+      return false;
+    }
+
+    if (currentView === "completed" && getEffectiveStatus(item) !== "finalizada") {
+      return false;
+    }
+
+    const searchable = normalizeSearchText([
+
+      item.title,
+      item.original_title,
+      item.genre,
+      item.status,
+      item.ship,
+      getMainCast(item)
+
+    ]
+      .filter(Boolean)
+      .join(" "));
+
+    return searchable.includes(term);
+
   });
 
-  if (error) {
-    button.disabled = false;
-    button.lastChild.textContent = " Continuar com Google";
-    showPopup("Não foi possível entrar", error.message || "Tente novamente em alguns instantes.", "⚠️");
-  }
-});
+  const ordered = sortSeries(filtered);
 
-document.getElementById("signup-form").addEventListener("submit", async (event) => {
-  event.preventDefault();
-  if (!client) return;
+  showSeries(ordered);
 
-  const button = document.getElementById("signup-button");
-  const email = document.getElementById("signup-email").value.trim();
-  const password = document.getElementById("signup-password").value;
+  if (term || currentView === "completed" || currentView === "upcoming") {
 
-  button.disabled = true;
-  button.textContent = "Criando conta...";
+    searchResults.textContent =
+      filtered.length +
+      (filtered.length === 1
+        ? " drama encontrado"
+        : " dramas encontrados");
 
-  const { data, error } = await client.auth.signUp({
-    email,
-    password,
-    options: { emailRedirectTo: `${window.location.origin}${window.location.pathname}` }
-  });
-
-  button.disabled = false;
-  button.textContent = "Criar conta";
-
-  if (error) {
-    showPopup("Ops!", "Não foi possível criar a conta: " + error.message, "⚠️");
-    return;
-  }
-
-  if (data.session) {
-    await showAccount(data.session.user);
-    showPopup("Conta criada!", "Sua conta foi criada e você já está conectada. 🌷", "🎉");
   } else {
-    showPopup("Cadastro realizado!", "Confira seu e-mail para confirmar sua conta no ThaiGList.", "💌");
+
+    searchResults.textContent =
+      series.length + " dramas no catálogo";
+
   }
-});
 
-document.getElementById("login-form").addEventListener("submit", async (event) => {
-  event.preventDefault();
-  if (!client) return;
+}
 
-  const button = document.getElementById("login-button");
-  const email = document.getElementById("login-email").value.trim();
-  const password = document.getElementById("login-password").value;
 
-  button.disabled = true;
-  button.textContent = "Entrando...";
+// ========================================
+// CARREGAR LISTA DO USUÁRIO
+// ========================================
 
-  const { error } = await client.auth.signInWithPassword({ email, password });
+async function loadUserListStatuses(userId) {
 
-  button.disabled = false;
-  button.textContent = "Entrar";
+  userListMap.clear();
 
-  if (error) {
-    showPopup("Ops!", "E-mail ou senha incorretos.", "⚠️");
+  if (!userId) {
+    filterSeries();
     return;
   }
 
-  window.location.href = "index.html";
-});
+  const { data, error } = await db
+    .from("user_drama_list")
+    .select("drama_id, status")
+    .eq("user_id", userId);
 
-document.getElementById("back-catalog").addEventListener("click", () => {
-  window.location.href = "index.html";
-});
+  if (!error && Array.isArray(data)) {
+    data.forEach(row => {
+      userListMap.set(row.drama_id, row.status);
+    });
+  }
 
-document.getElementById("logout-button").addEventListener("click", async function () {
-  if (!client) return;
+  filterSeries();
 
-  const button = this;
-  button.disabled = true;
-  button.textContent = "Saindo...";
+}
 
-  const { error } = await client.auth.signOut();
 
-  button.disabled = false;
-  button.textContent = "Sair da conta";
+// ========================================
+// CARREGAR DRAMAS DO SUPABASE
+// ========================================
+
+async function loadSeries() {
+
+  list.innerHTML =
+    "<p>Carregando catálogo... 🌷</p>";
+
+  const { data, error } = await db
+
+    .from("dramas")
+
+    .select("*")
+
+    .order("id");
 
   if (error) {
-    showPopup("Ops!", "Não foi possível sair da conta.", "⚠️");
+
+    console.error("Erro ao carregar dramas:", error);
+
+    list.innerHTML =
+      "<p>Não foi possível carregar o catálogo.</p>";
+
+    return;
+
+  }
+
+  series = data || [];
+  console.log("Total dramas:", series.length, "| Finalizadas:", series.filter(d => getEffectiveStatus(d) === "finalizada").length);
+
+  // Sincroniza automaticamente séries cujo último episódio já foi exibido
+  await syncAutoFinishedDramas(series);
+
+  // Atualiza aviso "NO AR", agenda semanal e catálogo
+  updateOnAirBanner();
+  renderWeeklySchedule();
+  filterSeries();
+
+  // Seleciona Destaque da Semana
+  const weeklySeries = series.filter(
+    item => item.weekly_featured === true
+  );
+
+  showFeaturedDrama(weeklySeries[0] || series.find(item => getEffectiveStatus(item) === "em andamento"));
+
+}
+
+
+// ========================================
+// DESTAQUE DA SEMANA
+// ========================================
+
+function showFeaturedDrama(item) {
+
+  const banner = document.getElementById("featured-banner");
+
+  const title = document.getElementById("featured-title");
+
+  const synopsis = document.getElementById("featured-synopsis");
+
+  const button = document.getElementById("featured-button");
+
+  const poster = document.getElementById("featured-poster");
+
+  if (!item) {
+
+    banner.style.display = "none";
+
+    return;
+
+  }
+
+  banner.style.display = "flex";
+
+  title.textContent =
+    item.title || "Drama em destaque";
+
+  synopsis.textContent =
+    item.synopsis || "Conheça este drama no ThaiGList!";
+
+  if (item.poster_url) {
+
+    poster.src = item.poster_url;
+
+    poster.alt = "Pôster de " + item.title;
+
+    poster.style.display = "block";
+
+  } else {
+
+    poster.removeAttribute("src");
+
+    poster.style.display = "none";
+
+  }
+
+  button.onclick = () => {
+
+    window.location.href =
+      "drama.html?id=" + encodeURIComponent(item.id);
+
+  };
+
+}
+
+
+// ========================================
+// SELETOR DE MODO DE EXIBIÇÃO
+// ========================================
+
+viewButtons.forEach(btn => {
+
+  btn.addEventListener("click", () => {
+
+    currentView = btn.dataset.view;
+
+    viewButtons.forEach(b =>
+      b.classList.toggle("active", b === btn)
+    );
+
+    filterSeries();
+
+  });
+
+});
+
+
+// ========================================
+// PESQUISA EM TEMPO REAL
+// ========================================
+
+search.addEventListener("input", () => {
+
+  filterSeries();
+
+});
+
+
+// ========================================
+// ENTER: IR PARA O CATÁLOGO
+// ========================================
+
+search.addEventListener("keydown", event => {
+
+  if (event.key === "Enter") {
+
+    event.preventDefault();
+
+    filterSeries();
+
+    document
+      .getElementById("catalog-section")
+      .scrollIntoView({
+
+        behavior: "smooth",
+
+        block: "start"
+
+      });
+
+  }
+
+});
+
+
+// ========================================
+// ALTERAR ORDENAÇÃO
+// ========================================
+
+sortSelect.addEventListener("change", () => {
+
+  filterSeries();
+
+});
+
+
+// ========================================
+// MENU DO USUÁRIO
+// ========================================
+
+function updateUserMenu(session) {
+
+  const loginLink =
+    document.getElementById("login-link");
+
+  const profileLink =
+    document.getElementById("profile-link");
+
+  const profileAvatar =
+    document.getElementById("profile-avatar");
+
+  const myListLink =
+    document.getElementById("my-list-link");
+
+  const logoutLink =
+    document.getElementById("logout-link");
+
+  const userName =
+    document.getElementById("user-name");
+
+  if (session) {
+
+    const user = session.user;
+
+    const email = user.email || "";
+
+    const name =
+      user.user_metadata?.full_name ||
+      user.user_metadata?.name ||
+      email.split("@")[0] ||
+      "Usuário";
+
+    activeUserId = user.id;
+
+    loginLink.hidden = true;
+
+    profileLink.hidden = false;
+
+    myListLink.hidden = false;
+
+    logoutLink.hidden = false;
+
+    userName.hidden = false;
+
+    userName.textContent =
+      "Olá, " + name + " 🌷";
+
+    profileLink.classList.remove("has-photo");
+
+    profileAvatar.removeAttribute("src");
+
+    loadProfileAvatar(user.id);
+    loadUserListStatuses(user.id);
+
+  } else {
+
+    activeUserId = null;
+
+    loginLink.hidden = false;
+
+    profileLink.hidden = true;
+
+    myListLink.hidden = true;
+
+    logoutLink.hidden = true;
+
+    userName.hidden = true;
+
+    profileLink.classList.remove("has-photo");
+
+    profileAvatar.removeAttribute("src");
+
+    loadUserListStatuses(null);
+
+  }
+
+}
+
+
+// ========================================
+// CARREGAR FOTO E NOME DO PERFIL
+// ========================================
+
+async function loadProfileAvatar(userId) {
+
+  const profileLink =
+    document.getElementById("profile-link");
+
+  const profileAvatar =
+    document.getElementById("profile-avatar");
+
+  const userName =
+    document.getElementById("user-name");
+
+  const { data, error } = await db
+
+    .from("profiles")
+
+    .select("display_name, avatar_url")
+
+    .eq("id", userId)
+
+    .maybeSingle();
+
+  if (activeUserId !== userId) {
     return;
   }
 
-  window.location.href = "index.html";
+  if (error) {
+
+    console.error(
+      "Erro ao carregar perfil:",
+      error
+    );
+
+    return;
+
+  }
+
+  if (!data) {
+    return;
+  }
+
+  if (data.display_name) {
+
+    userName.textContent =
+      "Olá, " + data.display_name + " 🌷";
+
+  }
+
+  if (data.avatar_url) {
+
+    profileAvatar.onload = () => {
+
+      if (activeUserId === userId) {
+
+        profileLink.classList.add("has-photo");
+
+      }
+
+    };
+
+    profileAvatar.onerror = () => {
+
+      profileLink.classList.remove("has-photo");
+
+      profileAvatar.removeAttribute("src");
+
+    };
+
+    profileAvatar.src = data.avatar_url;
+
+  }
+
+}
+
+
+// ========================================
+// VERIFICAR SESSÃO
+// ========================================
+
+async function checkUserSession() {
+
+  const { data, error } =
+    await db.auth.getSession();
+
+  if (error) {
+
+    console.error(
+      "Erro ao verificar sessão:",
+      error
+    );
+
+    return;
+
+  }
+
+  updateUserMenu(data.session);
+
+}
+
+
+// ========================================
+// ACOMPANHAR LOGIN E LOGOUT
+// ========================================
+
+db.auth.onAuthStateChange((_event, session) => {
+
+  updateUserMenu(session);
+
 });
 
-checkSession();
+
+// ========================================
+// BOTÃO SAIR
+// ========================================
+
+document
+  .getElementById("logout-link")
+  .addEventListener("click", async event => {
+
+    event.preventDefault();
+
+    const { error } = await db.auth.signOut();
+
+    if (error) {
+
+      console.error("Erro ao sair:", error);
+
+    }
+
+  });
+
+
+// ========================================
+// INICIALIZAÇÃO E ATUALIZAÇÃO EM TEMPO REAL DO "NO AR"
+// ========================================
+
+checkUserSession();
+
+loadSeries();
+
+setInterval(() => {
+  if (series.length) {
+    updateOnAirBanner();
+    renderWeeklySchedule();
+  }
+}, 60000);
+
 </script>
+
 </body>
 </html>

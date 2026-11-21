@@ -1082,7 +1082,7 @@ async function loadDramaComments(dramaId) {
     const userIds = [...new Set(comments.map((c) => c.user_id))];
     const { data: profiles } = await db
       .from("profiles")
-      .select("id, display_name, avatar_url, public_profile")
+      .select("id, display_name, avatar_url, public_profile, show_on_reviews")
       .in("id", userIds);
 
     const profileMap = new Map((profiles || []).map((p) => [p.id, p]));
@@ -1090,8 +1090,17 @@ async function loadDramaComments(dramaId) {
 
     comments.forEach((comment) => {
       const profile = profileMap.get(comment.user_id);
-      const authorName = profile?.display_name || "Fã do ThaiGList";
-      const isPublicAuthor = !profile || profile.public_profile !== false;
+
+      // Respeita a preferência de cada pessoa sobre exibir sua identidade
+      // nas resenhas e comentários. Na ausência do perfil, usa modo reservado.
+      const showIdentity = !!profile && profile.show_on_reviews !== false;
+      const authorName = showIdentity
+        ? (profile.display_name || "Fã do ThaiGList")
+        : "Fã do ThaiGList";
+
+      // Só permite abrir o perfil quando a identidade está visível
+      // e a opção de perfil público não foi desativada.
+      const isPublicAuthor = showIdentity && profile.public_profile !== false;
 
       const card = document.createElement("article");
       card.className = "comment-card";
@@ -1107,7 +1116,7 @@ async function loadDramaComments(dramaId) {
         authorWrap.title = `Ver perfil de ${authorName}`;
       }
 
-      if (profile?.avatar_url) {
+      if (showIdentity && profile?.avatar_url) {
         const img = document.createElement("img");
         img.className = "comment-avatar";
         img.src = profile.avatar_url;

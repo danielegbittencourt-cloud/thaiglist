@@ -886,11 +886,18 @@ h2 {
 }
 
 #series-list.view-list .upcoming-cols {
-  display: grid;
-  grid-template-columns: 165px 210px;
-  gap: 14px;
+  display: flex;
+  gap: 12px;
   align-items: center;
   flex-shrink: 0;
+}
+
+#series-list.view-list .upcoming-col {
+  width: 195px;
+}
+
+#series-list.view-list .upcoming-col.date-col {
+  width: 155px;
 }
 
 #series-list.view-list .upcoming-col {
@@ -926,8 +933,13 @@ h2 {
   }
   #series-list.view-list .upcoming-cols {
     width: 100%;
-    grid-template-columns: 1fr 1fr;
+    flex-wrap: wrap;
     order: 3;
+  }
+  #series-list.view-list .upcoming-col,
+  #series-list.view-list .upcoming-col.date-col {
+    flex: 1 1 140px;
+    width: auto;
   }
 }
 
@@ -1485,6 +1497,7 @@ function parseAirDay(rawDay) {
 function getEffectiveStatus(item) {
   const rawStatus = (item.status || "").trim().toLowerCase();
   const totalEps = Number(item.episodes) || 0;
+  const year = Number(item.year) || 0;
 
   if (rawStatus === "em andamento") {
     // Se tiver data de encerramento e já passou, considera finalizada automaticamente
@@ -1508,8 +1521,38 @@ function getEffectiveStatus(item) {
     return "em andamento";
   }
 
-  if (rawStatus === "finalizada" || rawStatus === "concluída" || rawStatus === "concluida") {
+  if (
+    rawStatus === "finalizada" ||
+    rawStatus === "finalizado" ||
+    rawStatus === "concluída" ||
+    rawStatus === "concluida" ||
+    rawStatus === "concluído" ||
+    rawStatus === "concluido" ||
+    rawStatus === "lançada" ||
+    rawStatus === "lancada" ||
+    rawStatus === "completa" ||
+    rawStatus === "completo"
+  ) {
     return "finalizada";
+  }
+
+  // Se não está em andamento nem em breve, e já tem ano <= 2026 (ou data de estreia passada), considera finalizada
+  const isExplicitUpcoming =
+    rawStatus === "teaser / piloto" ||
+    rawStatus === "em breve" ||
+    rawStatus === "previsto" ||
+    year > 2026;
+
+  if (!isExplicitUpcoming) {
+    if (item.premiere_date) {
+      const startTs = new Date(item.premiere_date + "T00:00:00").getTime();
+      if (!Number.isNaN(startTs) && Date.now() > startTs) {
+        return "finalizada";
+      }
+    }
+    if (!rawStatus && year > 0 && year <= 2026) {
+      return "finalizada";
+    }
   }
 
   return rawStatus;
@@ -2197,31 +2240,40 @@ function showSeries(items) {
 
     content.appendChild(infoWrap);
 
-    if (isListLayout && isUpcomingDrama(item)) {
-      const formattedDate = formatPremiereDateBR(item.premiere_date);
-      const releaseText = formattedDate
-        ? formattedDate
-        : (item.year ? `Previsto para ${item.year}` : "A definir");
-      const channelText = item.platform || "A definir";
-
+    if (isListLayout) {
+      const upcoming = isUpcomingDrama(item);
       const colsWrap = document.createElement("div");
       colsWrap.className = "upcoming-cols";
 
-      const dateCol = document.createElement("div");
-      dateCol.className = "upcoming-col";
-      dateCol.append(
-        createText("span", "upcoming-col-label", "📅 Data prevista"),
-        createText("span", "upcoming-col-value", releaseText)
-      );
+      if (upcoming) {
+        const formattedDate = formatPremiereDateBR(item.premiere_date);
+        const releaseText = formattedDate
+          ? formattedDate
+          : (item.year ? `Previsto para ${item.year}` : "A definir");
+
+        const dateCol = document.createElement("div");
+        dateCol.className = "upcoming-col date-col";
+        dateCol.append(
+          createText("span", "upcoming-col-label", "📅 Data prevista"),
+          createText("span", "upcoming-col-value", releaseText)
+        );
+        colsWrap.appendChild(dateCol);
+      }
+
+      const channelLabel = "📺 Canal oficial";
+      const channelText = (item.platform && String(item.platform).trim())
+        ? String(item.platform).trim()
+        : "A definir";
 
       const channelCol = document.createElement("div");
       channelCol.className = "upcoming-col";
+      channelCol.title = channelText;
       channelCol.append(
-        createText("span", "upcoming-col-label", "📺 Canal oficial"),
+        createText("span", "upcoming-col-label", channelLabel),
         createText("span", "upcoming-col-value", channelText)
       );
 
-      colsWrap.append(dateCol, channelCol);
+      colsWrap.appendChild(channelCol);
       content.appendChild(colsWrap);
     }
 

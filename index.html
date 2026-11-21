@@ -37,13 +37,45 @@ body {
 
 /* MENU DO USUÁRIO */
 
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.top-left-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-size: 16px;
+  color: var(--muted);
+  background: rgba(36, 29, 50, 0.75);
+  border: 1px solid rgba(56, 43, 73, 0.85);
+  transition: transform 0.18s, color 0.18s, border-color 0.18s, background 0.18s;
+  flex-shrink: 0;
+}
+
+.top-left-icon:hover {
+  color: #ffffff;
+  border-color: var(--purple);
+  background: var(--surface-light);
+  transform: translateY(-1px);
+}
+
 .user-nav {
   display: flex;
   justify-content: flex-end;
   align-items: center;
   gap: 12px;
   flex-wrap: wrap;
-  margin-bottom: 12px;
+  margin-bottom: 0;
 }
 
 .user-nav a {
@@ -1029,10 +1061,21 @@ table.catalog-table tbody tr:hover {
     padding: 16px 12px;
   }
 
+  .top-bar {
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .top-left-icon {
+    width: 34px;
+    height: 34px;
+    font-size: 15px;
+  }
+
   .user-nav {
     justify-content: flex-end;
     gap: 8px;
-    margin-bottom: 10px;
+    margin-bottom: 0;
   }
 
   .user-nav a {
@@ -1195,9 +1238,18 @@ footer {
 
 <div class="container">
 
-<!-- MENU DO USUÁRIO -->
+<!-- BARRA SUPERIOR: ÍCONE DISCRETO À ESQUERDA + MENU DO USUÁRIO -->
 
-<nav class="user-nav">
+<div class="top-bar">
+  <a
+    href="sobre.html"
+    id="about-top-icon"
+    class="top-left-icon"
+    title="Sobre o ThaiGList & Apoie"
+    aria-label="Sobre o ThaiGList e apoiar o projeto"
+  >🌷</a>
+
+  <nav class="user-nav">
 
   <a href="conta.html" id="login-link">
     Entrar / Cadastrar
@@ -1225,7 +1277,8 @@ footer {
     Sair
   </a>
 
-</nav>
+  </nav>
+</div>
 
 <!-- BANNER PRINCIPAL -->
 

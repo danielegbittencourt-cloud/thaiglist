@@ -3,10 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ThaiGList 🌷</title>
+<title>Minha Conta | ThaiGList 🌷</title>
 
 <style>
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -24,1132 +26,483 @@
 
 body {
   margin: 0;
-  padding: 30px 20px;
+  padding: 20px 15px;
   background: var(--background);
   color: var(--text);
   font-family: Arial, sans-serif;
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 780px;
   margin: auto;
 }
 
-/* MENU DO USUÁRIO */
-
-.user-nav {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-bottom: 12px;
-}
-
-.user-nav a {
-  display: inline-block;
-  padding: 11px 20px;
-  border-radius: 10px;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: bold;
-  color: white;
-  background: #7653a5;
-  transition: 0.2s;
-}
-
-.user-nav a:last-child {
-  background: linear-gradient(100deg, #f05ba8, #a875f5);
-}
-
-.user-nav a:hover {
-  transform: translateY(-2px);
-  opacity: 0.9;
-}
-
-#user-name {
-  color: #f1dcef;
-  font-size: 14px;
-}
-
-/* ÍCONE DE PERFIL */
-
-.profile-link {
-  width: 46px;
-  height: 46px;
-  padding: 0 !important;
-  border-radius: 50% !important;
-  overflow: hidden;
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #f05ba8, #a875f5) !important;
-  border: 2px solid #d99aff;
-  box-shadow: 0 0 12px #a875f555;
-  flex-shrink: 0;
-}
-
-.profile-link:hover {
-  transform: scale(1.08) !important;
-  box-shadow: 0 0 18px #f05ba888;
-}
-
-.profile-link img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-  display: none;
-}
-
-.profile-fallback {
-  color: white;
-  font-size: 23px;
-  line-height: 1;
-}
-
-.profile-link.has-photo img {
-  display: block;
-}
-
-.profile-link.has-photo .profile-fallback {
-  display: none;
-}
-
-/* BANNER PRINCIPAL */
-
+/* CABEÇALHO */
 header {
-  width: 100%;
-  min-height: 380px;
-  position: relative;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
   align-items: center;
-  padding: 30px 20px;
-
-  background-image:
-    linear-gradient(
-      to top,
-      rgba(16, 10, 25, 0.85),
-      rgba(25, 12, 35, 0.05) 65%
-    ),
-    url("./banner.jpeg");
-
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  color: white;
-  text-align: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 18px 22px;
+  background: linear-gradient(120deg, #1d1329, #2b1938);
+  border: 1px solid #49335c;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px #00000038;
 }
 
 header h1 {
-  color: white;
-  font-size: 46px;
-  margin: 0 0 8px;
-  letter-spacing: 1px;
-}
-
-header p {
-  color: #f1dcef;
-  font-size: 15px;
   margin: 0;
+  font-size: 23px;
+  color: #ffffff;
 }
 
-/* BANNER DE IDENTIDADE */
-
-.brand-banner {
-  width: 100%;
-  margin: 0 0 30px;
-  overflow: hidden;
-  border-radius: 20px;
-  border: 1px solid #75418b;
-  box-shadow: 0 10px 35px #00000066;
+.header-nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
-.brand-banner img {
-  display: block;
-  width: 100%;
-  height: auto;
-  object-fit: cover;
+.nav-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.15s, border-color 0.15s, background 0.15s;
 }
 
-/* ÁREA PRINCIPAL */
+.nav-pill-secondary {
+  color: var(--text);
+  background: rgba(36, 29, 50, 0.9);
+  border: 1px solid #493956;
+}
+
+.nav-pill-secondary:hover {
+  border-color: var(--purple);
+  transform: translateY(-1px);
+}
+
+.nav-pill-primary {
+  color: #ffffff;
+  background: linear-gradient(120deg, rgba(240, 91, 168, 0.28), rgba(168, 117, 245, 0.28));
+  border: 1px solid rgba(240, 91, 168, 0.55);
+}
+
+.nav-pill-primary:hover {
+  background: linear-gradient(120deg, var(--pink), var(--purple));
+  border-color: transparent;
+  transform: translateY(-1px);
+}
 
 main {
+  margin-top: 20px;
+}
+
+.card-box {
   background: var(--surface);
-  padding: 30px;
   border: 1px solid var(--border);
   border-radius: 20px;
+  padding: 28px;
   box-shadow: 0 8px 30px #00000033;
 }
 
-h2 {
-  color: var(--pink);
-  font-size: 25px;
-}
-
-/* BANNER NO AR (AO VIVO AGORA) */
-
-.on-air-banner {
+/* TELA DE LOGIN / CADASTRO */
+.auth-tabs {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  flex-wrap: wrap;
-  padding: 14px 18px;
-  margin-bottom: 22px;
-  border-radius: 14px;
-  background: linear-gradient(100deg, rgba(255, 62, 120, 0.22), rgba(168, 117, 245, 0.2));
-  border: 1px solid #ff5c93;
-  box-shadow: 0 0 22px rgba(255, 75, 130, 0.22);
-}
-
-.on-air-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.on-air-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 11px;
-  border-radius: 999px;
-  background: #ff3b7f;
-  color: #ffffff;
-  font-size: 12px;
-  font-weight: bold;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  animation: pulseLive 1.8s infinite;
-}
-
-@keyframes pulseLive {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 59, 127, 0.65); }
-  50% { box-shadow: 0 0 0 7px rgba(255, 59, 127, 0); }
-}
-
-.on-air-text {
-  font-size: 14px;
-  color: #ffffff;
-}
-
-.on-air-text strong {
-  color: #ff9fd0;
-}
-
-.on-air-btn {
-  padding: 8px 14px;
-  border-radius: 10px;
-  border: none;
-  background: linear-gradient(100deg, #f05ba8, #a875f5);
-  color: #ffffff;
-  font-size: 12px;
-  font-weight: bold;
-  cursor: pointer;
-  text-decoration: none;
-}
-
-/* PESQUISA E BARRA DO CATÁLOGO */
-
-.search-top-box {
-  margin-bottom: 25px;
-}
-
-#search {
-  width: 100%;
-  padding: 15px 18px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--surface-light);
-  color: white;
-  font-size: 16px;
-  outline: none;
-}
-
-#search::placeholder {
-  color: var(--muted);
-}
-
-#search:focus,
-#sort-select:focus {
-  border-color: var(--pink);
-  box-shadow: 0 0 0 3px #f05ba822;
-}
-
-.catalog-toolbar-section {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 10px;
-  margin-bottom: 20px;
-  padding-top: 18px;
-  border-top: 1px solid var(--border);
-}
-
-.controls-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  flex-wrap: wrap;
-}
-
-.view-switcher {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.view-switcher span {
-  color: var(--muted);
-  font-size: 13px;
-}
-
-.view-btn {
-  padding: 9px 14px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: var(--surface-light);
-  color: var(--muted);
-  font-size: 13px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.view-btn:hover {
-  color: white;
-  border-color: var(--purple);
-}
-
-.view-btn.active {
-  color: white;
-  background: linear-gradient(100deg, #f05ba8, #a875f5);
-  border-color: transparent;
-}
-
-.sort-container {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
   gap: 10px;
-  flex-wrap: wrap;
+  margin-bottom: 20px;
 }
 
-.sort-container label {
-  color: var(--muted);
-  font-size: 13px;
-}
-
-#sort-select {
-  padding: 11px 14px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--surface-light);
-  color: white;
-  font-size: 14px;
-  outline: none;
-  cursor: pointer;
-}
-
-#sort-select option {
-  background: var(--surface);
-  color: white;
-}
-
-#search-results {
-  color: var(--muted);
-  font-size: 13px;
-  margin: 0;
-}
-
-/* SELOS DE SITUAÇÃO */
-
-.status-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 3px 8px;
-  border-radius: 999px;
-  font-size: 10px;
-  font-weight: bold;
-  line-height: 1.2;
-  width: fit-content;
-}
-
-.status-pill.ongoing {
-  background: rgba(255, 92, 138, 0.22);
-  color: #ffa6c0;
-  border: 1px solid rgba(255, 92, 138, 0.55);
-}
-
-.status-pill.upcoming {
-  background: rgba(168, 117, 245, 0.22);
-  color: #d6baff;
-  border: 1px solid rgba(168, 117, 245, 0.5);
-}
-
-.status-pill.completed {
-  background: rgba(84, 194, 141, 0.14);
-  color: #8ee0b7;
-  border: 1px solid rgba(84, 194, 141, 0.35);
-}
-
-/* BANNER DE DESTAQUE */
-
-.featured-banner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 30px;
-  min-height: 350px;
-  padding: 35px 45px;
-  margin-bottom: 35px;
-  overflow: hidden;
-  border-radius: 20px;
-  border: 1px solid #71428c;
-  background: linear-gradient(120deg, #21132f, #30203f);
-  box-shadow: 0 10px 35px #00000066;
-}
-
-.featured-content {
+.auth-tab {
   flex: 1;
-  max-width: 550px;
-  position: relative;
-  z-index: 2;
-}
-
-.featured-image {
-  flex: 0 0 220px;
-  width: 220px;
-}
-
-.featured-image img {
-  display: block;
-  width: 100%;
-  height: 310px;
-  object-fit: cover;
-  border-radius: 14px;
-  border: 1px solid #a875f5;
-  box-shadow: 0 8px 25px #00000088;
-}
-
-.featured-label {
-  display: inline-block;
-  color: #ff91cb;
-  font-size: 12px;
-  font-weight: bold;
-  letter-spacing: 2px;
-  margin-bottom: 15px;
-}
-
-#featured-title {
-  color: white;
-  font-size: 38px;
-  margin: 0 0 15px;
-}
-
-#featured-synopsis {
-  color: #e0d3eb;
-  font-size: 15px;
-  line-height: 1.7;
-}
-
-#featured-button {
-  margin-top: 15px;
-  padding: 13px 25px;
-  border: none;
+  padding: 11px;
   border-radius: 10px;
-  background: linear-gradient(100deg, #f05ba8, #a875f5);
-  color: white;
-  font-size: 15px;
+  border: 1px solid var(--border);
+  background: var(--surface-light);
+  color: var(--muted);
+  font-size: 14px;
   font-weight: bold;
   cursor: pointer;
-  transition: .2s;
 }
 
-#featured-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 5px 20px #f05ba855;
+.auth-tab.active {
+  background: linear-gradient(100deg, var(--pink), var(--purple));
+  border-color: transparent;
+  color: #ffffff;
 }
 
-/* AGENDA SEMANAL DE LANÇAMENTOS */
-
-.schedule-section {
-  margin-bottom: 30px;
-  padding: 22px;
-  border-radius: 18px;
-  background: var(--surface-light);
-  border: 1px solid var(--border);
-}
-
-.schedule-header {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
+.form-group {
   margin-bottom: 14px;
 }
 
-.schedule-header h2 {
-  margin: 0;
-}
-
-.schedule-subtitle {
-  color: var(--muted);
-  font-size: 13px;
-  margin: 0;
-}
-
-.day-tabs {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-bottom: 18px;
-}
-
-.day-tab {
-  padding: 8px 14px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--muted);
-  font-size: 13px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.18s;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.day-tab:hover {
-  color: #ffffff;
-  border-color: var(--purple);
-}
-
-.day-tab.today {
-  border-color: rgba(240, 91, 168, 0.55);
-}
-
-.day-tab.active {
-  background: linear-gradient(100deg, #f05ba8, #a875f5);
-  color: #ffffff;
-  border-color: transparent;
-}
-
-.day-count {
-  font-size: 11px;
-  padding: 1px 6px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.14);
-}
-
-.schedule-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 14px;
-}
-
-.schedule-card {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px;
-  border-radius: 14px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  text-decoration: none;
-  color: var(--text);
-  transition: transform 0.18s, border-color 0.18s;
-}
-
-.schedule-card:hover {
-  transform: translateY(-2px);
-  border-color: var(--pink);
-}
-
-.schedule-card.live-now {
-  border-color: #ff4785;
-  box-shadow: 0 0 18px rgba(255, 71, 133, 0.25);
-}
-
-.schedule-poster {
-  width: 54px;
-  height: 76px;
-  border-radius: 8px;
-  object-fit: cover;
-  flex-shrink: 0;
-  background: #30213e;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-}
-
-.schedule-info {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.schedule-top-tags {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-.schedule-time {
-  font-size: 11.5px;
-  font-weight: bold;
-  color: #ff9dd0;
-}
-
-.schedule-ep {
-  font-size: 11px;
-  padding: 2px 7px;
-  border-radius: 999px;
-  background: rgba(168, 117, 245, 0.2);
-  color: #d9c2ff;
-  font-weight: bold;
-}
-
-.schedule-title {
-  margin: 0;
-  font-size: 14.5px;
-  color: #ffffff;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.schedule-platform {
-  font-size: 11.5px;
-  color: var(--muted);
-}
-
-.schedule-empty {
-  color: var(--muted);
-  font-size: 14px;
-  margin: 6px 0;
-}
-
-/* CATÁLOGO — MODO CARDS (PADRÃO) */
-
-#series-list.view-cards {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 22px;
-  margin-top: 20px;
-}
-
-#series-list.view-cards .series-card {
-  overflow: visible;
-  position: relative;
-  aspect-ratio: 2 / 3;
-  height: auto;
-  background: var(--surface-light);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  transition: .25s ease;
-  cursor: pointer;
-}
-
-#series-list.view-cards .series-card:hover {
-  transform: translateY(-5px);
-  border-color: var(--pink);
-  box-shadow: 0 8px 25px #f05ba822;
-}
-
-#series-list.view-cards .series-card.menu-open {
-  z-index: 30;
-}
-
-#series-list.view-cards .poster {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 15px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(145deg, #30213e, #522b63);
-  color: white;
-  text-align: center;
-  font-weight: bold;
-  padding: 0;
-}
-
-#series-list.view-cards .poster img {
+.form-group label {
   display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  background: transparent;
-}
-
-#series-list.view-cards .card-content {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  min-height: 46%;
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 12px 46px 12px 12px;
-  background: linear-gradient(
-    to bottom,
-    transparent 0%,
-    rgba(16, 13, 24, 0.8) 32%,
-    rgba(16, 13, 24, 0.98) 100%
-  );
-  z-index: 1;
-}
-
-#series-list.view-cards .series-card h3 {
-  color: #fff;
-  font-size: 14px;
-  line-height: 1.25;
-  margin: 4px 0 3px;
-}
-
-#series-list.view-cards .series-card p.card-meta {
-  color: #d9cae8;
-  font-size: 10.5px;
-  line-height: 1.3;
-  margin: 1px 0;
-}
-
-/* BOTÃO + FLUTUANTE NO CANTO INFERIOR DIREITO DO CARD */
-
-#series-list.view-cards .quick-plus-wrapper {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  z-index: 5;
-}
-
-.quick-plus-wrapper {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-}
-
-.quick-plus-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background: linear-gradient(135deg, #f05ba8, #a875f5);
-  color: #ffffff;
-  font-size: 18px;
+  margin-bottom: 6px;
+  font-size: 13px;
+  color: var(--muted);
   font-weight: bold;
-  line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.55);
-  transition: transform 0.15s ease, background 0.15s ease;
 }
 
-.quick-plus-btn:hover {
-  transform: scale(1.08);
-}
-
-.quick-plus-btn.in-list {
-  background: #2b4a3c;
-  border-color: #54c28d;
-  font-size: 14px;
-}
-
-.quick-plus-popover {
-  position: absolute;
-  right: 0;
-  bottom: 40px;
-  width: 158px;
-  padding: 6px;
-  border-radius: 12px;
-  background: #1b1528;
-  border: 1px solid #71428c;
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.78);
-  display: none;
-  flex-direction: column;
-  gap: 4px;
-  z-index: 50;
-}
-
-.quick-plus-popover.open {
-  display: flex;
-}
-
-.quick-option-btn {
+.form-group input {
   width: 100%;
-  padding: 7px 10px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface-light);
+  color: #ffffff;
+  font-size: 15px;
+  outline: none;
+}
+
+.form-group input:focus {
+  border-color: var(--pink);
+}
+
+.primary-btn {
+  width: 100%;
+  padding: 13px 18px;
   border: none;
-  border-radius: 8px;
-  background: transparent;
-  color: var(--text);
-  font-size: 12px;
-  font-weight: bold;
-  text-align: left;
-  cursor: pointer;
-  transition: background 0.15s;
-}
-
-.quick-option-btn:hover {
-  background: var(--surface-hover);
+  border-radius: 11px;
+  background: linear-gradient(100deg, var(--pink), var(--purple));
   color: #ffffff;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.15s, opacity 0.15s;
 }
 
-.quick-option-btn.selected {
-  background: rgba(240, 91, 168, 0.22);
+.primary-btn:hover {
+  transform: translateY(-1px);
+  opacity: 0.95;
+}
+
+.primary-btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.status-msg {
+  margin-top: 12px;
+  font-size: 13.5px;
   color: #ff9dd0;
 }
 
-/* CATÁLOGO — MODO LISTA */
-
-#series-list.view-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 20px;
-}
-
-#series-list.view-list .series-card {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 12px 16px;
-  background: var(--surface-light);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  cursor: pointer;
-  transition: border-color .2s;
-}
-
-#series-list.view-list .series-card:hover {
-  border-color: var(--pink);
-}
-
-#series-list.view-list .poster {
-  width: 56px;
-  height: 80px;
-  border-radius: 8px;
-  overflow: hidden;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #30213e;
-  font-size: 11px;
-  text-align: center;
-}
-
-#series-list.view-list .poster img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-#series-list.view-list .card-content {
-  flex: 1;
-  min-width: 0;
+/* PERFIL LIMPO */
+.profile-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
-#series-list.view-list .card-info {
-  flex: 1;
-  min-width: 0;
-}
-
-#series-list.view-list .upcoming-cols {
+.profile-identity {
   display: flex;
-  gap: 12px;
   align-items: center;
+  gap: 18px;
+  flex: 1;
+  min-width: 240px;
+}
+
+.avatar-wrap {
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--pink);
+  background: linear-gradient(135deg, #2d1b3d, #482863);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 38px;
   flex-shrink: 0;
+  box-shadow: 0 0 20px rgba(240, 91, 168, 0.28);
 }
 
-#series-list.view-list .upcoming-col {
-  width: 195px;
+.avatar-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
-#series-list.view-list .upcoming-col.date-col {
-  width: 155px;
+.profile-title-area h2 {
+  margin: 0 0 6px;
+  font-size: 26px;
+  color: #ffffff;
 }
 
-#series-list.view-list .upcoming-col {
+.profile-handle {
+  margin: 0 0 10px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.social-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--surface-light);
+  border: 1px solid #4a3761;
+  color: #f7efff;
+  font-size: 12.5px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: border-color 0.15s, transform 0.15s, background 0.15s;
+}
+
+.social-pill:hover {
+  border-color: var(--pink);
+  background: rgba(240, 91, 168, 0.16);
+  transform: translateY(-1px);
+}
+
+.profile-actions {
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  padding: 6px 10px;
-  border-radius: 10px;
-  background: rgba(16, 13, 24, 0.55);
-  border: 1px solid var(--border);
+  gap: 8px;
+  align-items: flex-end;
 }
 
-#series-list.view-list .upcoming-col-label {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: var(--muted);
-  font-weight: bold;
-}
-
-#series-list.view-list .upcoming-col-value {
-  font-size: 12.5px;
+.edit-profile-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 11px 18px;
+  border-radius: 11px;
+  background: linear-gradient(100deg, var(--pink), var(--purple));
   color: #ffffff;
+  font-size: 13.5px;
   font-weight: bold;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  text-decoration: none;
+  box-shadow: 0 4px 16px rgba(240, 91, 168, 0.25);
+  transition: transform 0.15s, opacity 0.15s;
 }
 
-@media (max-width: 780px) {
-  #series-list.view-list .card-content {
-    flex-wrap: wrap;
-  }
-  #series-list.view-list .upcoming-cols {
-    width: 100%;
-    flex-wrap: wrap;
-    order: 3;
-  }
-  #series-list.view-list .upcoming-col,
-  #series-list.view-list .upcoming-col.date-col {
-    flex: 1 1 140px;
-    width: auto;
-  }
+.edit-profile-btn:hover {
+  transform: translateY(-1px);
+  opacity: 0.94;
 }
 
-#series-list.view-list .series-card h3 {
-  margin: 4px 0 2px;
-  font-size: 15px;
-  color: #fff;
-}
-
-#series-list.view-list .series-card p.card-meta {
-  margin: 1px 0;
-  font-size: 11.5px;
+.logout-btn {
+  background: transparent;
+  border: 1px solid var(--border);
   color: var(--muted);
+  padding: 7px 13px;
+  border-radius: 9px;
+  font-size: 12px;
+  cursor: pointer;
 }
 
-/* CATÁLOGO — MODO TABELA */
+.logout-btn:hover {
+  border-color: var(--pink);
+  color: #ffffff;
+}
 
-.catalog-table-wrap {
-  width: 100%;
-  overflow-x: auto;
-  margin-top: 20px;
+/* DESTAQUES DO PERFIL: CASAL PREFERIDO & SÉRIE FAVORITA */
+.favorites-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.fav-box {
+  padding: 16px 18px;
+  border-radius: 14px;
   background: var(--surface-light);
   border: 1px solid var(--border);
-  border-radius: 16px;
 }
 
-table.catalog-table {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: left;
+.fav-box-label {
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--muted);
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.fav-box-value {
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffffff;
+  line-height: 1.4;
+}
+
+.fav-box-value.empty {
+  color: var(--muted);
+  font-weight: normal;
   font-size: 14px;
 }
 
-table.catalog-table thead {
-  background: #171222;
-  color: var(--muted);
-  font-size: 12px;
-  text-transform: uppercase;
+.fav-box-value a {
+  color: #ff9dd0;
+  text-decoration: none;
 }
 
-table.catalog-table th,
-table.catalog-table td {
-  padding: 12px 14px;
-  border-bottom: 1px solid var(--border);
-  vertical-align: middle;
+.fav-box-value a:hover {
+  text-decoration: underline;
 }
 
-table.catalog-table tbody tr:last-child td {
-  border-bottom: none;
+/* RESUMO DA LISTA */
+.section-block {
+  margin-top: 26px;
+  padding-top: 22px;
+  border-top: 1px solid var(--border);
 }
 
-table.catalog-table tbody tr:hover {
-  background: var(--surface-hover);
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
 }
 
-.table-thumb {
-  width: 42px;
-  height: 60px;
-  border-radius: 6px;
-  object-fit: cover;
-  display: block;
-  background: #30213e;
+.section-header h3 {
+  margin: 0;
+  font-size: 17px;
+  color: var(--pink);
 }
 
-.table-title-link {
-  color: #ffffff;
+.section-header a {
+  font-size: 13px;
+  color: var(--purple);
   font-weight: bold;
   text-decoration: none;
 }
 
-.table-title-link:hover {
-  color: var(--pink);
+.section-header a:hover {
+  text-decoration: underline;
 }
 
-/* TABLETS */
-
-@media (max-width: 900px) {
-  #series-list.view-cards {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
 }
 
-/* CELULARES */
-
-@media (max-width: 600px) {
-  body {
-    padding: 16px 12px;
-  }
-
-  .user-nav {
-    justify-content: flex-end;
-    gap: 8px;
-    margin-bottom: 10px;
-  }
-
-  .user-nav a {
-    padding: 9px 13px;
-    font-size: 12px;
-  }
-
-  .profile-link {
-    width: 42px;
-    height: 42px;
-    padding: 0 !important;
-  }
-
-  .profile-fallback {
-    font-size: 21px;
-  }
-
-  header {
-    min-height: 340px;
-    padding: 22px 15px;
-    background-size: auto 100%;
-    background-position: right center;
-  }
-
-  header h1 {
-    font-size: 34px;
-  }
-
-  header p {
-    font-size: 13px;
-    max-width: 300px;
-    line-height: 1.5;
-  }
-
-  main {
-    padding: 19px;
-  }
-
-  .featured-banner {
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    min-height: auto;
-    padding: 25px 18px;
-    text-align: center;
-  }
-
-  .featured-content {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .featured-image {
-    flex: none;
-    width: 180px;
-  }
-
-  .featured-image img {
-    width: 100%;
-    height: 260px;
-    object-fit: contain;
-  }
-
-  #featured-title {
-    font-size: 29px;
-  }
-
-  .schedule-section {
-    padding: 16px;
-  }
-
-  .controls-toolbar {
-    align-items: stretch;
-  }
-
-  .sort-container {
-    justify-content: space-between;
-  }
-
-  #sort-select {
-    max-width: 65%;
-  }
-
-  #series-list.view-cards {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
-  }
-
-  #series-list.view-cards .series-card h3 {
-    font-size: 13.5px;
-  }
-
-  #series-list.view-cards .series-card p.card-meta {
-    font-size: 10px;
-  }
-
-  #series-list.view-cards .card-content {
-    padding: 10px 42px 10px 10px;
-  }
-
-  .quick-plus-btn {
-    width: 28px;
-    height: 28px;
-    font-size: 16px;
-  }
+.stat-card {
+  padding: 15px 12px;
+  border-radius: 14px;
+  background: var(--surface-light);
+  border: 1px solid var(--border);
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s, border-color 0.15s;
 }
 
-/* RODAPÉ */
+.stat-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--purple);
+}
+
+.stat-number {
+  font-size: 24px;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* BADGES E CONQUISTAS */
+.badges-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+  gap: 12px;
+}
+
+.badge-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 13px;
+  background: var(--surface-light);
+  border: 1px solid rgba(240, 91, 168, 0.45);
+}
+
+.badge-item.locked {
+  opacity: 0.42;
+  border-color: var(--border);
+  filter: grayscale(0.85);
+}
+
+.badge-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: rgba(240, 91, 168, 0.16);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.badge-title {
+  font-size: 13px;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 2px;
+}
+
+.badge-desc {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.3;
+}
 
 footer {
   text-align: center;
-  padding: 25px;
+  padding: 22px;
   color: var(--muted);
+  font-size: 13px;
 }
 
 [hidden] {
   display: none !important;
+}
+
+@media (max-width: 640px) {
+  .card-box {
+    padding: 20px;
+  }
+
+  .profile-actions {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .favorites-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 </style>
 </head>
@@ -1158,1655 +511,455 @@ footer {
 
 <div class="container">
 
-<!-- MENU DO USUÁRIO -->
+  <header>
+    <h1>ThaiGList 🌷</h1>
+    <nav class="header-nav">
+      <a class="nav-pill nav-pill-secondary" href="index.html">← Catálogo</a>
+      <a class="nav-pill nav-pill-primary" href="minha-lista.html" id="nav-my-list" hidden>Minha Lista</a>
+    </nav>
+  </header>
 
-<nav class="user-nav">
+  <main>
 
-  <a href="conta.html" id="login-link">
-    Entrar / Cadastrar
-  </a>
-
-  <span id="user-name" hidden></span>
-
-  <a
-    href="conta.html"
-    id="profile-link"
-    class="profile-link"
-    title="Meu perfil"
-    aria-label="Acessar meu perfil"
-    hidden
-  >
-    <img id="profile-avatar" src="" alt="Foto do perfil">
-    <span class="profile-fallback">👤</span>
-  </a>
-
-  <a href="minha-lista.html" id="my-list-link" hidden>
-    Minha Lista
-  </a>
-
-  <a href="#" id="logout-link" hidden>
-    Sair
-  </a>
-
-</nav>
-
-<!-- BANNER PRINCIPAL -->
-
-<header>
-
-  <h1>ThaiGList 🌷</h1>
-
-  <p>
-   Sua coleção de GL de forma fácil e organizada
-  </p>
-
-</header>
-
-<section class="brand-banner"></section>
-
-<main>
-
-  <!-- AVISO AO VIVO ("NO AR") QUANDO HÁ EPISÓDIO PASSANDO NO HORÁRIO -->
-
-  <div id="on-air-banner" class="on-air-banner" hidden>
-    <div class="on-air-left">
-      <span class="on-air-badge">🔴 NO AR</span>
-      <span class="on-air-text" id="on-air-text"></span>
-    </div>
-    <a id="on-air-link" href="#" class="on-air-btn">Ver detalhes</a>
-  </div>
-
-  <h2 id="catalog-title">Explore o catálogo</h2>
-
-
-
-  <!-- BANNER DE DESTAQUE -->
-
-  <section id="featured-banner" class="featured-banner">
-
-    <div class="featured-content">
-
-      <span class="featured-label">
-        🌷 DESTAQUE DA SEMANA
-      </span>
-
-      <h2 id="featured-title">
-        Carregando destaque...
-      </h2>
-
-      <p id="featured-synopsis">
-        Descubra o drama em destaque desta semana.
-      </p>
-
-      <button id="featured-button" type="button">
-        Ver detalhes
-      </button>
-
+    <!-- ESTADO DE CARREGAMENTO -->
+    <div id="loading-box" class="card-box">
+      <p style="margin:0; color: var(--muted);">Carregando perfil... 🌷</p>
     </div>
 
-    <div class="featured-image">
-
-      <img
-        id="featured-poster"
-        src=""
-        alt="Pôster do drama em destaque"
-      >
-
-    </div>
-
-  </section>
-
-  <!-- CALENDÁRIO SEMANAL DE LANÇAMENTOS -->
-
-  <section class="schedule-section" aria-label="Calendário semanal de GLs em andamento">
-
-    <div class="schedule-header">
-      <h2>📅 Agenda Semanal</h2>
-      <p class="schedule-subtitle">Episódios novos exibidos semanalmente nas plataformas oficiais (horário de Brasília)</p>
-    </div>
-
-    <div class="day-tabs" id="day-tabs">
-      <button type="button" class="day-tab" data-day="0">Dom <span class="day-count" id="cnt-0">0</span></button>
-      <button type="button" class="day-tab" data-day="1">Seg <span class="day-count" id="cnt-1">0</span></button>
-      <button type="button" class="day-tab" data-day="2">Ter <span class="day-count" id="cnt-2">0</span></button>
-      <button type="button" class="day-tab" data-day="3">Qua <span class="day-count" id="cnt-3">0</span></button>
-      <button type="button" class="day-tab" data-day="4">Qui <span class="day-count" id="cnt-4">0</span></button>
-      <button type="button" class="day-tab" data-day="5">Sex <span class="day-count" id="cnt-5">0</span></button>
-      <button type="button" class="day-tab" data-day="6">Sáb <span class="day-count" id="cnt-6">0</span></button>
-      <button type="button" class="day-tab" data-day="all">Todos <span class="day-count" id="cnt-all">0</span></button>
-    </div>
-
-    <div id="schedule-list" class="schedule-grid">
-      <p class="schedule-empty">Carregando agenda semanal... 🌷</p>
-    </div>
-
-  </section>
-
-  <!-- EXIBIÇÃO, ORDENAÇÃO E CATÁLOGO -->
-
-  <section id="catalog-section">
-
-    <div class="search-top-box" style="margin-top: 8px; margin-bottom: 14px;">
-
-      <input
-        type="text"
-        id="search"
-        placeholder="Pesquisar por título, gênero, elenco ou ship (casal)..."
-        aria-label="Pesquisar dramas"
-        autocomplete="off"
-      >
-
-    </div>
-
-    <div class="catalog-toolbar-section" style="margin-top: 0; padding-top: 12px; border-top: none;">
-
-      <div class="controls-toolbar">
-
-        <div class="view-switcher" id="view-switcher">
-          <span>Exibir como:</span>
-          <button type="button" class="view-btn active" data-view="cards">⊞ Cards</button>
-          <button type="button" class="view-btn" data-view="list">☰ Lista</button>
-          <button type="button" class="view-btn" data-view="table">▤ Tabela</button>
-          <button type="button" class="view-btn" data-view="upcoming">⏳ Próximos lançamentos</button>
-          <button type="button" class="view-btn" data-view="completed">✓ Finalizadas</button>
-        </div>
-
-        <div class="sort-container">
-
-          <label for="sort-select">
-            Organizar por:
-          </label>
-
-          <select id="sort-select">
-
-            <option value="year">
-              Ano (mais recentes)
-            </option>
-
-            <option value="title">
-              Título (A–Z)
-            </option>
-
-            <option value="cast">
-              Elenco principal (A–Z)
-            </option>
-
-            <option value="ship">
-              Ship / Casal (A–Z)
-            </option>
-
-          </select>
-
-        </div>
-
+    <!-- FORMULÁRIO DE LOGIN / CADASTRO (QUANDO DESLOGADO) -->
+    <section id="auth-box" class="card-box" hidden>
+      <div class="auth-tabs">
+        <button type="button" class="auth-tab active" id="tab-login">Entrar</button>
+        <button type="button" class="auth-tab" id="tab-signup">Criar conta</button>
       </div>
 
-      <p id="search-results" aria-live="polite"></p>
+      <form id="auth-form">
+        <div class="form-group" id="signup-name-group" hidden>
+          <label for="auth-name">Nome de exibição</label>
+          <input type="text" id="auth-name" placeholder="Como você quer ser chamada no ThaiGList">
+        </div>
 
-    </div>
+        <div class="form-group">
+          <label for="auth-email">E-mail</label>
+          <input type="email" id="auth-email" required placeholder="seuemail@exemplo.com">
+        </div>
 
-    <div id="series-list" class="view-cards">
-      <p>Carregando catálogo... 🌷</p>
-    </div>
+        <div class="form-group">
+          <label for="auth-password">Senha</label>
+          <input type="password" id="auth-password" required minlength="6" placeholder="Mínimo 6 caracteres">
+        </div>
 
-  </section>
+        <button type="submit" class="primary-btn" id="auth-submit-btn">Entrar 🌷</button>
+        <p id="auth-msg" class="status-msg"></p>
+      </form>
+    </section>
 
-</main>
+    <!-- PERFIL LIMPO (LOGADO OU VISUALIZAÇÃO PÚBLICA ?user=...) -->
+    <section id="profile-box" class="card-box" hidden>
 
-<footer>
-  <p>ThaiGList © 2026</p>
-</footer>
+      <div class="profile-top">
+        <div class="profile-identity">
+          <div class="avatar-wrap" id="profile-avatar-wrap">🌷</div>
+
+          <div class="profile-title-area">
+            <h2 id="profile-display-name">Fã do ThaiGList</h2>
+            <p class="profile-handle" id="profile-subtitle">Membro da comunidade ThaiGList</p>
+            <div class="social-links" id="profile-socials"></div>
+          </div>
+        </div>
+
+        <div class="profile-actions" id="own-account-actions" hidden>
+          <a href="editar-perfil.html" class="edit-profile-btn">✏️ Editar perfil</a>
+          <button type="button" class="logout-btn" id="logout-btn">Sair da conta</button>
+        </div>
+      </div>
+
+      <!-- CASAL PREFERIDO E SÉRIE FAVORITA -->
+      <div class="favorites-grid">
+        <div class="fav-box">
+          <div class="fav-box-label">💕 Casal preferido (Ship)</div>
+          <div class="fav-box-value" id="fav-ship-value">Não definido</div>
+        </div>
+
+        <div class="fav-box">
+          <div class="fav-box-label">⭐ Série favorita</div>
+          <div class="fav-box-value" id="fav-drama-value">Não definida</div>
+        </div>
+      </div>
+
+      <!-- RESUMO DA LISTA -->
+      <div class="section-block">
+        <div class="section-header">
+          <h3>📋 Resumo da lista</h3>
+          <a href="minha-lista.html" id="view-full-list-link">Ver lista completa →</a>
+        </div>
+
+        <div class="stats-grid">
+          <a href="minha-lista.html" class="stat-card">
+            <div class="stat-number" id="stat-total">0</div>
+            <div class="stat-label">Total na lista</div>
+          </a>
+          <a href="minha-lista.html?status=completed" class="stat-card">
+            <div class="stat-number" id="stat-completed">0</div>
+            <div class="stat-label">✓ Concluídos</div>
+          </a>
+          <a href="minha-lista.html?status=watching" class="stat-card">
+            <div class="stat-number" id="stat-watching">0</div>
+            <div class="stat-label">▶ Assistindo</div>
+          </a>
+          <a href="minha-lista.html?status=want_to_watch" class="stat-card">
+            <div class="stat-number" id="stat-want">0</div>
+            <div class="stat-label">♡ Quero assistir</div>
+          </a>
+        </div>
+      </div>
+
+      <!-- BADGES E CONQUISTAS -->
+      <div class="section-block">
+        <div class="section-header">
+          <h3>🏆 Badges e conquistas</h3>
+          <span id="badges-counter" style="font-size: 12.5px; color: var(--muted);">0 desbloqueadas</span>
+        </div>
+
+        <div class="badges-grid" id="badges-grid"></div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer>
+    ThaiGList © 2026
+  </footer>
 
 </div>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-
 <script>
-
-// ========================================
-// STORAGE SEGURO (COM FALLBACK EM MEMÓRIA)
-// ========================================
+const SUPABASE_URL = "https://jjybnidhwfimcdwygafk.supabase.co";
+const SUPABASE_KEY = "sb_publishable_DyikY0WSJJ4apDc0_ZwfOw_x6LvfqM-";
 
 const memoryStorage = new Map();
-
 const safeStorage = {
-  getItem: (key) => {
-    try {
-      return window.localStorage.getItem(key);
-    } catch {
-      return memoryStorage.get(key) ?? null;
-    }
-  },
-  setItem: (key, value) => {
-    try {
-      window.localStorage.setItem(key, value);
-    } catch {
-      memoryStorage.set(key, value);
-    }
-  },
-  removeItem: (key) => {
-    try {
-      window.localStorage.removeItem(key);
-    } catch {
-      memoryStorage.delete(key);
-    }
-  }
+  getItem: (key) => { try { return window.localStorage.getItem(key); } catch { return memoryStorage.get(key) ?? null; } },
+  setItem: (key, value) => { try { window.localStorage.setItem(key, value); } catch { memoryStorage.set(key, value); } },
+  removeItem: (key) => { try { window.localStorage.removeItem(key); } catch { memoryStorage.delete(key); } }
 };
 
-
-// ========================================
-// CONEXÃO SUPABASE
-// ========================================
-
-const SUPABASE_URL =
-  "https://jjybnidhwfimcdwygafk.supabase.co";
-
-const SUPABASE_KEY =
-  "sb_publishable_DyikY0WSJJ4apDc0_ZwfOw_x6LvfqM-";
-
-const db = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY,
-  {
-    auth: {
-      storage: safeStorage,
-      persistSession: true,
-      autoRefreshToken: true
-    }
-  }
-);
-
-let series = [];
-let activeUserId = null;
-let userListMap = new Map();
-let currentView = "cards";
-let selectedScheduleDay = String(new Date().getDay());
-
-const DAY_NAMES = [
-  "Domingo",
-  "Segunda-feira",
-  "Terça-feira",
-  "Quarta-feira",
-  "Quinta-feira",
-  "Sexta-feira",
-  "Sábado"
-];
-
-const list = document.getElementById("series-list");
-const search = document.getElementById("search");
-const sortSelect = document.getElementById("sort-select");
-const searchResults = document.getElementById("search-results");
-const viewButtons = document.querySelectorAll("#view-switcher .view-btn");
-const dayTabButtons = document.querySelectorAll("#day-tabs .day-tab");
-
-const collator = new Intl.Collator("pt-BR", {
-  sensitivity: "base",
-  numeric: true
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+  auth: { storage: safeStorage, persistSession: true, autoRefreshToken: true }
 });
 
+const loadingBox = document.getElementById("loading-box");
+const authBox = document.getElementById("auth-box");
+const profileBox = document.getElementById("profile-box");
+const navMyList = document.getElementById("nav-my-list");
 
-// ========================================
-// FUNÇÃO PARA CRIAR ELEMENTOS DE TEXTO
-// ========================================
+const publicUserId = new URLSearchParams(window.location.search).get("user");
+let isSignupMode = false;
 
-function createText(tag, className, value) {
+// Alternância Entrar / Criar conta
+const tabLogin = document.getElementById("tab-login");
+const tabSignup = document.getElementById("tab-signup");
+const signupNameGroup = document.getElementById("signup-name-group");
+const authSubmitBtn = document.getElementById("auth-submit-btn");
+const authMsg = document.getElementById("auth-msg");
 
-  const element = document.createElement(tag);
+tabLogin.addEventListener("click", () => {
+  isSignupMode = false;
+  tabLogin.classList.add("active");
+  tabSignup.classList.remove("active");
+  signupNameGroup.hidden = true;
+  authSubmitBtn.textContent = "Entrar 🌷";
+  authMsg.textContent = "";
+});
 
-  element.className = className;
+tabSignup.addEventListener("click", () => {
+  isSignupMode = true;
+  tabSignup.classList.add("active");
+  tabLogin.classList.remove("active");
+  signupNameGroup.hidden = false;
+  authSubmitBtn.textContent = "Criar conta 🌷";
+  authMsg.textContent = "";
+});
 
-  element.textContent = value;
+document.getElementById("auth-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const email = document.getElementById("auth-email").value.trim();
+  const password = document.getElementById("auth-password").value;
+  const fullName = document.getElementById("auth-name").value.trim();
 
-  return element;
-}
+  authSubmitBtn.disabled = true;
+  authMsg.textContent = "";
 
-
-// ========================================
-// OBTÉM O ELENCO PRINCIPAL
-// ========================================
-
-function getMainCast(item) {
-
-  const cast = item.main_cast;
-
-  if (Array.isArray(cast)) {
-    return cast.join(", ");
-  }
-
-  return cast || "";
-
-}
-
-
-// ========================================
-// CÁLCULO AUTOMÁTICO DE EPISÓDIO E ENCERRAMENTO
-// ========================================
-
-function parseAirDay(rawDay) {
-  if (rawDay === null || rawDay === undefined || rawDay === "") return null;
-  if (typeof rawDay === "number" && rawDay >= 0 && rawDay <= 6) return rawDay;
-
-  const str = String(rawDay).trim().toLowerCase();
-  if (/^[0-6]$/.test(str)) return Number(str);
-  if (str.startsWith("dom")) return 0;
-  if (str.startsWith("seg")) return 1;
-  if (str.startsWith("ter")) return 2;
-  if (str.startsWith("qua")) return 3;
-  if (str.startsWith("qui")) return 4;
-  if (str.startsWith("sex")) return 5;
-  if (str.startsWith("sáb") || str.startsWith("sab")) return 6;
-  return null;
-}
-
-function getEffectiveStatus(item) {
-  const rawStatus = (item.status || "").trim().toLowerCase();
-  const totalEps = Number(item.episodes) || 0;
-  const year = Number(item.year) || 0;
-
-  if (rawStatus === "em andamento") {
-    // Se tiver data de encerramento e já passou, considera finalizada automaticamente
-    if (item.end_date) {
-      const endTs = new Date(item.end_date + "T23:59:59").getTime();
-      if (!Number.isNaN(endTs) && Date.now() > endTs) {
-        return "finalizada";
-      }
-    }
-
-    // Se tiver data de estreia e total de episódios, calcula quantos episódios já saíram
-    if (item.premiere_date && totalEps > 0) {
-      const startTs = new Date(item.premiere_date + "T00:00:00").getTime();
-      if (!Number.isNaN(startTs) && Date.now() >= startTs) {
-        const weeksElapsed = Math.floor((Date.now() - startTs) / (7 * 24 * 60 * 60 * 1000)) + 1;
-        if (weeksElapsed > totalEps) {
-          return "finalizada";
-        }
-      }
-    }
-    return "em andamento";
-  }
-
-  if (
-    rawStatus.includes("finaliz") ||
-    rawStatus.includes("conclu") ||
-    rawStatus.includes("complet") ||
-    rawStatus.includes("encerrad") ||
-    rawStatus.includes("lançad") ||
-    rawStatus.includes("lancad") ||
-    rawStatus.includes("exibid") ||
-    rawStatus === "finished" ||
-    rawStatus === "completed" ||
-    rawStatus === "ended"
-  ) {
-    return "finalizada";
-  }
-
-  const isExplicitUpcoming =
-    rawStatus.includes("teaser") ||
-    rawStatus.includes("piloto") ||
-    rawStatus.includes("breve") ||
-    rawStatus.includes("previst") ||
-    rawStatus.includes("anunciad") ||
-    rawStatus.includes("upcoming") ||
-    year > 2026;
-
-  if (!isExplicitUpcoming && year > 0 && year <= 2026) {
-    return "finalizada";
-  }
-
-  return rawStatus;
-}
-
-function getCurrentEpisodeNumber(item) {
-  const totalEps = Number(item.episodes) || 0;
-  if (!item.premiere_date) return null;
-
-  const startTs = new Date(item.premiere_date + "T00:00:00").getTime();
-  if (Number.isNaN(startTs) || Date.now() < startTs) return null;
-
-  const ep = Math.floor((Date.now() - startTs) / (7 * 24 * 60 * 60 * 1000)) + 1;
-  return totalEps > 0 ? Math.min(ep, totalEps) : ep;
-}
-
-function isSeriesOnAirNow(item, nowDate = new Date()) {
-  if (getEffectiveStatus(item) !== "em andamento") return false;
-
-  const airDay = parseAirDay(item.air_day);
-  if (airDay === null || airDay !== nowDate.getDay()) return false;
-
-  if (!item.air_time) return false;
-  const parts = String(item.air_time).trim().split(":");
-  if (parts.length < 2) return false;
-
-  const startHour = Number(parts[0]);
-  const startMin = Number(parts[1]);
-  if (Number.isNaN(startHour) || Number.isNaN(startMin)) return false;
-
-  const startMinutes = startHour * 60 + startMin;
-  const nowMinutes = nowDate.getHours() * 60 + nowDate.getMinutes();
-
-  // Janela de exibição: do horário de início até 60 minutos depois
-  return nowMinutes >= startMinutes && nowMinutes < startMinutes + 60;
-}
-
-async function syncAutoFinishedDramas(dramasList) {
-  const toFinishIds = dramasList
-    .filter(d => (d.status || "").trim().toLowerCase() === "em andamento" && getEffectiveStatus(d) === "finalizada")
-    .map(d => d.id);
-
-  if (!toFinishIds.length) return;
-
-  const { error } = await db
-    .from("dramas")
-    .update({ status: "Finalizada" })
-    .in("id", toFinishIds);
-
-  if (!error) {
-    dramasList.forEach(d => {
-      if (toFinishIds.includes(d.id)) {
-        d.status = "Finalizada";
-      }
+  if (isSignupMode) {
+    const { data, error } = await db.auth.signUp({
+      email,
+      password,
+      options: { data: { full_name: fullName } }
     });
-  }
-}
-
-
-// ========================================
-// SELOS DE SITUAÇÃO (EM ANDAMENTO / EM BREVE / FINALIZADA)
-// ========================================
-
-function isUpcomingDrama(item) {
-  const effectiveStatus = getEffectiveStatus(item);
-  const year = Number(item.year) || 0;
-  return (
-    effectiveStatus === "teaser / piloto" ||
-    effectiveStatus === "em breve" ||
-    effectiveStatus === "previsto" ||
-    year > 2026
-  );
-}
-
-function formatPremiereDateBR(rawDate) {
-  if (!rawDate) return "";
-  const str = String(rawDate).trim();
-  const match = str.match(/^(\d{4})-(\d{2})-(\d{2})/);
-  if (match) {
-    return `${match[3]}/${match[2]}/${match[1]}`;
-  }
-  return str;
-}
-
-function getReleaseBadgeInfo(item) {
-
-  const effectiveStatus = getEffectiveStatus(item);
-
-  if (effectiveStatus === "em andamento") {
-    return {
-      type: "ongoing",
-      label: "📺 Em andamento"
-    };
-  }
-
-  if (isUpcomingDrama(item)) {
-    return {
-      type: "upcoming",
-      label: "⏳ Em breve"
-    };
-  }
-
-  if (effectiveStatus === "finalizada") {
-    return {
-      type: "completed",
-      label: "✓ Finalizada"
-    };
-  }
-
-  return null;
-
-}
-
-
-// ========================================
-// AVISO "NO AR" NO TOPO DA PÁGINA
-// ========================================
-
-function updateOnAirBanner() {
-  const banner = document.getElementById("on-air-banner");
-  const textEl = document.getElementById("on-air-text");
-  const linkEl = document.getElementById("on-air-link");
-
-  const now = new Date();
-  const liveSeries = series.filter(item => isSeriesOnAirNow(item, now));
-
-  if (!liveSeries.length) {
-    banner.hidden = true;
-    return;
-  }
-
-  const current = liveSeries[0];
-  const epNum = getCurrentEpisodeNumber(current);
-  const epLabel = epNum ? ` · Episódio ${epNum}` : "";
-  const platLabel = current.platform ? ` (${current.platform})` : "";
-
-  textEl.innerHTML = `<strong>${current.title}</strong>${epLabel}${platLabel}`;
-  linkEl.href = "drama.html?id=" + encodeURIComponent(current.id);
-  banner.hidden = false;
-}
-
-
-// ========================================
-// AGENDA SEMANAL DE LANÇAMENTOS
-// ========================================
-
-function renderWeeklySchedule() {
-  const scheduleList = document.getElementById("schedule-list");
-  const todayIdx = new Date().getDay();
-
-  const ongoingDramas = series.filter(item => getEffectiveStatus(item) === "em andamento");
-
-  // Atualiza contadores por dia da semana
-  for (let d = 0; d <= 6; d++) {
-    const count = ongoingDramas.filter(item => parseAirDay(item.air_day) === d).length;
-    const badge = document.getElementById("cnt-" + d);
-    if (badge) badge.textContent = count;
-  }
-  const allBadge = document.getElementById("cnt-all");
-  if (allBadge) allBadge.textContent = ongoingDramas.length;
-
-  dayTabButtons.forEach(btn => {
-    const dVal = btn.dataset.day;
-    btn.classList.toggle("active", dVal === selectedScheduleDay);
-    btn.classList.toggle("today", dVal === String(todayIdx));
-  });
-
-  let filtered = ongoingDramas;
-  if (selectedScheduleDay !== "all") {
-    const dayNum = Number(selectedScheduleDay);
-    filtered = ongoingDramas.filter(item => parseAirDay(item.air_day) === dayNum);
-  }
-
-  filtered.sort((a, b) => {
-    const dayA = parseAirDay(a.air_day) ?? 7;
-    const dayB = parseAirDay(b.air_day) ?? 7;
-    if (selectedScheduleDay === "all" && dayA !== dayB) return dayA - dayB;
-    return (a.air_time || "99:99").localeCompare(b.air_time || "99:99");
-  });
-
-  scheduleList.innerHTML = "";
-
-  if (!filtered.length) {
-    const msg = document.createElement("p");
-    msg.className = "schedule-empty";
-    msg.textContent =
-      selectedScheduleDay === "all"
-        ? "Nenhum GL em andamento cadastrado na agenda desta semana 🌷"
-        : `Nenhum lançamento agendado para ${DAY_NAMES[Number(selectedScheduleDay)]} 🌷`;
-    scheduleList.appendChild(msg);
-    return;
-  }
-
-  const now = new Date();
-
-  filtered.forEach(item => {
-    const liveNow = isSeriesOnAirNow(item, now);
-    const card = document.createElement("a");
-    card.className = "schedule-card" + (liveNow ? " live-now" : "");
-    card.href = "drama.html?id=" + encodeURIComponent(item.id);
-
-    if (item.poster_url) {
-      const img = document.createElement("img");
-      img.className = "schedule-poster";
-      img.src = item.poster_url;
-      img.alt = item.title || "Pôster";
-      img.loading = "lazy";
-      img.onerror = () => { img.style.display = "none"; };
-      card.appendChild(img);
-    } else {
-      const ph = document.createElement("div");
-      ph.className = "schedule-poster";
-      ph.textContent = "🌷";
-      card.appendChild(ph);
+    authSubmitBtn.disabled = false;
+    if (error) {
+      authMsg.textContent = "Erro ao criar conta: " + error.message;
+      return;
     }
-
-    const info = document.createElement("div");
-    info.className = "schedule-info";
-
-    const topTags = document.createElement("div");
-    topTags.className = "schedule-top-tags";
-
-    if (liveNow) {
-      const liveTag = document.createElement("span");
-      liveTag.className = "on-air-badge";
-      liveTag.style.padding = "2px 7px";
-      liveTag.style.fontSize = "10px";
-      liveTag.textContent = "🔴 NO AR";
-      topTags.appendChild(liveTag);
+    if (data?.user) {
+      await db.from("profiles").upsert({
+        id: data.user.id,
+        display_name: fullName || email.split("@")[0]
+      });
     }
-
-    const dayIdx = parseAirDay(item.air_day);
-    const dayPrefix = selectedScheduleDay === "all" && dayIdx !== null ? `${DAY_NAMES[dayIdx].slice(0, 3)} · ` : "";
-    const timeLabel = item.air_time ? `${dayPrefix}⏰ ${String(item.air_time).slice(0, 5)}` : `${dayPrefix}Horário a definir`;
-
-    const timeSpan = document.createElement("span");
-    timeSpan.className = "schedule-time";
-    timeSpan.textContent = timeLabel;
-    topTags.appendChild(timeSpan);
-
-    const epNum = getCurrentEpisodeNumber(item);
-    const totalEps = Number(item.episodes) || 0;
-    if (epNum || totalEps) {
-      const epSpan = document.createElement("span");
-      epSpan.className = "schedule-ep";
-      epSpan.textContent = epNum
-        ? (totalEps ? `EP ${epNum}/${totalEps}` : `EP ${epNum}`)
-        : `${totalEps} eps`;
-      topTags.appendChild(epSpan);
+    authMsg.textContent = "Conta criada! Verifique seu e-mail ou aguarde o carregamento... 🌷";
+  } else {
+    const { error } = await db.auth.signInWithPassword({ email, password });
+    authSubmitBtn.disabled = false;
+    if (error) {
+      authMsg.textContent = "E-mail ou senha inválidos.";
+      return;
     }
+  }
 
-    const titleEl = document.createElement("h3");
-    titleEl.className = "schedule-title";
-    titleEl.textContent = item.title || "Sem título";
-
-    const platEl = document.createElement("div");
-    platEl.className = "schedule-platform";
-    platEl.textContent = item.platform ? `📺 ${item.platform}` : "📺 Plataforma oficial";
-
-    info.append(topTags, titleEl, platEl);
-    card.appendChild(info);
-    scheduleList.appendChild(card);
-  });
-}
-
-dayTabButtons.forEach(btn => {
-  btn.addEventListener("click", () => {
-    selectedScheduleDay = btn.dataset.day;
-    renderWeeklySchedule();
-  });
+  await initAccountPage();
 });
 
-
-// ========================================
-// FECHAR POPOVERS ABERTOS
-// ========================================
-
-function closeAllQuickPopovers(exceptPopover = null) {
-  document.querySelectorAll(".quick-plus-popover.open").forEach(pop => {
-    if (pop !== exceptPopover) {
-      pop.classList.remove("open");
-      const parentCard = pop.closest(".series-card");
-      if (parentCard) parentCard.classList.remove("menu-open");
-    }
-  });
-}
-
-document.addEventListener("click", () => {
-  closeAllQuickPopovers();
+document.getElementById("logout-btn").addEventListener("click", async () => {
+  await db.auth.signOut();
+  window.location.href = "conta.html";
 });
 
+function buildSocialLink(platform, rawValue) {
+  const val = String(rawValue || "").trim();
+  if (!val) return null;
 
-// ========================================
-// ATALHO RÁPIDO (+) PARA ADICIONAR NA LISTA
-// ========================================
+  const cleanHandle = val.replace(/^@/, "").replace(/^https?:\/\/(www\.)?(instagram\.com|x\.com|twitter\.com|tiktok\.com)\/?@?/i, "").replace(/\/$/, "");
+  if (!cleanHandle) return null;
 
-function buildQuickPlusControl(item) {
+  const a = document.createElement("a");
+  a.className = "social-pill";
+  a.target = "_blank";
+  a.rel = "noopener noreferrer";
 
-  const currentStatus = userListMap.get(item.id) || null;
-  const isInList = Boolean(currentStatus);
+  if (platform === "instagram") {
+    a.href = val.startsWith("http") ? val : `https://instagram.com/${cleanHandle}`;
+    a.textContent = `📸 @${cleanHandle}`;
+  } else if (platform === "x") {
+    a.href = val.startsWith("http") ? val : `https://x.com/${cleanHandle}`;
+    a.textContent = `𝕏 @${cleanHandle}`;
+  } else if (platform === "tiktok") {
+    a.href = val.startsWith("http") ? val : `https://www.tiktok.com/@${cleanHandle}`;
+    a.textContent = `🎵 @${cleanHandle}`;
+  }
+  return a;
+}
 
-  const wrapper = document.createElement("div");
-  wrapper.className = "quick-plus-wrapper";
-
-  const stopNav = (ev) => ev.stopPropagation();
-  wrapper.addEventListener("click", stopNav);
-  wrapper.addEventListener("keydown", stopNav);
-
-  const plusBtn = document.createElement("button");
-  plusBtn.type = "button";
-  plusBtn.className = "quick-plus-btn" + (isInList ? " in-list" : "");
-  plusBtn.textContent = isInList ? "✓" : "+";
-  plusBtn.title = isInList ? "Alterar status na sua lista" : "Adicionar à minha lista";
-  plusBtn.setAttribute("aria-label", plusBtn.title);
-
-  const popover = document.createElement("div");
-  popover.className = "quick-plus-popover";
-
-  const options = [
-    { value: "want_to_watch", label: "♡ Quero assistir" },
-    { value: "watching", label: "▶ Assistindo" },
-    { value: "completed", label: "✓ Concluído" }
+function renderBadges(stats, commentsCount, profile) {
+  const badges = [
+    {
+      icon: "🌷",
+      title: "Primeiros Passos",
+      desc: "Adicionou o 1º GL na lista",
+      unlocked: stats.total >= 1
+    },
+    {
+      icon: "🎬",
+      title: "Maratonista GL",
+      desc: "Concluiu 5 ou mais séries",
+      unlocked: stats.completed >= 5
+    },
+    {
+      icon: "👑",
+      title: "Rainha dos GLs",
+      desc: "Concluiu 15 ou mais séries",
+      unlocked: stats.completed >= 15
+    },
+    {
+      icon: "📚",
+      title: "Colecionadora",
+      desc: "20+ dramas salvos na lista",
+      unlocked: stats.total >= 20
+    },
+    {
+      icon: "💬",
+      title: "Crítica da Comunidade",
+      desc: "Publicou 1 ou mais avaliações",
+      unlocked: commentsCount >= 1
+    },
+    {
+      icon: "💕",
+      title: "Shipper Oficial",
+      desc: "Definiu um casal preferido",
+      unlocked: Boolean((profile?.favorite_ship || "").trim())
+    }
   ];
 
-  options.forEach(opt => {
-    const optBtn = document.createElement("button");
-    optBtn.type = "button";
-    optBtn.className = "quick-option-btn" + (currentStatus === opt.value ? " selected" : "");
-    optBtn.textContent = opt.label;
+  const grid = document.getElementById("badges-grid");
+  const counter = document.getElementById("badges-counter");
+  grid.innerHTML = "";
 
-    optBtn.addEventListener("click", async () => {
+  let unlockedCount = 0;
 
-      if (!activeUserId) {
-        window.location.href = "conta.html";
-        return;
-      }
+  badges.forEach(b => {
+    if (b.unlocked) unlockedCount++;
 
-      plusBtn.disabled = true;
-      plusBtn.textContent = "…";
-      closeAllQuickPopovers();
+    const card = document.createElement("div");
+    card.className = "badge-item" + (b.unlocked ? "" : " locked");
 
-      const { error } = await db
-        .from("user_drama_list")
-        .upsert(
-          {
-            user_id: activeUserId,
-            drama_id: item.id,
-            status: opt.value,
-            updated_at: new Date().toISOString()
-          },
-          { onConflict: "user_id,drama_id" }
-        );
+    const icon = document.createElement("div");
+    icon.className = "badge-icon";
+    icon.textContent = b.icon;
 
-      plusBtn.disabled = false;
+    const info = document.createElement("div");
+    const title = document.createElement("div");
+    title.className = "badge-title";
+    title.textContent = b.title;
 
-      if (error) {
-        console.error("Erro ao salvar na lista:", error);
-        plusBtn.textContent = isInList ? "✓" : "+";
-        return;
-      }
+    const desc = document.createElement("div");
+    desc.className = "badge-desc";
+    desc.textContent = b.desc;
 
-      userListMap.set(item.id, opt.value);
-      plusBtn.textContent = "✓";
-      plusBtn.classList.add("in-list");
-
-      popover.querySelectorAll(".quick-option-btn").forEach(b => {
-        b.classList.toggle("selected", b === optBtn);
-      });
-
-    });
-
-    popover.appendChild(optBtn);
+    info.append(title, desc);
+    card.append(icon, info);
+    grid.appendChild(card);
   });
 
-  plusBtn.addEventListener("click", () => {
-    const willOpen = !popover.classList.contains("open");
-    closeAllQuickPopovers(popover);
-    popover.classList.toggle("open", willOpen);
-    const parentCard = wrapper.closest(".series-card");
-    if (parentCard) parentCard.classList.toggle("menu-open", willOpen);
-  });
-
-  wrapper.append(plusBtn, popover);
-  return wrapper;
-
+  counter.textContent = `${unlockedCount} de ${badges.length} desbloqueadas`;
 }
 
-
-// ========================================
-// ORDENAÇÃO DO CATÁLOGO
-// ========================================
-
-function sortSeries(items) {
-
-  const sorted = [...items];
-
-  const order = sortSelect.value;
-
-  if (order === "year") {
-
-    sorted.sort((a, b) => {
-
-      const yearA = Number(a.year) || 0;
-      const yearB = Number(b.year) || 0;
-
-      return yearB - yearA ||
-        collator.compare(a.title || "", b.title || "");
-
-    });
-
-  }
-
-  else if (order === "title") {
-
-    sorted.sort((a, b) => {
-
-      return collator.compare(
-        a.title || "",
-        b.title || ""
-      );
-
-    });
-
-  }
-
-  else if (order === "cast") {
-
-    sorted.sort((a, b) => {
-
-      return collator.compare(
-        getMainCast(a),
-        getMainCast(b)
-      );
-
-    });
-
-  }
-
-  else if (order === "ship") {
-
-    sorted.sort((a, b) => {
-
-      return collator.compare(
-        a.ship || "",
-        b.ship || ""
-      );
-
-    });
-
-  }
-
-  return sorted;
-
-}
-
-
-// ========================================
-// EXIBIR CATÁLOGO (CARDS, LISTA, TABELA E FINALIZADAS)
-// ========================================
-
-function showSeries(items) {
-
-  list.innerHTML = "";
-
-  if (!items.length) {
-
-    list.className = "view-cards";
-
-    list.appendChild(
-      createText("p", "", "Nenhuma série encontrada 🌷")
-    );
-
-    return;
-
-  }
-
-  // MODO TABELA
-  if (currentView === "table") {
-
-    list.className = "";
-
-    const wrap = document.createElement("div");
-    wrap.className = "catalog-table-wrap";
-
-    const table = document.createElement("table");
-    table.className = "catalog-table";
-    table.innerHTML = `
-      <thead>
-        <tr>
-          <th>Capa</th>
-          <th>Título</th>
-          <th>Ano</th>
-          <th>Situação</th>
-          <th>Lista</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    `;
-
-    const tbody = table.querySelector("tbody");
-
-    items.forEach(item => {
-
-      const tr = document.createElement("tr");
-
-      const tdThumb = document.createElement("td");
-      if (item.poster_url) {
-        const img = document.createElement("img");
-        img.className = "table-thumb";
-        img.src = item.poster_url;
-        img.alt = "Pôster de " + (item.title || "drama");
-        img.loading = "lazy";
-        img.onerror = () => { img.style.display = "none"; };
-        tdThumb.appendChild(img);
-      } else {
-        tdThumb.textContent = "🌷";
-      }
-
-      const tdTitle = document.createElement("td");
-      const link = document.createElement("a");
-      link.className = "table-title-link";
-      link.href = "drama.html?id=" + encodeURIComponent(item.id);
-      link.textContent = item.title || "Sem título";
-      tdTitle.appendChild(link);
-
-      if (item.genre) {
-        const g = document.createElement("div");
-        g.style.fontSize = "11px";
-        g.style.color = "var(--muted)";
-        g.textContent = item.genre;
-        tdTitle.appendChild(g);
-      }
-
-      const tdYear = document.createElement("td");
-      tdYear.textContent = item.year || "—";
-
-      const tdStatus = document.createElement("td");
-      const badgeInfo = getReleaseBadgeInfo(item);
-      if (badgeInfo) {
-        const span = document.createElement("span");
-        span.className = "status-pill " + badgeInfo.type;
-        span.textContent = badgeInfo.label;
-        tdStatus.appendChild(span);
-      } else {
-        tdStatus.textContent = item.status || "—";
-      }
-
-      const tdAction = document.createElement("td");
-      tdAction.appendChild(buildQuickPlusControl(item));
-
-      tr.append(tdThumb, tdTitle, tdYear, tdStatus, tdAction);
-      tbody.appendChild(tr);
-
-    });
-
-    wrap.appendChild(table);
-    list.appendChild(wrap);
-    return;
-
-  }
-
-  // MODOS CARDS, LISTA, PRÓXIMOS LANÇAMENTOS E FINALIZADAS
-  const isListLayout = currentView === "list" || currentView === "upcoming";
-  const layoutClass = isListLayout ? "view-list" : "view-cards";
-  list.className = layoutClass;
-
-  items.forEach(item => {
-
-    const card = document.createElement("article");
-
-    card.className = "series-card";
-
-    card.setAttribute("role", "link");
-
-    card.setAttribute(
-      "aria-label",
-      "Ver detalhes de " + (item.title || "drama")
-    );
-
-    card.tabIndex = 0;
-
-    function openDrama() {
-
-      window.location.href =
-        "drama.html?id=" + encodeURIComponent(item.id);
-
-    }
-
-    card.addEventListener("click", openDrama);
-
-    card.addEventListener("keydown", event => {
-
-      if (event.key === "Enter" || event.key === " ") {
-
-        event.preventDefault();
-
-        openDrama();
-
-      }
-
-    });
-
-    // PÔSTER
-
-    const poster = document.createElement("div");
-
-    poster.className = "poster";
-
-    if (item.poster_url) {
-
-      const image = document.createElement("img");
-
-      image.src = item.poster_url;
-
-      image.alt = "Pôster de " + (item.title || "drama");
-
-      image.loading = "lazy";
-
-      image.onerror = () => {
-
-        image.remove();
-
-        poster.textContent = "Capa em breve 🌷";
-
-      };
-
-      poster.appendChild(image);
-
-    } else {
-
-      poster.textContent = "Capa em breve 🌷";
-
-    }
-
-    // INFORMAÇÕES DO CARD
-
-    const content = document.createElement("div");
-
-    content.className = "card-content";
-
-    const infoWrap = document.createElement("div");
-    infoWrap.className = "card-info";
-
-    const badgeInfo = getReleaseBadgeInfo(item);
-    // Em cards e lista, não exibe selo "Finalizada" (fica oculto na visualização geral,
-    // aparecendo apenas ao filtrar pela aba "Finalizadas").
-    if (badgeInfo && badgeInfo.type !== "completed") {
-      const badgeEl = document.createElement("span");
-      badgeEl.className = "status-pill " + badgeInfo.type;
-      badgeEl.textContent = badgeInfo.label;
-      infoWrap.appendChild(badgeEl);
-    } else if (currentView === "completed" && badgeInfo && badgeInfo.type === "completed") {
-      const badgeEl = document.createElement("span");
-      badgeEl.className = "status-pill " + badgeInfo.type;
-      badgeEl.textContent = badgeInfo.label;
-      infoWrap.appendChild(badgeEl);
-    }
-
-    if (isListLayout) {
-      const userStatus = userListMap.get(item.id);
-      const listStatusLabels = {
-        want_to_watch: "♡ Quero assistir",
-        watching: "▶ Assistindo",
-        completed: "✓ Concluído por você"
-      };
-      if (userStatus && listStatusLabels[userStatus]) {
-        const uTag = document.createElement("span");
-        uTag.className = "status-pill" + (userStatus === "completed" ? " completed" : "");
-        if (userStatus !== "completed") {
-          uTag.style.background = "rgba(168, 117, 245, 0.16)";
-          uTag.style.color = "#e5d4ff";
-          uTag.style.border = "1px solid rgba(168, 117, 245, 0.35)";
-        }
-        uTag.textContent = listStatusLabels[userStatus];
-        infoWrap.appendChild(uTag);
-      }
-    }
-
-    infoWrap.appendChild(
-      createText("h3", "", item.title || "Sem título")
-    );
-
-    if (item.year) {
-
-      infoWrap.appendChild(
-        createText("p", "card-meta", "Ano: " + item.year)
-      );
-
-    }
-
-    if (item.genre) {
-
-      infoWrap.appendChild(
-        createText("p", "card-meta", "Gênero: " + item.genre)
-      );
-
-    }
-
-    content.appendChild(infoWrap);
-
-    if (isListLayout) {
-      const upcoming = isUpcomingDrama(item);
-      const colsWrap = document.createElement("div");
-      colsWrap.className = "upcoming-cols";
-
-      if (upcoming) {
-        const formattedDate = formatPremiereDateBR(item.premiere_date);
-        const releaseText = formattedDate
-          ? formattedDate
-          : (item.year ? `Previsto para ${item.year}` : "A definir");
-
-        const dateCol = document.createElement("div");
-        dateCol.className = "upcoming-col date-col";
-        dateCol.append(
-          createText("span", "upcoming-col-label", "📅 Data prevista"),
-          createText("span", "upcoming-col-value", releaseText)
-        );
-        colsWrap.appendChild(dateCol);
-      }
-
-      const channelLabel = "📺 Canal oficial";
-      const channelText = (item.platform && String(item.platform).trim())
-        ? String(item.platform).trim()
-        : "A definir";
-
-      const channelCol = document.createElement("div");
-      channelCol.className = "upcoming-col";
-      channelCol.title = channelText;
-      channelCol.append(
-        createText("span", "upcoming-col-label", channelLabel),
-        createText("span", "upcoming-col-value", channelText)
-      );
-
-      colsWrap.appendChild(channelCol);
-      content.appendChild(colsWrap);
-    }
-
-    if (isListLayout) {
-      content.appendChild(buildQuickPlusControl(item));
-      card.append(poster, content);
-    } else {
-      card.append(poster, content, buildQuickPlusControl(item));
-    }
-
-    list.appendChild(card);
-
-  });
-
-}
-
-
-// ========================================
-// FILTRO E ATUALIZAÇÃO DO CATÁLOGO
-// ========================================
-
-function normalizeSearchText(value) {
-  return String(value || "")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[#&/]/g, " ")
-    .toLocaleLowerCase("pt-BR")
-    .trim();
-}
-
-function filterSeries() {
-
-  const term = normalizeSearchText(search.value);
-
-  const filtered = series.filter(item => {
-
-    if (currentView === "upcoming" && !isUpcomingDrama(item)) {
-      return false;
-    }
-
-    if (currentView === "completed" && getEffectiveStatus(item) !== "finalizada") {
-      return false;
-    }
-
-    const searchable = normalizeSearchText([
-
-      item.title,
-      item.original_title,
-      item.genre,
-      item.status,
-      item.ship,
-      getMainCast(item)
-
-    ]
-      .filter(Boolean)
-      .join(" "));
-
-    return searchable.includes(term);
-
-  });
-
-  const ordered = sortSeries(filtered);
-
-  showSeries(ordered);
-
-  if (term || currentView === "completed" || currentView === "upcoming") {
-
-    searchResults.textContent =
-      filtered.length +
-      (filtered.length === 1
-        ? " drama encontrado"
-        : " dramas encontrados");
-
-  } else {
-
-    searchResults.textContent =
-      series.length + " dramas no catálogo";
-
-  }
-
-}
-
-
-// ========================================
-// CARREGAR LISTA DO USUÁRIO
-// ========================================
-
-async function loadUserListStatuses(userId) {
-
-  userListMap.clear();
-
-  if (!userId) {
-    filterSeries();
-    return;
-  }
-
-  const { data, error } = await db
-    .from("user_drama_list")
-    .select("drama_id, status")
-    .eq("user_id", userId);
-
-  if (!error && Array.isArray(data)) {
-    data.forEach(row => {
-      userListMap.set(row.drama_id, row.status);
-    });
-  }
-
-  filterSeries();
-
-}
-
-
-// ========================================
-// CARREGAR DRAMAS DO SUPABASE
-// ========================================
-
-async function loadSeries() {
-
-  list.innerHTML =
-    "<p>Carregando catálogo... 🌷</p>";
-
-  const { data, error } = await db
-
-    .from("dramas")
-
-    .select("*")
-
-    .order("id");
-
-  if (error) {
-
-    console.error("Erro ao carregar dramas:", error);
-
-    list.innerHTML =
-      "<p>Não foi possível carregar o catálogo.</p>";
-
-    return;
-
-  }
-
-  series = data || [];
-  console.log("Total dramas:", series.length, "| Finalizadas:", series.filter(d => getEffectiveStatus(d) === "finalizada").length);
-
-  // Sincroniza automaticamente séries cujo último episódio já foi exibido
-  await syncAutoFinishedDramas(series);
-
-  // Atualiza aviso "NO AR", agenda semanal e catálogo
-  updateOnAirBanner();
-  renderWeeklySchedule();
-  filterSeries();
-
-  // Seleciona Destaque da Semana
-  const weeklySeries = series.filter(
-    item => item.weekly_featured === true
-  );
-
-  showFeaturedDrama(weeklySeries[0] || series.find(item => getEffectiveStatus(item) === "em andamento"));
-
-}
-
-
-// ========================================
-// DESTAQUE DA SEMANA
-// ========================================
-
-function showFeaturedDrama(item) {
-
-  const banner = document.getElementById("featured-banner");
-
-  const title = document.getElementById("featured-title");
-
-  const synopsis = document.getElementById("featured-synopsis");
-
-  const button = document.getElementById("featured-button");
-
-  const poster = document.getElementById("featured-poster");
-
-  if (!item) {
-
-    banner.style.display = "none";
-
-    return;
-
-  }
-
-  banner.style.display = "flex";
-
-  title.textContent =
-    item.title || "Drama em destaque";
-
-  synopsis.textContent =
-    item.synopsis || "Conheça este drama no ThaiGList!";
-
-  if (item.poster_url) {
-
-    poster.src = item.poster_url;
-
-    poster.alt = "Pôster de " + item.title;
-
-    poster.style.display = "block";
-
-  } else {
-
-    poster.removeAttribute("src");
-
-    poster.style.display = "none";
-
-  }
-
-  button.onclick = () => {
-
-    window.location.href =
-      "drama.html?id=" + encodeURIComponent(item.id);
-
-  };
-
-}
-
-
-// ========================================
-// SELETOR DE MODO DE EXIBIÇÃO
-// ========================================
-
-viewButtons.forEach(btn => {
-
-  btn.addEventListener("click", () => {
-
-    currentView = btn.dataset.view;
-
-    viewButtons.forEach(b =>
-      b.classList.toggle("active", b === btn)
-    );
-
-    filterSeries();
-
-  });
-
-});
-
-
-// ========================================
-// PESQUISA EM TEMPO REAL
-// ========================================
-
-search.addEventListener("input", () => {
-
-  filterSeries();
-
-});
-
-
-// ========================================
-// ENTER: IR PARA O CATÁLOGO
-// ========================================
-
-search.addEventListener("keydown", event => {
-
-  if (event.key === "Enter") {
-
-    event.preventDefault();
-
-    filterSeries();
-
-    document
-      .getElementById("catalog-section")
-      .scrollIntoView({
-
-        behavior: "smooth",
-
-        block: "start"
-
-      });
-
-  }
-
-});
-
-
-// ========================================
-// ALTERAR ORDENAÇÃO
-// ========================================
-
-sortSelect.addEventListener("change", () => {
-
-  filterSeries();
-
-});
-
-
-// ========================================
-// MENU DO USUÁRIO
-// ========================================
-
-function updateUserMenu(session) {
-
-  const loginLink =
-    document.getElementById("login-link");
-
-  const profileLink =
-    document.getElementById("profile-link");
-
-  const profileAvatar =
-    document.getElementById("profile-avatar");
-
-  const myListLink =
-    document.getElementById("my-list-link");
-
-  const logoutLink =
-    document.getElementById("logout-link");
-
-  const userName =
-    document.getElementById("user-name");
-
-  if (session) {
-
-    const user = session.user;
-
-    const email = user.email || "";
-
-    const name =
-      user.user_metadata?.full_name ||
-      user.user_metadata?.name ||
-      email.split("@")[0] ||
-      "Usuário";
-
-    activeUserId = user.id;
-
-    loginLink.hidden = true;
-
-    profileLink.hidden = false;
-
-    myListLink.hidden = false;
-
-    logoutLink.hidden = false;
-
-    userName.hidden = false;
-
-    userName.textContent =
-      "Olá, " + name + " 🌷";
-
-    profileLink.classList.remove("has-photo");
-
-    profileAvatar.removeAttribute("src");
-
-    loadProfileAvatar(user.id);
-    loadUserListStatuses(user.id);
-
-  } else {
-
-    activeUserId = null;
-
-    loginLink.hidden = false;
-
-    profileLink.hidden = true;
-
-    myListLink.hidden = true;
-
-    logoutLink.hidden = true;
-
-    userName.hidden = true;
-
-    profileLink.classList.remove("has-photo");
-
-    profileAvatar.removeAttribute("src");
-
-    loadUserListStatuses(null);
-
-  }
-
-}
-
-
-// ========================================
-// CARREGAR FOTO E NOME DO PERFIL
-// ========================================
-
-async function loadProfileAvatar(userId) {
-
-  const profileLink =
-    document.getElementById("profile-link");
-
-  const profileAvatar =
-    document.getElementById("profile-avatar");
-
-  const userName =
-    document.getElementById("user-name");
-
-  const { data, error } = await db
-
+async function renderProfileView(targetUserId, isOwnProfile, authUser = null) {
+  const { data: profile } = await db
     .from("profiles")
-
-    .select("display_name, avatar_url")
-
-    .eq("id", userId)
-
+    .select("*")
+    .eq("id", targetUserId)
     .maybeSingle();
 
-  if (activeUserId !== userId) {
+  if (!isOwnProfile && profile && profile.public_profile === false) {
+    loadingBox.hidden = false;
+    loadingBox.innerHTML = "<p style='margin:0;'>Este perfil é privado. 🔒</p>";
+    profileBox.hidden = true;
     return;
   }
 
-  if (error) {
+  const fallbackName = authUser?.user_metadata?.full_name || authUser?.email?.split("@")[0] || "Fã do ThaiGList";
+  const displayName = (profile?.display_name || "").trim() || fallbackName;
 
-    console.error(
-      "Erro ao carregar perfil:",
-      error
-    );
+  document.getElementById("profile-display-name").textContent = displayName;
+  document.getElementById("profile-subtitle").textContent = isOwnProfile
+    ? "Seu espaço pessoal no ThaiGList"
+    : "Perfil público na comunidade";
 
-    return;
-
+  const avatarWrap = document.getElementById("profile-avatar-wrap");
+  avatarWrap.innerHTML = "";
+  if (profile?.avatar_url) {
+    const img = document.createElement("img");
+    img.src = profile.avatar_url;
+    img.alt = displayName;
+    img.onerror = () => { avatarWrap.textContent = "🌷"; };
+    avatarWrap.appendChild(img);
+  } else {
+    avatarWrap.textContent = "🌷";
   }
 
-  if (!data) {
-    return;
+  // Redes sociais (Instagram, X, TikTok)
+  const socialsEl = document.getElementById("profile-socials");
+  socialsEl.innerHTML = "";
+  const igLink = buildSocialLink("instagram", profile?.instagram);
+  const xLink = buildSocialLink("x", profile?.twitter_x || profile?.x_handle);
+  const ttLink = buildSocialLink("tiktok", profile?.tiktok);
+
+  [igLink, xLink, ttLink].forEach(el => { if (el) socialsEl.appendChild(el); });
+
+  // Casal preferido
+  const favShipEl = document.getElementById("fav-ship-value");
+  const shipVal = (profile?.favorite_ship || "").trim();
+  if (shipVal) {
+    favShipEl.classList.remove("empty");
+    favShipEl.innerHTML = "";
+    const shipLink = document.createElement("a");
+    shipLink.href = "index.html?ship=" + encodeURIComponent(shipVal);
+    shipLink.textContent = "💕 " + shipVal;
+    favShipEl.appendChild(shipLink);
+  } else {
+    favShipEl.classList.add("empty");
+    favShipEl.textContent = isOwnProfile ? "Adicione em Editar perfil" : "Não informado";
   }
 
-  if (data.display_name) {
-
-    userName.textContent =
-      "Olá, " + data.display_name + " 🌷";
-
-  }
-
-  if (data.avatar_url) {
-
-    profileAvatar.onload = () => {
-
-      if (activeUserId === userId) {
-
-        profileLink.classList.add("has-photo");
-
-      }
-
-    };
-
-    profileAvatar.onerror = () => {
-
-      profileLink.classList.remove("has-photo");
-
-      profileAvatar.removeAttribute("src");
-
-    };
-
-    profileAvatar.src = data.avatar_url;
-
-  }
-
-}
-
-
-// ========================================
-// VERIFICAR SESSÃO
-// ========================================
-
-async function checkUserSession() {
-
-  const { data, error } =
-    await db.auth.getSession();
-
-  if (error) {
-
-    console.error(
-      "Erro ao verificar sessão:",
-      error
-    );
-
-    return;
-
-  }
-
-  updateUserMenu(data.session);
-
-}
-
-
-// ========================================
-// ACOMPANHAR LOGIN E LOGOUT
-// ========================================
-
-db.auth.onAuthStateChange((_event, session) => {
-
-  updateUserMenu(session);
-
-});
-
-
-// ========================================
-// BOTÃO SAIR
-// ========================================
-
-document
-  .getElementById("logout-link")
-  .addEventListener("click", async event => {
-
-    event.preventDefault();
-
-    const { error } = await db.auth.signOut();
-
-    if (error) {
-
-      console.error("Erro ao sair:", error);
-
+  // Série favorita
+  const favDramaEl = document.getElementById("fav-drama-value");
+  const favDramaVal = (profile?.favorite_drama || "").trim();
+  if (favDramaVal) {
+    favDramaEl.classList.remove("empty");
+    favDramaEl.innerHTML = "";
+    if (profile?.favorite_drama_id) {
+      const dLink = document.createElement("a");
+      dLink.href = "drama.html?id=" + encodeURIComponent(profile.favorite_drama_id);
+      dLink.textContent = "⭐ " + favDramaVal;
+      favDramaEl.appendChild(dLink);
+    } else {
+      favDramaEl.textContent = "⭐ " + favDramaVal;
     }
-
-  });
-
-
-// ========================================
-// INICIALIZAÇÃO E ATUALIZAÇÃO EM TEMPO REAL DO "NO AR"
-// ========================================
-
-checkUserSession();
-
-loadSeries();
-
-setInterval(() => {
-  if (series.length) {
-    updateOnAirBanner();
-    renderWeeklySchedule();
+  } else {
+    favDramaEl.classList.add("empty");
+    favDramaEl.textContent = isOwnProfile ? "Adicione em Editar perfil" : "Não informada";
   }
-}, 60000);
 
+  // Resumo da lista
+  const { data: listRows } = await db
+    .from("user_drama_list")
+    .select("status")
+    .eq("user_id", targetUserId);
+
+  const rows = listRows || [];
+  const stats = {
+    total: rows.length,
+    completed: rows.filter(r => r.status === "completed").length,
+    watching: rows.filter(r => r.status === "watching").length,
+    want: rows.filter(r => r.status === "want_to_watch").length
+  };
+
+  document.getElementById("stat-total").textContent = stats.total;
+  document.getElementById("stat-completed").textContent = stats.completed;
+  document.getElementById("stat-watching").textContent = stats.watching;
+  document.getElementById("stat-want").textContent = stats.want;
+
+  // Quantidade de comentários para conquistas
+  const { count: commentsCount } = await db
+    .from("drama_comments")
+    .select("id", { count: "exact", head: true })
+    .eq("user_id", targetUserId);
+
+  renderBadges(stats, commentsCount || 0, profile);
+
+  document.getElementById("own-account-actions").hidden = !isOwnProfile;
+  document.getElementById("view-full-list-link").hidden = !isOwnProfile;
+
+  loadingBox.hidden = true;
+  authBox.hidden = true;
+  profileBox.hidden = false;
+}
+
+async function initAccountPage() {
+  const { data: sessionData } = await db.auth.getSession();
+  const session = sessionData?.session || null;
+  const loggedUser = session?.user || null;
+
+  navMyList.hidden = !loggedUser;
+
+  if (publicUserId && (!loggedUser || loggedUser.id !== publicUserId)) {
+    await renderProfileView(publicUserId, false, null);
+    return;
+  }
+
+  if (!loggedUser) {
+    loadingBox.hidden = true;
+    profileBox.hidden = true;
+    authBox.hidden = false;
+    return;
+  }
+
+  await renderProfileView(loggedUser.id, true, loggedUser);
+}
+
+initAccountPage();
 </script>
 
 </body>

@@ -244,6 +244,14 @@ main {
   color: var(--muted);
 }
 
+.profile-bio {
+  margin: 12px 0 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #e4d6f2;
+  max-width: 520px;
+}
+
 .social-links {
   display: flex;
   flex-wrap: wrap;
@@ -393,8 +401,17 @@ main {
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
+}
+
+.stat-card.static-card {
+  cursor: default;
+}
+
+.stat-card.static-card:hover {
+  transform: none;
+  border-color: var(--border);
 }
 
 .stat-card {
@@ -565,6 +582,7 @@ footer {
             <h2 id="profile-display-name">Fã do ThaiGList</h2>
             <p class="profile-handle" id="profile-subtitle">Membro da comunidade ThaiGList</p>
             <div class="social-links" id="profile-socials"></div>
+            <p class="profile-bio" id="profile-bio" hidden></p>
           </div>
         </div>
 
@@ -611,6 +629,14 @@ footer {
             <div class="stat-number" id="stat-want">0</div>
             <div class="stat-label">♡ Quero assistir</div>
           </a>
+          <div class="stat-card static-card">
+            <div class="stat-number" id="stat-episodes">0</div>
+            <div class="stat-label">📺 Episódios assistidos</div>
+          </div>
+          <div class="stat-card static-card">
+            <div class="stat-number" id="stat-reviews">0</div>
+            <div class="stat-label">💬 Avaliações feitas</div>
+          </div>
         </div>
       </div>
 
@@ -868,6 +894,17 @@ async function renderProfileView(targetUserId, isOwnProfile, authUser = null) {
 
   [igLink, xLink, ttLink].forEach(el => { if (el) socialsEl.appendChild(el); });
 
+  // Bio
+  const bioEl = document.getElementById("profile-bio");
+  const bioText = (profile?.bio || "").trim();
+  if (bioText) {
+    bioEl.textContent = bioText;
+    bioEl.hidden = false;
+  } else {
+    bioEl.textContent = "";
+    bioEl.hidden = true;
+  }
+
   // Casal preferido
   const favShipEl = document.getElementById("fav-ship-value");
   const shipVal = (profile?.favorite_ship || "").trim();
@@ -902,32 +939,59 @@ async function renderProfileView(targetUserId, isOwnProfile, authUser = null) {
     favDramaEl.textContent = isOwnProfile ? "Adicione em Editar perfil" : "Não informada";
   }
 
-  // Resumo da lista
+  // Resumo da lista + episódios assistidos
   const { data: listRows } = await db
     .from("user_drama_list")
-    .select("status")
+    .select("*")
     .eq("user_id", targetUserId);
 
   const rows = listRows || [];
+  const dramaIds = [...new Set(rows.map(r => r.drama_id).filter(Boolean))];
+  let dramasById = new Map();
+
+  if (dramaIds.length > 0) {
+    const { data: dramasData } = await db
+      .from("dramas")
+      .select("id, episodes")
+      .in("id", dramaIds);
+    dramasById = new Map((dramasData || []).map(d => [d.id, d]));
+  }
+
+  let episodesWatched = 0;
+  rows.forEach(r => {
+    const epProgress = Number(r.episodes_watched ?? r.current_episode ?? 0) || 0;
+    const totalEps = Number(dramasById.get(r.drama_id)?.episodes) || 0;
+    if (r.status === "completed") {
+      episodesWatched += epProgress > 0 ? Math.max(epProgress, totalEps) : totalEps;
+    } else if (r.status === "watching") {
+      episodesWatched += epProgress;
+    }
+  });
+
   const stats = {
     total: rows.length,
     completed: rows.filter(r => r.status === "completed").length,
     watching: rows.filter(r => r.status === "watching").length,
-    want: rows.filter(r => r.status === "want_to_watch").length
+    want: rows.filter(r => r.status === "want_to_watch").length,
+    episodes: episodesWatched
   };
 
   document.getElementById("stat-total").textContent = stats.total;
   document.getElementById("stat-completed").textContent = stats.completed;
   document.getElementById("stat-watching").textContent = stats.watching;
   document.getElementById("stat-want").textContent = stats.want;
+  document.getElementById("stat-episodes").textContent = stats.episodes;
 
-  // Quantidade de comentários para conquistas
+  // Quantidade de comentários para conquistas e estatísticas
   const { count: commentsCount } = await db
     .from("drama_comments")
     .select("id", { count: "exact", head: true })
     .eq("user_id", targetUserId);
 
-  renderBadges(stats, commentsCount || 0, profile);
+  const totalReviews = commentsCount || 0;
+  document.getElementById("stat-reviews").textContent = totalReviews;
+
+  renderBadges(stats, totalReviews, profile);
 
   document.getElementById("own-account-actions").hidden = !isOwnProfile;
   document.getElementById("view-full-list-link").hidden = !isOwnProfile;

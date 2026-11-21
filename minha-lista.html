@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Minha lista | ThaiGList</title>
+<title>Minha Lista | ThaiGList 🌷</title>
 
 <style>
 *,
@@ -18,111 +18,137 @@
   --surface-light: #241d32;
   --surface-hover: #2c233d;
   --pink: #f05ba8;
-  --pink-soft: #f05ba822;
   --purple: #a875f5;
-  --purple-soft: #a875f522;
   --text: #f7efff;
   --muted: #b8a9c9;
   --border: #382b49;
-  --border-glow: #71428c;
 }
 
 body {
   margin: 0;
-  padding: 20px 14px 48px;
+  padding: 20px 15px;
   background: var(--background);
   color: var(--text);
   font-family: Arial, sans-serif;
-  line-height: 1.5;
 }
 
 .container {
-  max-width: 1020px;
-  margin: 0 auto;
+  max-width: 1120px;
+  margin: auto;
 }
 
-/* Cabeçalho */
-header.top-banner {
-  padding: 20px 24px;
-  background: linear-gradient(120deg, #21132f, #392047);
-  border: 1px solid var(--border-glow);
-  border-radius: 20px;
-  box-shadow: 0 8px 30px #00000044;
-  margin-bottom: 20px;
-}
-
-.brand-row {
+header {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 18px 22px;
+  background: linear-gradient(120deg, #1d1329, #2b1938);
+  border: 1px solid #49335c;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px #00000038;
 }
 
-.brand-title {
+header h1 {
   margin: 0;
-  font-size: 26px;
+  font-size: 24px;
   color: #ffffff;
 }
 
-.brand-subtitle {
-  margin: 4px 0 0;
-  color: var(--muted);
-  font-size: 14px;
-}
-
-nav.top-nav {
+.header-nav {
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 16px;
-  padding-top: 14px;
-  border-top: 1px solid #ffffff1a;
+  gap: 10px;
 }
 
-nav.top-nav a {
-  display: inline-block;
-  padding: 7px 13px;
-  border-radius: 999px;
+.nav-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 14px;
+  border-radius: 10px;
   font-size: 13px;
   font-weight: bold;
-  color: var(--text);
-  background: #171122aa;
-  border: 1px solid transparent;
   text-decoration: none;
-  transition: border-color .15s, background .15s;
+  color: var(--text);
+  background: rgba(36, 29, 50, 0.9);
+  border: 1px solid #493956;
+  transition: transform 0.15s, border-color 0.15s, background 0.15s;
 }
 
-nav.top-nav a:hover,
-nav.top-nav a.active {
-  border-color: var(--pink);
-  background: var(--pink-soft);
+.nav-pill:hover {
+  border-color: var(--purple);
+  transform: translateY(-1px);
+}
+
+.nav-pill-primary {
   color: #ffffff;
+  background: linear-gradient(120deg, rgba(240, 91, 168, 0.28), rgba(168, 117, 245, 0.28));
+  border: 1px solid rgba(240, 91, 168, 0.55);
 }
 
-/* Barra de controles: filtros de status + seletor de modo */
+.nav-pill-primary:hover {
+  background: linear-gradient(120deg, var(--pink), var(--purple));
+  border-color: transparent;
+}
+
+main {
+  margin-top: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 26px;
+  box-shadow: 0 8px 30px #00000033;
+}
+
 .toolbar {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 14px;
-  padding: 16px 20px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  margin-bottom: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
 }
 
-.filter-group,
+.status-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.status-tab {
+  padding: 9px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-light);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.18s;
+}
+
+.status-tab:hover {
+  color: #ffffff;
+  border-color: var(--purple);
+}
+
+.status-tab.active {
+  background: linear-gradient(100deg, var(--pink), var(--purple));
+  border-color: transparent;
+  color: #ffffff;
+}
+
 .view-switcher {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
   align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
-.tool-btn {
+.view-btn {
   padding: 8px 13px;
   border-radius: 10px;
   border: 1px solid var(--border);
@@ -131,135 +157,171 @@ nav.top-nav a.active {
   font-size: 13px;
   font-weight: bold;
   cursor: pointer;
-  transition: all .15s ease;
 }
 
-.tool-btn:hover {
-  color: var(--text);
-  border-color: var(--purple);
-}
-
-.tool-btn.active {
-  color: #ffffff;
-  background: linear-gradient(120deg, var(--pink), var(--purple));
+.view-btn.active {
+  background: linear-gradient(100deg, var(--pink), var(--purple));
   border-color: transparent;
+  color: #ffffff;
 }
 
-.view-label {
-  font-size: 12px;
-  color: var(--muted);
-  font-weight: bold;
-  margin-right: 4px;
-}
-
-/* MODO 1: CARDS */
-.items-container.view-cards {
+/* MODO CARDS */
+#list-container.view-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
 }
 
-.items-container.view-cards .drama-item {
-  display: flex;
-  flex-direction: column;
-  background: var(--surface);
-  border: 1px solid var(--border);
+#list-container.view-cards .drama-card {
+  position: relative;
+  aspect-ratio: 2 / 3;
   border-radius: 16px;
   overflow: hidden;
-  transition: transform .15s, border-color .15s;
+  background: var(--surface-light);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.items-container.view-cards .drama-item:hover {
-  transform: translateY(-2px);
-  border-color: var(--border-glow);
+#list-container.view-cards .drama-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--pink);
+  box-shadow: 0 8px 24px rgba(240, 91, 168, 0.18);
 }
 
-.items-container.view-cards .drama-poster {
+#list-container.view-cards .drama-poster {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  height: 290px;
+  height: 100%;
   object-fit: cover;
   display: block;
-  background: var(--surface-light);
 }
 
-.items-container.view-cards .drama-content {
-  padding: 14px;
+#list-container.view-cards .drama-overlay {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  flex: 1;
+  justify-content: flex-end;
+  padding: 14px;
+  background: linear-gradient(
+    to bottom,
+    transparent 35%,
+    rgba(16, 13, 24, 0.85) 70%,
+    rgba(16, 13, 24, 0.98) 100%
+  );
 }
 
-.items-container.view-cards .drama-title {
-  margin: 0;
-  font-size: 16px;
+#list-container.view-cards .drama-title {
+  margin: 0 0 4px;
+  font-size: 14.5px;
   color: #ffffff;
 }
 
-.items-container.view-cards .drama-meta {
-  font-size: 12px;
+#list-container.view-cards .drama-meta {
+  font-size: 11.5px;
   color: var(--muted);
+  margin-bottom: 10px;
 }
 
-.items-container.view-cards .drama-actions {
-  margin-top: auto;
-  padding-top: 8px;
-}
-
-/* MODO 2: LISTA */
-.items-container.view-list {
+/* MODO LISTA */
+#list-container.view-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.items-container.view-list .drama-item {
+#list-container.view-list .drama-card {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 16px;
   padding: 12px 16px;
-  background: var(--surface);
-  border: 1px solid var(--border);
   border-radius: 14px;
+  background: var(--surface-light);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
 }
 
-.items-container.view-list .drama-poster {
-  width: 56px;
-  height: 78px;
+#list-container.view-list .drama-card:hover {
+  border-color: var(--pink);
+  background: var(--surface-hover);
+  transform: translateX(2px);
+}
+
+#list-container.view-list .drama-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+}
+
+#list-container.view-list .drama-poster {
+  width: 52px;
+  height: 76px;
   border-radius: 8px;
   object-fit: cover;
   flex-shrink: 0;
-  background: var(--surface-light);
 }
 
-.items-container.view-list .drama-content {
-  flex: 1;
+#list-container.view-list .drama-overlay {
   min-width: 0;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  flex: 1;
 }
 
-.items-container.view-list .drama-title {
-  margin: 0;
-  font-size: 16px;
+#list-container.view-list .drama-title {
+  margin: 0 0 4px;
+  font-size: 15.5px;
   color: #ffffff;
 }
 
-.items-container.view-list .drama-meta {
-  font-size: 13px;
+#list-container.view-list .drama-meta {
+  font-size: 12.5px;
   color: var(--muted);
 }
 
-/* MODO 3: TABELA */
-.table-wrapper {
+.card-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.status-select {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #493956;
+  background: #171222;
+  color: #ffffff;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.remove-btn {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 92, 138, 0.45);
+  background: rgba(255, 92, 138, 0.14);
+  color: #ffa6c0;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.remove-btn:hover {
+  background: rgba(255, 92, 138, 0.28);
+}
+
+/* MODO TABELA */
+.list-table-wrap {
   width: 100%;
   overflow-x: auto;
-  background: var(--surface);
+  border-radius: 14px;
   border: 1px solid var(--border);
-  border-radius: 16px;
+  background: var(--surface-light);
 }
 
 table.list-table {
@@ -270,142 +332,127 @@ table.list-table {
 }
 
 table.list-table thead {
-  background: var(--surface-light);
+  background: #171222;
   color: var(--muted);
   font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
 table.list-table th,
 table.list-table td {
-  padding: 13px 16px;
+  padding: 12px 14px;
   border-bottom: 1px solid var(--border);
   vertical-align: middle;
+}
+
+table.list-table tbody tr.clickable-row {
+  cursor: pointer;
+  transition: background 0.16s ease;
+}
+
+table.list-table tbody tr.clickable-row:hover {
+  background: var(--surface-hover);
 }
 
 table.list-table tbody tr:last-child td {
   border-bottom: none;
 }
 
-table.list-table tbody tr:hover {
-  background: var(--surface-hover);
-}
-
 .table-thumb {
-  width: 38px;
-  height: 54px;
+  width: 42px;
+  height: 60px;
   border-radius: 6px;
   object-fit: cover;
   display: block;
-  background: var(--surface-light);
 }
 
-.status-badge {
-  display: inline-block;
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: bold;
-  background: var(--purple-soft);
-  color: var(--text);
-  border: 1px solid #a875f555;
-}
-
-.open-link {
-  display: inline-block;
-  padding: 7px 12px;
-  border-radius: 8px;
-  background: var(--pink-soft);
-  border: 1px solid #f05ba866;
+.table-title-text {
   color: #ffffff;
-  font-size: 12px;
   font-weight: bold;
-  text-decoration: none;
-  white-space: nowrap;
 }
 
-.open-link:hover {
-  background: linear-gradient(120deg, var(--pink), var(--purple));
-  border-color: transparent;
-}
-
-.empty-state {
-  padding: 36px 20px;
-  text-align: center;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  color: var(--muted);
-}
-
-.empty-state a {
-  display: inline-block;
-  margin-top: 12px;
-  color: var(--pink);
-  font-weight: bold;
-  text-decoration: none;
+table.list-table tbody tr.clickable-row:hover .table-title-text {
+  color: #ff9dd0;
+  text-decoration: underline;
 }
 
 footer {
   text-align: center;
+  padding: 22px;
   color: var(--muted);
   font-size: 13px;
-  margin-top: 32px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+@media (max-width: 900px) {
+  #list-container.view-cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 600px) {
-  .items-container.view-cards {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+  #list-container.view-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
   }
 
-  .items-container.view-cards .drama-poster {
-    height: 210px;
+  #list-container.view-list .drama-card {
+    flex-direction: column;
+    align-items: stretch;
   }
 }
 </style>
 </head>
 
 <body>
+
 <div class="container">
 
-  <header class="top-banner">
-    <div class="brand-row">
-      <div>
-        <h1 class="brand-title">Minha Lista 🌷</h1>
-        <p class="brand-subtitle">Acompanhe os dramas GL que você quer ver, está assistindo ou já concluiu.</p>
-      </div>
-    </div>
-
-    <nav class="top-nav" aria-label="Navegação principal">
-      <a href="index.html">Catálogo</a>
-      <a href="minha-lista.html" class="active">Minha lista</a>
-      <a href="conta.html">Minha conta</a>
+  <header>
+    <h1>Minha Lista 🌷</h1>
+    <nav class="header-nav">
+      <a class="nav-pill nav-pill-secondary" href="index.html">← Catálogo</a>
+      <a class="nav-pill nav-pill-primary" href="conta.html">Minha Conta</a>
     </nav>
   </header>
 
-  <section class="toolbar" aria-label="Filtros e modo de visualização">
-    <div class="filter-group" id="status-filters">
-      <button type="button" class="tool-btn active" data-filter="all">Todos</button>
-      <button type="button" class="tool-btn" data-filter="want_to_watch">♡ Quero assistir</button>
-      <button type="button" class="tool-btn" data-filter="watching">▶ Assistindo</button>
-      <button type="button" class="tool-btn" data-filter="completed">✓ Concluído</button>
+  <main>
+
+    <div id="not-logged" hidden>
+      <p>Entre na sua conta para ver e gerenciar sua lista de dramas.</p>
+      <a class="nav-pill nav-pill-primary" href="conta.html">Ir para Minha Conta →</a>
     </div>
 
-    <div class="view-switcher" id="view-switcher">
-      <span class="view-label">Visualização:</span>
-      <button type="button" class="tool-btn active" data-view="cards">⊞ Cards</button>
-      <button type="button" class="tool-btn" data-view="list">☰ Lista</button>
-      <button type="button" class="tool-btn" data-view="table">▤ Tabela</button>
+    <div id="list-content" hidden>
+      <div class="toolbar">
+        <div class="status-tabs" id="status-tabs">
+          <button type="button" class="status-tab active" data-status="all">Todos</button>
+          <button type="button" class="status-tab" data-status="want_to_watch">♡ Quero assistir</button>
+          <button type="button" class="status-tab" data-status="watching">▶ Assistindo</button>
+          <button type="button" class="status-tab" data-status="completed">✓ Concluído</button>
+        </div>
+
+        <div class="view-switcher" id="view-switcher">
+          <button type="button" class="view-btn active" data-view="cards">⊞ Cards</button>
+          <button type="button" class="view-btn" data-view="list">☰ Lista</button>
+          <button type="button" class="view-btn" data-view="table">▤ Tabela</button>
+        </div>
+      </div>
+
+      <div id="list-container" class="view-cards">
+        <p>Carregando sua lista... 🌷</p>
+      </div>
     </div>
-  </section>
 
-  <div id="list-container" class="items-container view-cards">
-    <div class="empty-state">Carregando sua lista... 🌷</div>
-  </div>
+  </main>
 
-  <footer>ThaiGList © 2026</footer>
+  <footer>
+    ThaiGList © 2026
+  </footer>
+
 </div>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
@@ -415,240 +462,270 @@ const SUPABASE_KEY = "sb_publishable_DyikY0WSJJ4apDc0_ZwfOw_x6LvfqM-";
 
 const memoryStorage = new Map();
 const safeStorage = {
-  getItem: (key) => {
-    try {
-      return window.localStorage.getItem(key);
-    } catch {
-      return memoryStorage.get(key) ?? null;
-    }
-  },
-  setItem: (key, value) => {
-    try {
-      window.localStorage.setItem(key, value);
-    } catch {
-      memoryStorage.set(key, value);
-    }
-  },
-  removeItem: (key) => {
-    try {
-      window.localStorage.removeItem(key);
-    } catch {
-      memoryStorage.delete(key);
-    }
-  }
+  getItem: (key) => { try { return window.localStorage.getItem(key); } catch { return memoryStorage.get(key) ?? null; } },
+  setItem: (key, value) => { try { window.localStorage.setItem(key, value); } catch { memoryStorage.set(key, value); } },
+  removeItem: (key) => { try { window.localStorage.removeItem(key); } catch { memoryStorage.delete(key); } }
 };
 
-const db = window.supabase
-  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
-      auth: {
-        storage: safeStorage,
-        persistSession: true,
-        autoRefreshToken: true
-      }
-    })
-  : null;
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+  auth: { storage: safeStorage, persistSession: true, autoRefreshToken: true }
+});
 
-const VIEW_STORAGE_KEY = "thaiglist_my_list_view";
-let currentView = safeStorage.getItem(VIEW_STORAGE_KEY) || "cards";
-if (!["cards", "list", "table"].includes(currentView)) {
-  currentView = "cards";
+const params = new URLSearchParams(window.location.search);
+let activeStatus = params.get("status") || "all";
+let activeView = "cards";
+let currentUser = null;
+let myEntries = [];
+
+const container = document.getElementById("list-container");
+
+function goToDrama(dramaId) {
+  window.location.href = "drama.html?id=" + encodeURIComponent(dramaId);
 }
 
-let currentFilter = "all";
-let combinedItems = [];
-
-const listContainer = document.getElementById("list-container");
-const viewButtons = document.querySelectorAll("#view-switcher .tool-btn");
-const filterButtons = document.querySelectorAll("#status-filters .tool-btn");
-
-function formatStatusLabel(status) {
-  const normalized = (status || "").trim().toLowerCase();
-  if (normalized === "watching" || normalized === "assistindo") return "▶ Assistindo";
-  if (normalized === "completed" || normalized === "concluida" || normalized === "concluída") return "✓ Concluído";
-  return "♡ Quero assistir";
-}
-
-function matchesFilter(status, filter) {
-  if (filter === "all") return true;
-  const normalized = (status || "").trim().toLowerCase();
-  if (filter === "want_to_watch") return ["want_to_watch", "plan_to_watch", "quero assistir", "quero ver", ""].includes(normalized);
-  if (filter === "watching") return ["watching", "assistindo"].includes(normalized);
-  if (filter === "completed") return ["completed", "concluida", "concluída"].includes(normalized);
-  return true;
-}
-
-function syncViewButtons() {
-  viewButtons.forEach((btn) => {
-    btn.classList.toggle("active", btn.dataset.view === currentView);
+function attachKeyboardOpen(el, dramaId) {
+  el.tabIndex = 0;
+  el.setAttribute("role", "link");
+  el.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      goToDrama(dramaId);
+    }
   });
 }
 
-function renderList() {
-  syncViewButtons();
+function buildRowControls(entry) {
+  const wrap = document.createElement("div");
+  wrap.className = "card-controls";
 
-  const filtered = combinedItems.filter((item) => matchesFilter(item.status, currentFilter));
+  // Impede que mexer no status ou remover abra a página do drama
+  const stopBubble = (e) => e.stopPropagation();
+  wrap.addEventListener("click", stopBubble);
+  wrap.addEventListener("keydown", stopBubble);
 
-  if (filtered.length === 0) {
-    listContainer.className = "items-container view-cards";
-    listContainer.innerHTML = `
-      <div class="empty-state" style="grid-column: 1 / -1;">
-        <p style="margin: 0;">Nenhuma série encontrada neste filtro.</p>
-        <a href="index.html">Explorar catálogo do ThaiGList →</a>
-      </div>
-    `;
+  const select = document.createElement("select");
+  select.className = "status-select";
+  [
+    { value: "want_to_watch", label: "♡ Quero assistir" },
+    { value: "watching", label: "▶ Assistindo" },
+    { value: "completed", label: "✓ Concluído" }
+  ].forEach(opt => {
+    const o = document.createElement("option");
+    o.value = opt.value;
+    o.textContent = opt.label;
+    o.selected = entry.status === opt.value;
+    select.appendChild(o);
+  });
+
+  select.addEventListener("change", async () => {
+    const newStatus = select.value;
+    const { error } = await db
+      .from("user_drama_list")
+      .update({ status: newStatus, updated_at: new Date().toISOString() })
+      .eq("id", entry.id);
+
+    if (!error) {
+      entry.status = newStatus;
+      renderMyList();
+    }
+  });
+
+  const removeBtn = document.createElement("button");
+  removeBtn.type = "button";
+  removeBtn.className = "remove-btn";
+  removeBtn.textContent = "Remover";
+
+  removeBtn.addEventListener("click", async () => {
+    const { error } = await db
+      .from("user_drama_list")
+      .delete()
+      .eq("id", entry.id);
+
+    if (!error) {
+      myEntries = myEntries.filter(item => item.id !== entry.id);
+      renderMyList();
+    }
+  });
+
+  wrap.append(select, removeBtn);
+  return wrap;
+}
+
+function renderMyList() {
+  container.innerHTML = "";
+
+  const filtered = activeStatus === "all"
+    ? myEntries
+    : myEntries.filter(item => item.status === activeStatus);
+
+  if (!filtered.length) {
+    container.className = "view-cards";
+    const p = document.createElement("p");
+    p.style.color = "var(--muted)";
+    p.textContent = "Nenhum drama encontrado nesta categoria 🌷";
+    container.appendChild(p);
     return;
   }
 
-  if (currentView === "table") {
-    listContainer.className = "";
-    const rowsHtml = filtered.map((item) => {
-      const posterCell = item.poster_url
-        ? `<img class="table-thumb" src="${item.poster_url}" alt="${item.title}">`
-        : `<div class="table-thumb" style="display:flex;align-items:center;justify-content:center;">🌷</div>`;
+  // MODO TABELA: linha inteira clicável
+  if (activeView === "table") {
+    container.className = "";
+    const wrap = document.createElement("div");
+    wrap.className = "list-table-wrap";
 
-      return `
+    const table = document.createElement("table");
+    table.className = "list-table";
+    table.innerHTML = `
+      <thead>
         <tr>
-          <td>${posterCell}</td>
-          <td><strong>${item.title}</strong></td>
-          <td>${item.year || "—"}</td>
-          <td>${item.episodes ? `${item.episodes} eps` : "—"}</td>
-          <td><span class="status-badge">${formatStatusLabel(item.status)}</span></td>
-          <td><a class="open-link" href="drama.html?id=${item.drama_id}">Ver detalhes</a></td>
+          <th>Capa</th>
+          <th>Título</th>
+          <th>Ano</th>
+          <th>Situação na lista</th>
         </tr>
-      `;
-    }).join("");
-
-    listContainer.innerHTML = `
-      <div class="table-wrapper">
-        <table class="list-table">
-          <thead>
-            <tr>
-              <th>Pôster</th>
-              <th>Título</th>
-              <th>Ano</th>
-              <th>Episódios</th>
-              <th>Status</th>
-              <th>Ação</th>
-            </tr>
-          </thead>
-          <tbody>${rowsHtml}</tbody>
-        </table>
-      </div>
+      </thead>
+      <tbody></tbody>
     `;
+
+    const tbody = table.querySelector("tbody");
+
+    filtered.forEach(entry => {
+      const d = entry.dramas || {};
+      const tr = document.createElement("tr");
+      tr.className = "clickable-row";
+      tr.title = `Abrir detalhes de ${d.title || "drama"}`;
+      tr.addEventListener("click", () => goToDrama(entry.drama_id));
+      attachKeyboardOpen(tr, entry.drama_id);
+
+      const tdImg = document.createElement("td");
+      if (d.poster_url) {
+        const img = document.createElement("img");
+        img.className = "table-thumb";
+        img.src = d.poster_url;
+        img.alt = d.title || "Capa";
+        img.loading = "lazy";
+        tdImg.appendChild(img);
+      } else {
+        tdImg.textContent = "🌷";
+      }
+
+      const tdTitle = document.createElement("td");
+      const titleSpan = document.createElement("span");
+      titleSpan.className = "table-title-text";
+      titleSpan.textContent = d.title || "Sem título";
+      tdTitle.appendChild(titleSpan);
+
+      const tdYear = document.createElement("td");
+      tdYear.textContent = d.year || "—";
+
+      const tdActions = document.createElement("td");
+      tdActions.appendChild(buildRowControls(entry));
+
+      tr.append(tdImg, tdTitle, tdYear, tdActions);
+      tbody.appendChild(tr);
+    });
+
+    wrap.appendChild(table);
+    container.appendChild(wrap);
     return;
   }
 
-  listContainer.className = `items-container view-${currentView}`;
-  listContainer.innerHTML = "";
+  // MODOS CARDS E LISTA: card inteiro clicável
+  container.className = activeView === "list" ? "view-list" : "view-cards";
 
-  filtered.forEach((item) => {
-    const article = document.createElement("article");
-    article.className = "drama-item";
+  filtered.forEach(entry => {
+    const d = entry.dramas || {};
+    const card = document.createElement("article");
+    card.className = "drama-card";
+    card.title = `Abrir detalhes de ${d.title || "drama"}`;
+    card.addEventListener("click", () => goToDrama(entry.drama_id));
+    attachKeyboardOpen(card, entry.drama_id);
 
-    if (item.poster_url) {
-      const img = document.createElement("img");
-      img.className = "drama-poster";
-      img.src = item.poster_url;
-      img.alt = `Pôster de ${item.title}`;
-      img.onerror = () => { img.style.display = "none"; };
-      article.appendChild(img);
+    const poster = document.createElement("img");
+    poster.className = "drama-poster";
+    poster.src = d.poster_url || "";
+    poster.alt = d.title || "Drama";
+    poster.loading = "lazy";
+    poster.onerror = () => { poster.style.display = "none"; };
+
+    const overlay = document.createElement("div");
+    overlay.className = "drama-overlay";
+
+    const h3 = document.createElement("h3");
+    h3.className = "drama-title";
+    h3.textContent = d.title || "Sem título";
+
+    const meta = document.createElement("div");
+    meta.className = "drama-meta";
+    meta.textContent = [d.year, d.genre].filter(Boolean).join(" · ") || "GL";
+
+    overlay.append(h3, meta);
+
+    if (activeView === "cards") {
+      overlay.appendChild(buildRowControls(entry));
+      card.append(poster, overlay);
+    } else {
+      const left = document.createElement("div");
+      left.className = "drama-left";
+      left.append(poster, overlay);
+      card.append(left, buildRowControls(entry));
     }
 
-    const content = document.createElement("div");
-    content.className = "drama-content";
-
-    const infoWrap = document.createElement("div");
-
-    const titleEl = document.createElement("h3");
-    titleEl.className = "drama-title";
-    titleEl.textContent = item.title;
-
-    const metaEl = document.createElement("div");
-    metaEl.className = "drama-meta";
-    const parts = [formatStatusLabel(item.status)];
-    if (item.year) parts.push(`${item.year}`);
-    if (item.episodes) parts.push(`${item.episodes} eps`);
-    metaEl.textContent = parts.join(" · ");
-
-    infoWrap.append(titleEl, metaEl);
-
-    const actions = document.createElement("div");
-    actions.className = "drama-actions";
-
-    const link = document.createElement("a");
-    link.className = "open-link";
-    link.href = `drama.html?id=${item.drama_id}`;
-    link.textContent = "Abrir drama →";
-    actions.appendChild(link);
-
-    content.append(infoWrap, actions);
-    article.appendChild(content);
-    listContainer.appendChild(article);
+    container.appendChild(card);
   });
 }
-
-viewButtons.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    currentView = btn.dataset.view;
-    safeStorage.setItem(VIEW_STORAGE_KEY, currentView);
-    renderList();
-  });
-});
-
-filterButtons.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    currentFilter = btn.dataset.filter;
-    filterButtons.forEach((b) => b.classList.toggle("active", b === btn));
-    renderList();
-  });
-});
 
 async function loadMyList() {
-  if (!db) {
-    listContainer.innerHTML = `<div class="empty-state">Não foi possível conectar ao serviço.</div>`;
-    return;
-  }
-
   const { data: sessionData } = await db.auth.getSession();
-  const session = sessionData?.session;
+  currentUser = sessionData?.session?.user || null;
 
-  if (!session?.user) {
-    listContainer.innerHTML = `
-      <div class="empty-state">
-        <p style="margin: 0;">Faça login para ver e organizar a sua lista de dramas GL.</p>
-        <a href="conta.html">Entrar na minha conta →</a>
-      </div>
-    `;
+  if (!currentUser) {
+    document.getElementById("not-logged").hidden = false;
+    document.getElementById("list-content").hidden = true;
     return;
   }
 
-  const [listRes, dramasRes] = await Promise.all([
-    db.from("user_drama_list").select("drama_id, status").eq("user_id", session.user.id),
-    db.from("dramas").select("id, title, poster_url, year, episodes")
-  ]);
+  document.getElementById("not-logged").hidden = true;
+  document.getElementById("list-content").hidden = false;
 
-  const userRows = listRes.data || [];
-  const dramasMap = new Map((dramasRes.data || []).map((d) => [d.id, d]));
+  document.querySelectorAll("#status-tabs .status-tab").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.status === activeStatus);
+  });
 
-  combinedItems = userRows
-    .map((row) => {
-      const drama = dramasMap.get(row.drama_id);
-      if (!drama) return null;
-      return {
-        drama_id: row.drama_id,
-        status: row.status,
-        title: drama.title || "Sem título",
-        poster_url: drama.poster_url || "",
-        year: drama.year || "",
-        episodes: drama.episodes || ""
-      };
-    })
-    .filter(Boolean);
+  const { data, error } = await db
+    .from("user_drama_list")
+    .select("id, drama_id, status, updated_at, dramas(id, title, year, genre, poster_url)")
+    .eq("user_id", currentUser.id)
+    .order("updated_at", { ascending: false });
 
-  renderList();
+  if (error) {
+    console.error("Erro ao carregar lista:", error);
+    container.innerHTML = "<p>Não foi possível carregar sua lista.</p>";
+    return;
+  }
+
+  myEntries = data || [];
+  renderMyList();
 }
+
+document.querySelectorAll("#status-tabs .status-tab").forEach(btn => {
+  btn.addEventListener("click", () => {
+    activeStatus = btn.dataset.status;
+    document.querySelectorAll("#status-tabs .status-tab").forEach(b => b.classList.toggle("active", b === btn));
+    renderMyList();
+  });
+});
+
+document.querySelectorAll("#view-switcher .view-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    activeView = btn.dataset.view;
+    document.querySelectorAll("#view-switcher .view-btn").forEach(b => b.classList.toggle("active", b === btn));
+    renderMyList();
+  });
+});
 
 loadMyList();
 </script>
+
 </body>
 </html>

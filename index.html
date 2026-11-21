@@ -1253,18 +1253,14 @@ footer {
     <a id="on-air-link" href="#" class="on-air-btn">Ver detalhes</a>
   </div>
 
-  <h2 id="catalog-title">Explore o catálogo</h2>
-
-
-
   <!-- BANNER DE DESTAQUE -->
 
   <section id="featured-banner" class="featured-banner">
 
     <div class="featured-content">
 
-      <span class="featured-label">
-        🌷 DESTAQUE DA SEMANA
+      <span class="featured-label" id="featured-label">
+        🔥 EM ALTA NAS LISTAS DA SEMANA
       </span>
 
       <h2 id="featured-title">
@@ -1274,6 +1270,8 @@ footer {
       <p id="featured-synopsis">
         Descubra o drama em destaque desta semana.
       </p>
+
+      <div id="featured-stats" style="font-size: 12.5px; color: #ff9dd0; font-weight: bold; margin-top: 8px;" hidden></div>
 
       <button id="featured-button" type="button">
         Ver detalhes
@@ -1322,6 +1320,8 @@ footer {
   <!-- EXIBIÇÃO, ORDENAÇÃO E CATÁLOGO -->
 
   <section id="catalog-section">
+
+    <h2 id="catalog-title" style="margin-top: 6px; margin-bottom: 14px;">Explore o catálogo</h2>
 
     <div class="search-top-box" style="margin-top: 8px; margin-bottom: 14px;">
 
@@ -2473,27 +2473,117 @@ async function loadSeries() {
   renderWeeklySchedule();
   filterSeries();
 
-  // Seleciona Destaque da Semana
-  const weeklySeries = series.filter(
-    item => item.weekly_featured === true
-  );
-
-  showFeaturedDrama(weeklySeries[0] || series.find(item => getEffectiveStatus(item) === "em andamento"));
+  // Seleciona automaticamente o drama mais adicionado às listas na última semana
+  await loadMostListedThisWeek();
 
 }
 
 
 // ========================================
-// DESTAQUE DA SEMANA
+// MAIS ADICIONADO ÀS LISTAS NA SEMANA
 // ========================================
 
-function showFeaturedDrama(item) {
+async function loadMostListedThisWeek() {
+  const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+
+  // 1) Tenta buscar o ranking via RPC (se criado no Supabase) para funcionar mesmo com RLS restrito
+  const { data: rpcData, error: rpcError } = await db.rpc("get_most_listed_weekly");
+
+  if (!rpcError && Array.isArray(rpcData) && rpcData.length > 0) {
+    const topRow = rpcData[0];
+    const topDrama = series.find(d => d.id === topRow.drama_id);
+    if (topDrama) {
+      showFeaturedDrama(topDrama, {
+        label: "🔥 EM ALTA NAS LISTAS DA SEMANA",
+        count: Number(topRow.total_adds) || 0,
+        period: "nos últimos 7 dias"
+      });
+      return;
+    }
+  }
+
+  // 2) Consulta direta na tabela user_drama_list dos últimos 7 dias
+  const { data: recentRows, error: recentErr } = await db
+    .from("user_drama_list")
+    .select("drama_id, updated_at")
+    .gte("updated_at", sevenDaysAgo);
+
+  if (!recentErr && Array.isArray(recentRows) && recentRows.length > 0) {
+    const counts = new Map();
+    recentRows.forEach(r => {
+      counts.set(r.drama_id, (counts.get(r.drama_id) || 0) + 1);
+    });
+
+    let bestId = null;
+    let bestCount = 0;
+    counts.forEach((cnt, id) => {
+      if (cnt > bestCount && series.some(d => d.id === id)) {
+        bestCount = cnt;
+        bestId = id;
+      }
+    });
+
+    if (bestId !== null) {
+      const topDrama = series.find(d => d.id === bestId);
+      showFeaturedDrama(topDrama, {
+        label: "🔥 EM ALTA NAS LISTAS DA SEMANA",
+        count: bestCount,
+        period: "nos últimos 7 dias"
+      });
+      return;
+    }
+  }
+
+  // 3) Fallback: mais adicionado no geral em user_drama_list
+  const { data: allRows, error: allErr } = await db
+    .from("user_drama_list")
+    .select("drama_id");
+
+  if (!allErr && Array.isArray(allRows) && allRows.length > 0) {
+    const counts = new Map();
+    allRows.forEach(r => {
+      counts.set(r.drama_id, (counts.get(r.drama_id) || 0) + 1);
+    });
+
+    let bestId = null;
+    let bestCount = 0;
+    counts.forEach((cnt, id) => {
+      if (cnt > bestCount && series.some(d => d.id === id)) {
+        bestCount = cnt;
+        bestId = id;
+      }
+    });
+
+    if (bestId !== null) {
+      const topDrama = series.find(d => d.id === bestId);
+      showFeaturedDrama(topDrama, {
+        label: "🌷 FAVORITO NAS LISTAS DA COMUNIDADE",
+        count: bestCount,
+        period: "no total"
+      });
+      return;
+    }
+  }
+
+  // 4) Fallback final: destaque manual (weekly_featured) ou primeiro drama em andamento
+  const weeklySeries = series.filter(item => item.weekly_featured === true);
+  showFeaturedDrama(
+    weeklySeries[0] || series.find(item => getEffectiveStatus(item) === "em andamento"),
+    { label: "🔥 EM ALTA NAS LISTAS DA SEMANA", count: 0 }
+  );
+}
+
+function showFeaturedDrama(item, meta = {}) {
 
   const banner = document.getElementById("featured-banner");
+
+  const labelEl = document.getElementById("featured-label");
 
   const title = document.getElementById("featured-title");
 
   const synopsis = document.getElementById("featured-synopsis");
+
+  const statsEl = document.getElementById("featured-stats");
 
   const button = document.getElementById("featured-button");
 
@@ -2509,11 +2599,25 @@ function showFeaturedDrama(item) {
 
   banner.style.display = "flex";
 
+  if (labelEl && meta.label) {
+    labelEl.textContent = meta.label;
+  }
+
   title.textContent =
     item.title || "Drama em destaque";
 
   synopsis.textContent =
     item.synopsis || "Conheça este drama no ThaiGList!";
+
+  if (statsEl) {
+    if (meta.count && meta.count > 0) {
+      const pessoaLabel = meta.count === 1 ? "pessoa adicionou" : "pessoas adicionaram";
+      statsEl.textContent = `📌 ${meta.count} ${pessoaLabel} à lista ${meta.period || "esta semana"}`;
+      statsEl.hidden = false;
+    } else {
+      statsEl.hidden = true;
+    }
+  }
 
   if (item.poster_url) {
 

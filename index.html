@@ -1522,37 +1522,31 @@ function getEffectiveStatus(item) {
   }
 
   if (
-    rawStatus === "finalizada" ||
-    rawStatus === "finalizado" ||
-    rawStatus === "concluída" ||
-    rawStatus === "concluida" ||
-    rawStatus === "concluído" ||
-    rawStatus === "concluido" ||
-    rawStatus === "lançada" ||
-    rawStatus === "lancada" ||
-    rawStatus === "completa" ||
-    rawStatus === "completo"
+    rawStatus.includes("finaliz") ||
+    rawStatus.includes("conclu") ||
+    rawStatus.includes("complet") ||
+    rawStatus.includes("encerrad") ||
+    rawStatus.includes("lançad") ||
+    rawStatus.includes("lancad") ||
+    rawStatus.includes("exibid") ||
+    rawStatus === "finished" ||
+    rawStatus === "completed" ||
+    rawStatus === "ended"
   ) {
     return "finalizada";
   }
 
-  // Se não está em andamento nem em breve, e já tem ano <= 2026 (ou data de estreia passada), considera finalizada
   const isExplicitUpcoming =
-    rawStatus === "teaser / piloto" ||
-    rawStatus === "em breve" ||
-    rawStatus === "previsto" ||
+    rawStatus.includes("teaser") ||
+    rawStatus.includes("piloto") ||
+    rawStatus.includes("breve") ||
+    rawStatus.includes("previst") ||
+    rawStatus.includes("anunciad") ||
+    rawStatus.includes("upcoming") ||
     year > 2026;
 
-  if (!isExplicitUpcoming) {
-    if (item.premiere_date) {
-      const startTs = new Date(item.premiere_date + "T00:00:00").getTime();
-      if (!Number.isNaN(startTs) && Date.now() > startTs) {
-        return "finalizada";
-      }
-    }
-    if (!rawStatus && year > 0 && year <= 2026) {
-      return "finalizada";
-    }
+  if (!isExplicitUpcoming && year > 0 && year <= 2026) {
+    return "finalizada";
   }
 
   return rawStatus;
@@ -2408,6 +2402,7 @@ async function loadSeries() {
   }
 
   series = data || [];
+  console.log("Total dramas:", series.length, "| Finalizadas:", series.filter(d => getEffectiveStatus(d) === "finalizada").length);
 
   // Sincroniza automaticamente séries cujo último episódio já foi exibido
   await syncAutoFinishedDramas(series);

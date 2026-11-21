@@ -246,6 +246,52 @@ p {
   line-height: 1.7;
 }
 
+/* CHIP / CASAL NA PÁGINA DE DETALHES */
+.detail-ship-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 16px;
+}
+
+.detail-ship-label {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: bold;
+}
+
+.ship-chips-wrap {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ship-chip-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 13px;
+  border-radius: 999px;
+  border: 1px solid rgba(240, 91, 168, 0.5);
+  background: rgba(240, 91, 168, 0.15);
+  color: #ffa6d5;
+  font-size: 13px;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ship-chip-btn:hover {
+  background: linear-gradient(120deg, rgba(240, 91, 168, 0.32), rgba(168, 117, 245, 0.28));
+  border-color: var(--pink);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(240, 91, 168, 0.22);
+}
+
 .synopsis {
   margin-top: 30px;
   padding-top: 20px;
@@ -809,6 +855,39 @@ function addText(parent, tag, className, value) {
   return element;
 }
 
+function buildShipRow(shipValue) {
+  const rawShip = String(shipValue || "").trim();
+  if (!rawShip) return null;
+
+  const row = document.createElement("div");
+  row.className = "detail-ship-row";
+
+  const label = document.createElement("span");
+  label.className = "detail-ship-label";
+  label.textContent = "💕 Ship / Casal:";
+
+  const chipsWrap = document.createElement("div");
+  chipsWrap.className = "ship-chips-wrap";
+
+  const parts = rawShip
+    .split(/[,;]+/)
+    .map(s => s.trim())
+    .filter(Boolean);
+
+  parts.forEach(part => {
+    const searchTerm = part.includes("/") ? part.split("/")[0].trim() : part;
+    const chipLink = document.createElement("a");
+    chipLink.className = "ship-chip-btn";
+    chipLink.href = "index.html?ship=" + encodeURIComponent(searchTerm);
+    chipLink.title = `Buscar outras séries com ${searchTerm}`;
+    chipLink.textContent = `💕 ${part}`;
+    chipsWrap.appendChild(chipLink);
+  });
+
+  row.append(label, chipsWrap);
+  return row;
+}
+
 async function loadDrama() {
   if (!currentDramaId) {
     details.textContent = "Série não encontrada.";
@@ -890,6 +969,10 @@ async function loadDrama() {
 
     addText(info, "h2", "", data.title || "Sem título");
     if (data.original_title) addText(info, "p", "original-title", data.original_title);
+
+    const shipRow = buildShipRow(data.ship);
+    if (shipRow) info.appendChild(shipRow);
+
     if (data.year) addText(info, "p", "", "Ano: " + data.year);
     if (data.country) addText(info, "p", "", "País: " + data.country);
     if (data.episodes) addText(info, "p", "", "Episódios: " + data.episodes);
@@ -1091,15 +1174,11 @@ async function loadDramaComments(dramaId) {
     comments.forEach((comment) => {
       const profile = profileMap.get(comment.user_id);
 
-      // Respeita a preferência de cada pessoa sobre exibir sua identidade
-      // nas resenhas e comentários. Na ausência do perfil, usa modo reservado.
       const showIdentity = !!profile && profile.show_on_reviews !== false;
       const authorName = showIdentity
         ? (profile.display_name || "Fã do ThaiGList")
         : "Fã do ThaiGList";
 
-      // Só permite abrir o perfil quando a identidade está visível
-      // e a opção de perfil público não foi desativada.
       const isPublicAuthor = showIdentity && profile.public_profile !== false;
 
       const card = document.createElement("article");

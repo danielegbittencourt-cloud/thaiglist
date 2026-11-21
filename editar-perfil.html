@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Editar Perfil | ThaiGList 🌷</title>
+
+<style>
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --background: #100d18;
+  --surface: #1b1626;
+  --surface-light: #241d32;
+  --pink: #f05ba8;
+  --purple: #a875f5;
+  --text: #f7efff;
+  --muted: #b8a9c9;
+  --border: #382b49;
+}
+
+body {
+  margin: 0;
+  padding: 20px 15px;
+  background: var(--background);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  max-width: 720px;
+  margin: auto;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 18px 22px;
+  background: linear-gradient(120deg, #1d1329, #2b1938);
+  border: 1px solid #49335c;
+  border-radius: 16px;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 22px;
+  color: #ffffff;
+}
+
+.nav-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: bold;
+  text-decoration: none;
+  color: var(--text);
+  background: rgba(36, 29, 50, 0.9);
+  border: 1px solid #493956;
+}
+
+.nav-pill:hover {
+  border-color: var(--purple);
+}
+
+main {
+  margin-top: 20px;
+}
+
+.card-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 8px 30px #00000033;
+}
+
+h2 {
+  margin: 0 0 6px;
+  color: var(--pink);
+  font-size: 24px;
+}
+
+.subtitle {
+  margin: 0 0 22px;
+  color: var(--muted);
+  font-size: 13.5px;
+}
+
+.section-title {
+  margin: 26px 0 14px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+  font-size: 15px;
+  color: var(--purple);
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+}
+
+.avatar-editor {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  padding: 16px;
+  border-radius: 14px;
+  background: var(--surface-light);
+  border: 1px solid var(--border);
+  margin-bottom: 18px;
+}
+
+.avatar-preview {
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--pink);
+  background: #30213e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.avatar-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.avatar-fields {
+  flex: 1;
+  min-width: 210px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.form-group {
+  margin-bottom: 14px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 11px 13px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface-light);
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--pink);
+}
+
+.form-group textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--surface-light);
+  border: 1px solid var(--border);
+  margin-bottom: 10px;
+  cursor: pointer;
+  font-size: 13.5px;
+}
+
+.checkbox-row input[type="checkbox"] {
+  width: 17px;
+  height: 17px;
+  accent-color: var(--pink);
+  cursor: pointer;
+}
+
+.actions-bar {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 24px;
+}
+
+.save-btn {
+  flex: 1;
+  min-width: 180px;
+  padding: 13px 20px;
+  border: none;
+  border-radius: 11px;
+  background: linear-gradient(100deg, var(--pink), var(--purple));
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.save-btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.cancel-btn {
+  padding: 13px 18px;
+  border-radius: 11px;
+  border: 1px solid var(--border);
+  background: var(--surface-light);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+}
+
+.feedback-msg {
+  margin-top: 14px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #8ee0b7;
+}
+
+.feedback-msg.error {
+  color: #ff8fb3;
+}
+
+@media (max-width: 600px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <header>
+    <h1>ThaiGList 🌷</h1>
+    <a class="nav-pill" href="conta.html">← Voltar para Minha Conta</a>
+  </header>
+
+  <main>
+    <div class="card-box">
+      <h2>Editar perfil ✏️</h2>
+      <p class="subtitle">Personalize suas informações, favoritos, redes sociais e privacidade.</p>
+
+      <form id="edit-profile-form">
+
+        <!-- FOTO E NOME -->
+        <div class="avatar-editor">
+          <div class="avatar-preview" id="avatar-preview">🌷</div>
+          <div class="avatar-fields">
+            <div class="form-group" style="margin-bottom: 10px;">
+              <label for="avatar-file">Enviar nova foto do aparelho</label>
+              <input type="file" id="avatar-file" accept="image/*">
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="avatar-url">Ou cole o link (URL) da foto</label>
+              <input type="url" id="avatar-url" placeholder="https://...">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="display-name">Nome de usuário / exibição</label>
+          <input type="text" id="display-name" maxlength="50" required placeholder="Seu nome no ThaiGList">
+        </div>
+
+        <div class="form-group">
+          <label for="bio">Bio / Sobre você (opcional)</label>
+          <textarea id="bio" maxlength="240" placeholder="Conte um pouco sobre seus gostos em GLs..."></textarea>
+        </div>
+
+        <!-- FAVORITOS -->
+        <div class="section-title">💕 Favoritos</div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="favorite-ship">Casal preferido (Ship)</label>
+            <input type="text" id="favorite-ship" maxlength="80" placeholder="Ex: LingOrm, NamtanFilm, LMSY...">
+          </div>
+
+          <div class="form-group">
+            <label for="favorite-drama-select">Série favorita</label>
+            <select id="favorite-drama-select">
+              <option value="">Selecione uma série do catálogo...</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- REDES SOCIAIS -->
+        <div class="section-title">📱 Redes sociais</div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="instagram">Instagram (@usuario)</label>
+            <input type="text" id="instagram" maxlength="80" placeholder="@seuinstagram">
+          </div>
+
+          <div class="form-group">
+            <label for="twitter-x">X / Twitter (@usuario)</label>
+            <input type="text" id="twitter-x" maxlength="80" placeholder="@seuperfilnox">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="tiktok">TikTok (@usuario)</label>
+          <input type="text" id="tiktok" maxlength="80" placeholder="@seutiktok">
+        </div>
+
+        <!-- PRIVACIDADE E CONTA -->
+        <div class="section-title">🔒 Privacidade e conta</div>
+
+        <label class="checkbox-row">
+          <input type="checkbox" id="public-profile" checked>
+          <span>Permitir que outras pessoas visitem meu perfil público</span>
+        </label>
+
+        <label class="checkbox-row">
+          <input type="checkbox" id="show-on-reviews" checked>
+          <span>Mostrar meu nome e foto nas avaliações e comentários</span>
+        </label>
+
+        <div class="form-group" style="margin-top: 14px;">
+          <label for="account-email">E-mail da conta (somente leitura)</label>
+          <input type="email" id="account-email" disabled style="opacity: 0.7;">
+        </div>
+
+        <div class="actions-bar">
+          <button type="submit" class="save-btn" id="save-profile-btn">Salvar alterações 🌷</button>
+          <a href="conta.html" class="cancel-btn">Cancelar</a>
+        </div>
+
+        <p id="feedback-msg" class="feedback-msg"></p>
+
+      </form>
+    </div>
+  </main>
+
+</div>
+
+<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+const SUPABASE_URL = "https://jjybnidhwfimcdwygafk.supabase.co";
+const SUPABASE_KEY = "sb_publishable_DyikY0WSJJ4apDc0_ZwfOw_x6LvfqM-";
+
+const memoryStorage = new Map();
+const safeStorage = {
+  getItem: (key) => { try { return window.localStorage.getItem(key); } catch { return memoryStorage.get(key) ?? null; } },
+  setItem: (key, value) => { try { window.localStorage.setItem(key, value); } catch { memoryStorage.set(key, value); } },
+  removeItem: (key) => { try { window.localStorage.removeItem(key); } catch { memoryStorage.delete(key); } }
+};
+
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+  auth: { storage: safeStorage, persistSession: true, autoRefreshToken: true }
+});
+
+let currentUser = null;
+
+const avatarPreview = document.getElementById("avatar-preview");
+const avatarUrlInput = document.getElementById("avatar-url");
+const avatarFileInput = document.getElementById("avatar-file");
+const favDramaSelect = document.getElementById("favorite-drama-select");
+const feedbackMsg = document.getElementById("feedback-msg");
+
+function updateAvatarPreview(url) {
+  avatarPreview.innerHTML = "";
+  if (url) {
+    const img = document.createElement("img");
+    img.src = url;
+    img.alt = "Prévia do avatar";
+    img.onerror = () => { avatarPreview.textContent = "🌷"; };
+    avatarPreview.appendChild(img);
+  } else {
+    avatarPreview.textContent = "🌷";
+  }
+}
+
+avatarUrlInput.addEventListener("input", () => {
+  updateAvatarPreview(avatarUrlInput.value.trim());
+});
+
+avatarFileInput.addEventListener("change", () => {
+  const file = avatarFileInput.files?.[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => updateAvatarPreview(reader.result);
+  reader.readAsDataURL(file);
+});
+
+async function loadDramasDropdown() {
+  const { data } = await db
+    .from("dramas")
+    .select("id, title, year")
+    .order("title");
+
+  (data || []).forEach(d => {
+    const opt = document.createElement("option");
+    opt.value = String(d.id);
+    opt.dataset.title = d.title || "";
+    opt.textContent = d.year ? `${d.title} (${d.year})` : d.title;
+    favDramaSelect.appendChild(opt);
+  });
+}
+
+async function initEditPage() {
+  const { data: sessionData } = await db.auth.getSession();
+  currentUser = sessionData?.session?.user || null;
+
+  if (!currentUser) {
+    window.location.href = "conta.html";
+    return;
+  }
+
+  document.getElementById("account-email").value = currentUser.email || "";
+
+  await loadDramasDropdown();
+
+  const { data: profile } = await db
+    .from("profiles")
+    .select("*")
+    .eq("id", currentUser.id)
+    .maybeSingle();
+
+  const fallbackName = currentUser.user_metadata?.full_name || currentUser.email?.split("@")[0] || "";
+  document.getElementById("display-name").value = profile?.display_name || fallbackName;
+  document.getElementById("bio").value = profile?.bio || "";
+  document.getElementById("favorite-ship").value = profile?.favorite_ship || "";
+  document.getElementById("instagram").value = profile?.instagram || "";
+  document.getElementById("twitter-x").value = profile?.twitter_x || profile?.x_handle || "";
+  document.getElementById("tiktok").value = profile?.tiktok || "";
+  document.getElementById("public-profile").checked = profile?.public_profile !== false;
+  document.getElementById("show-on-reviews").checked = profile?.show_on_reviews !== false;
+
+  if (profile?.avatar_url) {
+    avatarUrlInput.value = profile.avatar_url;
+    updateAvatarPreview(profile.avatar_url);
+  }
+
+  if (profile?.favorite_drama_id) {
+    favDramaSelect.value = String(profile.favorite_drama_id);
+  } else if (profile?.favorite_drama) {
+    const matchOpt = Array.from(favDramaSelect.options).find(
+      o => (o.dataset.title || "").toLowerCase() === profile.favorite_drama.toLowerCase()
+    );
+    if (matchOpt) favDramaSelect.value = matchOpt.value;
+  }
+}
+
+document.getElementById("edit-profile-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  if (!currentUser) return;
+
+  const saveBtn = document.getElementById("save-profile-btn");
+  saveBtn.disabled = true;
+  saveBtn.textContent = "Salvando...";
+  feedbackMsg.textContent = "";
+  feedbackMsg.classList.remove("error");
+
+  let finalAvatarUrl = avatarUrlInput.value.trim() || null;
+  const file = avatarFileInput.files?.[0];
+
+  if (file) {
+    const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
+    const filePath = `${currentUser.id}/avatar-${Date.now()}.${ext}`;
+    const { error: uploadErr } = await db.storage
+      .from("avatars")
+      .upload(filePath, file, { upsert: true });
+
+    if (!uploadErr) {
+      const { data: pubData } = db.storage.from("avatars").getPublicUrl(filePath);
+      if (pubData?.publicUrl) finalAvatarUrl = pubData.publicUrl;
+    }
+  }
+
+  const selectedOpt = favDramaSelect.options[favDramaSelect.selectedIndex];
+  const favDramaId = favDramaSelect.value ? Number(favDramaSelect.value) : null;
+  const favDramaTitle = favDramaId ? (selectedOpt?.dataset?.title || "") : null;
+
+  const payload = {
+    id: currentUser.id,
+    display_name: document.getElementById("display-name").value.trim(),
+    avatar_url: finalAvatarUrl,
+    bio: document.getElementById("bio").value.trim() || null,
+    favorite_ship: document.getElementById("favorite-ship").value.trim() || null,
+    favorite_drama_id: favDramaId,
+    favorite_drama: favDramaTitle,
+    instagram: document.getElementById("instagram").value.trim() || null,
+    twitter_x: document.getElementById("twitter-x").value.trim() || null,
+    tiktok: document.getElementById("tiktok").value.trim() || null,
+    public_profile: document.getElementById("public-profile").checked,
+    show_on_reviews: document.getElementById("show-on-reviews").checked,
+    updated_at: new Date().toISOString()
+  };
+
+  const { error } = await db
+    .from("profiles")
+    .upsert(payload, { onConflict: "id" });
+
+  saveBtn.disabled = false;
+  saveBtn.textContent = "Salvar alterações 🌷";
+
+  if (error) {
+    console.error("Erro ao salvar perfil:", error);
+    feedbackMsg.classList.add("error");
+    feedbackMsg.textContent = "Não foi possível salvar: " + error.message;
+    return;
+  }
+
+  feedbackMsg.textContent = "Perfil atualizado com sucesso! Redirecionando... 🌷";
+  setTimeout(() => {
+    window.location.href = "conta.html";
+  }, 900);
+});
+
+initEditPage();
+</script>
+
+</body>
+</html>

@@ -190,6 +190,70 @@ h2 {
   font-size: 25px;
 }
 
+/* BANNER NO AR (AO VIVO AGORA) */
+
+.on-air-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 14px 18px;
+  margin-bottom: 22px;
+  border-radius: 14px;
+  background: linear-gradient(100deg, rgba(255, 62, 120, 0.22), rgba(168, 117, 245, 0.2));
+  border: 1px solid #ff5c93;
+  box-shadow: 0 0 22px rgba(255, 75, 130, 0.22);
+}
+
+.on-air-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.on-air-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: #ff3b7f;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  animation: pulseLive 1.8s infinite;
+}
+
+@keyframes pulseLive {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 59, 127, 0.65); }
+  50% { box-shadow: 0 0 0 7px rgba(255, 59, 127, 0); }
+}
+
+.on-air-text {
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.on-air-text strong {
+  color: #ff9fd0;
+}
+
+.on-air-btn {
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(100deg, #f05ba8, #a875f5);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+}
+
 /* PESQUISA E BARRA DO CATÁLOGO */
 
 .search-top-box {
@@ -331,6 +395,12 @@ h2 {
   border: 1px solid rgba(168, 117, 245, 0.5);
 }
 
+.status-pill.completed {
+  background: rgba(84, 194, 141, 0.14);
+  color: #8ee0b7;
+  border: 1px solid rgba(84, 194, 141, 0.35);
+}
+
 /* BANNER DE DESTAQUE */
 
 .featured-banner {
@@ -409,84 +479,169 @@ h2 {
   box-shadow: 0 5px 20px #f05ba855;
 }
 
-/* CARROSSEL GLs DA SEMANA */
+/* AGENDA SEMANAL DE LANÇAMENTOS */
 
-.weekly-section {
+.schedule-section {
   margin-bottom: 30px;
+  padding: 22px;
+  border-radius: 18px;
+  background: var(--surface-light);
+  border: 1px solid var(--border);
 }
 
-.weekly-subtitle {
+.schedule-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.schedule-header h2 {
+  margin: 0;
+}
+
+.schedule-subtitle {
   color: var(--muted);
-  margin-top: -10px;
+  font-size: 13px;
+  margin: 0;
 }
 
-.weekly-carousel {
+.day-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.day-tab {
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.18s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.day-tab:hover {
+  color: #ffffff;
+  border-color: var(--purple);
+}
+
+.day-tab.today {
+  border-color: rgba(240, 91, 168, 0.55);
+}
+
+.day-tab.active {
+  background: linear-gradient(100deg, #f05ba8, #a875f5);
+  color: #ffffff;
+  border-color: transparent;
+}
+
+.day-count {
+  font-size: 11px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.schedule-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.schedule-card {
   display: flex;
   align-items: center;
   gap: 12px;
-  width: 100%;
-  overflow: hidden;
+  padding: 12px;
+  border-radius: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  text-decoration: none;
+  color: var(--text);
+  transition: transform 0.18s, border-color 0.18s;
 }
 
-#weekly-list {
+.schedule-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--pink);
+}
+
+.schedule-card.live-now {
+  border-color: #ff4785;
+  box-shadow: 0 0 18px rgba(255, 71, 133, 0.25);
+}
+
+.schedule-poster {
+  width: 54px;
+  height: 76px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: #30213e;
   display: flex;
-  gap: 18px;
-  overflow-x: auto;
-  scroll-behavior: smooth;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.schedule-info {
   flex: 1;
   min-width: 0;
-  padding: 15px 5px 20px;
-  scrollbar-width: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-#weekly-list::-webkit-scrollbar {
-  display: none;
+.schedule-top-tags {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
 }
 
-.weekly-card {
-  flex: 0 0 145px;
-  width: 145px;
-  color: var(--text);
-  text-decoration: none;
-  transition: transform .25s ease;
-  cursor: pointer;
+.schedule-time {
+  font-size: 11.5px;
+  font-weight: bold;
+  color: #ff9dd0;
 }
 
-.weekly-card:hover {
-  transform: translateY(-7px);
+.schedule-ep {
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(168, 117, 245, 0.2);
+  color: #d9c2ff;
+  font-weight: bold;
 }
 
-.weekly-card img {
-  width: 145px;
-  height: 210px;
-  object-fit: cover;
-  border-radius: 12px;
-  display: block;
-  border: 1px solid #62416f;
-  box-shadow: 0 5px 18px #00000066;
+.schedule-title {
+  margin: 0;
+  font-size: 14.5px;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.weekly-card h3 {
-  color: var(--text);
+.schedule-platform {
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.schedule-empty {
+  color: var(--muted);
   font-size: 14px;
-  text-align: center;
-  margin-top: 10px;
-}
-
-.weekly-carousel button {
-  flex: 0 0 38px;
-  width: 38px;
-  height: 38px;
-  border: 1px solid #71428c;
-  border-radius: 50%;
-  background: #30213e;
-  color: white;
-  cursor: pointer;
-  transition: .2s;
-}
-
-.weekly-carousel button:hover {
-  background: var(--pink);
+  margin: 6px 0;
 }
 
 /* CATÁLOGO — MODO CARDS (PADRÃO) */
@@ -887,6 +1042,10 @@ table.catalog-table tbody tr:hover {
     font-size: 29px;
   }
 
+  .schedule-section {
+    padding: 16px;
+  }
+
   .controls-toolbar {
     align-items: stretch;
   }
@@ -920,26 +1079,6 @@ table.catalog-table tbody tr:hover {
     width: 28px;
     height: 28px;
     font-size: 16px;
-  }
-
-  .weekly-card {
-    flex-basis: 125px;
-    width: 125px;
-  }
-
-  .weekly-card img {
-    width: 125px;
-    height: 185px;
-  }
-
-  .weekly-carousel {
-    gap: 5px;
-  }
-
-  .weekly-carousel button {
-    flex-basis: 30px;
-    width: 30px;
-    height: 30px;
   }
 }
 
@@ -1009,6 +1148,16 @@ footer {
 
 <main>
 
+  <!-- AVISO AO VIVO ("NO AR") QUANDO HÁ EPISÓDIO PASSANDO NO HORÁRIO -->
+
+  <div id="on-air-banner" class="on-air-banner" hidden>
+    <div class="on-air-left">
+      <span class="on-air-badge">🔴 NO AR</span>
+      <span class="on-air-text" id="on-air-text"></span>
+    </div>
+    <a id="on-air-link" href="#" class="on-air-btn">Ver detalhes</a>
+  </div>
+
   <h2 id="catalog-title">Explore o catálogo</h2>
 
   <!-- PESQUISA -->
@@ -1061,30 +1210,28 @@ footer {
 
   </section>
 
-  <!-- CARROSSEL SEMANAL -->
+  <!-- CALENDÁRIO SEMANAL DE LANÇAMENTOS -->
 
-  <section class="weekly-section">
+  <section class="schedule-section" aria-label="Calendário semanal de GLs em andamento">
 
-    <h2>🌷 GLs da Semana</h2>
+    <div class="schedule-header">
+      <h2>📅 Agenda Semanal</h2>
+      <p class="schedule-subtitle">Episódios novos exibidos semanalmente nas plataformas oficiais (horário de Brasília)</p>
+    </div>
 
-    <p class="weekly-subtitle">
-      Seus dramas em destaque nesta semana
-    </p>
+    <div class="day-tabs" id="day-tabs">
+      <button type="button" class="day-tab" data-day="0">Dom <span class="day-count" id="cnt-0">0</span></button>
+      <button type="button" class="day-tab" data-day="1">Seg <span class="day-count" id="cnt-1">0</span></button>
+      <button type="button" class="day-tab" data-day="2">Ter <span class="day-count" id="cnt-2">0</span></button>
+      <button type="button" class="day-tab" data-day="3">Qua <span class="day-count" id="cnt-3">0</span></button>
+      <button type="button" class="day-tab" data-day="4">Qui <span class="day-count" id="cnt-4">0</span></button>
+      <button type="button" class="day-tab" data-day="5">Sex <span class="day-count" id="cnt-5">0</span></button>
+      <button type="button" class="day-tab" data-day="6">Sáb <span class="day-count" id="cnt-6">0</span></button>
+      <button type="button" class="day-tab" data-day="all">Todos <span class="day-count" id="cnt-all">0</span></button>
+    </div>
 
-    <div class="weekly-carousel">
-
-      <button id="weekly-prev" type="button" aria-label="Anterior">
-        ❮
-      </button>
-
-      <div id="weekly-list">
-        <p>Carregando destaques... 🌷</p>
-      </div>
-
-      <button id="weekly-next" type="button" aria-label="Próximo">
-        ❯
-      </button>
-
+    <div id="schedule-list" class="schedule-grid">
+      <p class="schedule-empty">Carregando agenda semanal... 🌷</p>
     </div>
 
   </section>
@@ -1102,6 +1249,7 @@ footer {
           <button type="button" class="view-btn active" data-view="cards">⊞ Cards</button>
           <button type="button" class="view-btn" data-view="list">☰ Lista</button>
           <button type="button" class="view-btn" data-view="table">▤ Tabela</button>
+          <button type="button" class="view-btn" data-view="completed">✓ Finalizadas</button>
         </div>
 
         <div class="sort-container">
@@ -1209,12 +1357,24 @@ let series = [];
 let activeUserId = null;
 let userListMap = new Map();
 let currentView = "cards";
+let selectedScheduleDay = String(new Date().getDay());
+
+const DAY_NAMES = [
+  "Domingo",
+  "Segunda-feira",
+  "Terça-feira",
+  "Quarta-feira",
+  "Quinta-feira",
+  "Sexta-feira",
+  "Sábado"
+];
 
 const list = document.getElementById("series-list");
 const search = document.getElementById("search");
 const sortSelect = document.getElementById("sort-select");
 const searchResults = document.getElementById("search-results");
 const viewButtons = document.querySelectorAll("#view-switcher .view-btn");
+const dayTabButtons = document.querySelectorAll("#day-tabs .day-tab");
 
 const collator = new Intl.Collator("pt-BR", {
   sensitivity: "base",
@@ -1256,15 +1416,122 @@ function getMainCast(item) {
 
 
 // ========================================
-// SELOS DE SITUAÇÃO (EM ANDAMENTO / EM BREVE)
+// CÁLCULO AUTOMÁTICO DE EPISÓDIO E ENCERRAMENTO
+// ========================================
+
+function parseAirDay(rawDay) {
+  if (rawDay === null || rawDay === undefined || rawDay === "") return null;
+  if (typeof rawDay === "number" && rawDay >= 0 && rawDay <= 6) return rawDay;
+
+  const str = String(rawDay).trim().toLowerCase();
+  if (/^[0-6]$/.test(str)) return Number(str);
+  if (str.startsWith("dom")) return 0;
+  if (str.startsWith("seg")) return 1;
+  if (str.startsWith("ter")) return 2;
+  if (str.startsWith("qua")) return 3;
+  if (str.startsWith("qui")) return 4;
+  if (str.startsWith("sex")) return 5;
+  if (str.startsWith("sáb") || str.startsWith("sab")) return 6;
+  return null;
+}
+
+function getEffectiveStatus(item) {
+  const rawStatus = (item.status || "").trim().toLowerCase();
+  const totalEps = Number(item.episodes) || 0;
+
+  if (rawStatus === "em andamento") {
+    // Se tiver data de encerramento e já passou, considera finalizada automaticamente
+    if (item.end_date) {
+      const endTs = new Date(item.end_date + "T23:59:59").getTime();
+      if (!Number.isNaN(endTs) && Date.now() > endTs) {
+        return "finalizada";
+      }
+    }
+
+    // Se tiver data de estreia e total de episódios, calcula quantos episódios já saíram
+    if (item.premiere_date && totalEps > 0) {
+      const startTs = new Date(item.premiere_date + "T00:00:00").getTime();
+      if (!Number.isNaN(startTs) && Date.now() >= startTs) {
+        const weeksElapsed = Math.floor((Date.now() - startTs) / (7 * 24 * 60 * 60 * 1000)) + 1;
+        if (weeksElapsed > totalEps) {
+          return "finalizada";
+        }
+      }
+    }
+    return "em andamento";
+  }
+
+  if (rawStatus === "finalizada" || rawStatus === "concluída" || rawStatus === "concluida") {
+    return "finalizada";
+  }
+
+  return rawStatus;
+}
+
+function getCurrentEpisodeNumber(item) {
+  const totalEps = Number(item.episodes) || 0;
+  if (!item.premiere_date) return null;
+
+  const startTs = new Date(item.premiere_date + "T00:00:00").getTime();
+  if (Number.isNaN(startTs) || Date.now() < startTs) return null;
+
+  const ep = Math.floor((Date.now() - startTs) / (7 * 24 * 60 * 60 * 1000)) + 1;
+  return totalEps > 0 ? Math.min(ep, totalEps) : ep;
+}
+
+function isSeriesOnAirNow(item, nowDate = new Date()) {
+  if (getEffectiveStatus(item) !== "em andamento") return false;
+
+  const airDay = parseAirDay(item.air_day);
+  if (airDay === null || airDay !== nowDate.getDay()) return false;
+
+  if (!item.air_time) return false;
+  const parts = String(item.air_time).trim().split(":");
+  if (parts.length < 2) return false;
+
+  const startHour = Number(parts[0]);
+  const startMin = Number(parts[1]);
+  if (Number.isNaN(startHour) || Number.isNaN(startMin)) return false;
+
+  const startMinutes = startHour * 60 + startMin;
+  const nowMinutes = nowDate.getHours() * 60 + nowDate.getMinutes();
+
+  // Janela de exibição: do horário de início até 60 minutos depois
+  return nowMinutes >= startMinutes && nowMinutes < startMinutes + 60;
+}
+
+async function syncAutoFinishedDramas(dramasList) {
+  const toFinishIds = dramasList
+    .filter(d => (d.status || "").trim().toLowerCase() === "em andamento" && getEffectiveStatus(d) === "finalizada")
+    .map(d => d.id);
+
+  if (!toFinishIds.length) return;
+
+  const { error } = await db
+    .from("dramas")
+    .update({ status: "Finalizada" })
+    .in("id", toFinishIds);
+
+  if (!error) {
+    dramasList.forEach(d => {
+      if (toFinishIds.includes(d.id)) {
+        d.status = "Finalizada";
+      }
+    });
+  }
+}
+
+
+// ========================================
+// SELOS DE SITUAÇÃO (EM ANDAMENTO / EM BREVE / FINALIZADA)
 // ========================================
 
 function getReleaseBadgeInfo(item) {
 
-  const status = (item.status || "").trim().toLowerCase();
+  const effectiveStatus = getEffectiveStatus(item);
   const year = Number(item.year) || 0;
 
-  if (status === "em andamento") {
+  if (effectiveStatus === "em andamento") {
     return {
       type: "ongoing",
       label: "📺 Em andamento"
@@ -1272,9 +1539,9 @@ function getReleaseBadgeInfo(item) {
   }
 
   if (
-    status === "teaser / piloto" ||
-    status === "em breve" ||
-    status === "previsto" ||
+    effectiveStatus === "teaser / piloto" ||
+    effectiveStatus === "em breve" ||
+    effectiveStatus === "previsto" ||
     year > 2026
   ) {
     return {
@@ -1283,9 +1550,175 @@ function getReleaseBadgeInfo(item) {
     };
   }
 
+  if (effectiveStatus === "finalizada") {
+    return {
+      type: "completed",
+      label: "✓ Finalizada"
+    };
+  }
+
   return null;
 
 }
+
+
+// ========================================
+// AVISO "NO AR" NO TOPO DA PÁGINA
+// ========================================
+
+function updateOnAirBanner() {
+  const banner = document.getElementById("on-air-banner");
+  const textEl = document.getElementById("on-air-text");
+  const linkEl = document.getElementById("on-air-link");
+
+  const now = new Date();
+  const liveSeries = series.filter(item => isSeriesOnAirNow(item, now));
+
+  if (!liveSeries.length) {
+    banner.hidden = true;
+    return;
+  }
+
+  const current = liveSeries[0];
+  const epNum = getCurrentEpisodeNumber(current);
+  const epLabel = epNum ? ` · Episódio ${epNum}` : "";
+  const platLabel = current.platform ? ` (${current.platform})` : "";
+
+  textEl.innerHTML = `<strong>${current.title}</strong>${epLabel}${platLabel}`;
+  linkEl.href = "drama.html?id=" + encodeURIComponent(current.id);
+  banner.hidden = false;
+}
+
+
+// ========================================
+// AGENDA SEMANAL DE LANÇAMENTOS
+// ========================================
+
+function renderWeeklySchedule() {
+  const scheduleList = document.getElementById("schedule-list");
+  const todayIdx = new Date().getDay();
+
+  const ongoingDramas = series.filter(item => getEffectiveStatus(item) === "em andamento");
+
+  // Atualiza contadores por dia da semana
+  for (let d = 0; d <= 6; d++) {
+    const count = ongoingDramas.filter(item => parseAirDay(item.air_day) === d).length;
+    const badge = document.getElementById("cnt-" + d);
+    if (badge) badge.textContent = count;
+  }
+  const allBadge = document.getElementById("cnt-all");
+  if (allBadge) allBadge.textContent = ongoingDramas.length;
+
+  dayTabButtons.forEach(btn => {
+    const dVal = btn.dataset.day;
+    btn.classList.toggle("active", dVal === selectedScheduleDay);
+    btn.classList.toggle("today", dVal === String(todayIdx));
+  });
+
+  let filtered = ongoingDramas;
+  if (selectedScheduleDay !== "all") {
+    const dayNum = Number(selectedScheduleDay);
+    filtered = ongoingDramas.filter(item => parseAirDay(item.air_day) === dayNum);
+  }
+
+  filtered.sort((a, b) => {
+    const dayA = parseAirDay(a.air_day) ?? 7;
+    const dayB = parseAirDay(b.air_day) ?? 7;
+    if (selectedScheduleDay === "all" && dayA !== dayB) return dayA - dayB;
+    return (a.air_time || "99:99").localeCompare(b.air_time || "99:99");
+  });
+
+  scheduleList.innerHTML = "";
+
+  if (!filtered.length) {
+    const msg = document.createElement("p");
+    msg.className = "schedule-empty";
+    msg.textContent =
+      selectedScheduleDay === "all"
+        ? "Nenhum GL em andamento cadastrado na agenda desta semana 🌷"
+        : `Nenhum lançamento agendado para ${DAY_NAMES[Number(selectedScheduleDay)]} 🌷`;
+    scheduleList.appendChild(msg);
+    return;
+  }
+
+  const now = new Date();
+
+  filtered.forEach(item => {
+    const liveNow = isSeriesOnAirNow(item, now);
+    const card = document.createElement("a");
+    card.className = "schedule-card" + (liveNow ? " live-now" : "");
+    card.href = "drama.html?id=" + encodeURIComponent(item.id);
+
+    if (item.poster_url) {
+      const img = document.createElement("img");
+      img.className = "schedule-poster";
+      img.src = item.poster_url;
+      img.alt = item.title || "Pôster";
+      img.loading = "lazy";
+      img.onerror = () => { img.style.display = "none"; };
+      card.appendChild(img);
+    } else {
+      const ph = document.createElement("div");
+      ph.className = "schedule-poster";
+      ph.textContent = "🌷";
+      card.appendChild(ph);
+    }
+
+    const info = document.createElement("div");
+    info.className = "schedule-info";
+
+    const topTags = document.createElement("div");
+    topTags.className = "schedule-top-tags";
+
+    if (liveNow) {
+      const liveTag = document.createElement("span");
+      liveTag.className = "on-air-badge";
+      liveTag.style.padding = "2px 7px";
+      liveTag.style.fontSize = "10px";
+      liveTag.textContent = "🔴 NO AR";
+      topTags.appendChild(liveTag);
+    }
+
+    const dayIdx = parseAirDay(item.air_day);
+    const dayPrefix = selectedScheduleDay === "all" && dayIdx !== null ? `${DAY_NAMES[dayIdx].slice(0, 3)} · ` : "";
+    const timeLabel = item.air_time ? `${dayPrefix}⏰ ${String(item.air_time).slice(0, 5)}` : `${dayPrefix}Horário a definir`;
+
+    const timeSpan = document.createElement("span");
+    timeSpan.className = "schedule-time";
+    timeSpan.textContent = timeLabel;
+    topTags.appendChild(timeSpan);
+
+    const epNum = getCurrentEpisodeNumber(item);
+    const totalEps = Number(item.episodes) || 0;
+    if (epNum || totalEps) {
+      const epSpan = document.createElement("span");
+      epSpan.className = "schedule-ep";
+      epSpan.textContent = epNum
+        ? (totalEps ? `EP ${epNum}/${totalEps}` : `EP ${epNum}`)
+        : `${totalEps} eps`;
+      topTags.appendChild(epSpan);
+    }
+
+    const titleEl = document.createElement("h3");
+    titleEl.className = "schedule-title";
+    titleEl.textContent = item.title || "Sem título";
+
+    const platEl = document.createElement("div");
+    platEl.className = "schedule-platform";
+    platEl.textContent = item.platform ? `📺 ${item.platform}` : "📺 Plataforma oficial";
+
+    info.append(topTags, titleEl, platEl);
+    card.appendChild(info);
+    scheduleList.appendChild(card);
+  });
+}
+
+dayTabButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    selectedScheduleDay = btn.dataset.day;
+    renderWeeklySchedule();
+  });
+});
 
 
 // ========================================
@@ -1459,7 +1892,7 @@ function sortSeries(items) {
 
 
 // ========================================
-// EXIBIR CATÁLOGO (CARDS, LISTA E TABELA)
+// EXIBIR CATÁLOGO (CARDS, LISTA, TABELA E FINALIZADAS)
 // ========================================
 
 function showSeries(items) {
@@ -1563,8 +1996,9 @@ function showSeries(items) {
 
   }
 
-  // MODOS CARDS E LISTA
-  list.className = "view-" + currentView;
+  // MODOS CARDS, LISTA E FINALIZADAS (EXIBE EM CARDS)
+  const layoutClass = currentView === "list" ? "view-list" : "view-cards";
+  list.className = layoutClass;
 
   items.forEach(item => {
 
@@ -1644,7 +2078,9 @@ function showSeries(items) {
     infoWrap.className = "card-info";
 
     const badgeInfo = getReleaseBadgeInfo(item);
-    if (badgeInfo) {
+    // Nos cards principais, "Finalizada" fica discreta apenas nos detalhes (drama.html),
+    // exceto quando o usuário seleciona a aba "Finalizadas" ou modo Lista/Tabela.
+    if (badgeInfo && (badgeInfo.type !== "completed" || currentView === "completed" || currentView === "list")) {
       const badgeEl = document.createElement("span");
       badgeEl.className = "status-pill " + badgeInfo.type;
       badgeEl.textContent = badgeInfo.label;
@@ -1699,6 +2135,10 @@ function filterSeries() {
 
   const filtered = series.filter(item => {
 
+    if (currentView === "completed" && getEffectiveStatus(item) !== "finalizada") {
+      return false;
+    }
+
     const searchable = [
 
       item.title,
@@ -1720,7 +2160,7 @@ function filterSeries() {
 
   showSeries(ordered);
 
-  if (term) {
+  if (term || currentView === "completed") {
 
     searchResults.textContent =
       filtered.length +
@@ -1780,20 +2220,7 @@ async function loadSeries() {
 
     .from("dramas")
 
-    .select(`
-      id,
-      title,
-      original_title,
-      synopsis,
-      year,
-      episodes,
-      poster_url,
-      genre,
-      status,
-      country,
-      main_cast,
-      weekly_featured
-    `)
+    .select("*")
 
     .order("id");
 
@@ -1810,19 +2237,20 @@ async function loadSeries() {
 
   series = data || [];
 
-  // Atualiza catálogo
+  // Sincroniza automaticamente séries cujo último episódio já foi exibido
+  await syncAutoFinishedDramas(series);
 
+  // Atualiza aviso "NO AR", agenda semanal e catálogo
+  updateOnAirBanner();
+  renderWeeklySchedule();
   filterSeries();
 
-  // Seleciona GLs da semana
-
+  // Seleciona Destaque da Semana
   const weeklySeries = series.filter(
     item => item.weekly_featured === true
   );
 
-  showWeeklySeries(weeklySeries);
-
-  showFeaturedDrama(weeklySeries[0]);
+  showFeaturedDrama(weeklySeries[0] || series.find(item => getEffectiveStatus(item) === "em andamento"));
 
 }
 
@@ -1886,74 +2314,6 @@ function showFeaturedDrama(item) {
 
 
 // ========================================
-// CARROSSEL GLs DA SEMANA
-// ========================================
-
-function showWeeklySeries(items) {
-
-  const weeklyList = document.getElementById("weekly-list");
-
-  weeklyList.innerHTML = "";
-
-  if (!items.length) {
-
-    weeklyList.textContent =
-      "Em breve teremos GLs em destaque! 🌷";
-
-    return;
-
-  }
-
-  items.forEach(item => {
-
-    const card = document.createElement("article");
-
-    card.className = "weekly-card";
-
-    card.addEventListener("click", () => {
-
-      window.location.href =
-        "drama.html?id=" + encodeURIComponent(item.id);
-
-    });
-
-    if (item.poster_url) {
-
-      const image = document.createElement("img");
-
-      image.src = item.poster_url;
-
-      image.alt = "Pôster de " + item.title;
-
-      image.loading = "lazy";
-
-      card.appendChild(image);
-
-    } else {
-
-      const placeholder = document.createElement("div");
-
-      placeholder.textContent = "Capa em breve 🌷";
-
-      card.appendChild(placeholder);
-
-    }
-
-    const title = document.createElement("h3");
-
-    title.textContent =
-      item.title || "Sem título";
-
-    card.appendChild(title);
-
-    weeklyList.appendChild(card);
-
-  });
-
-}
-
-
-// ========================================
 // SELETOR DE MODO DE EXIBIÇÃO
 // ========================================
 
@@ -1972,40 +2332,6 @@ viewButtons.forEach(btn => {
   });
 
 });
-
-
-// ========================================
-// NAVEGAÇÃO DO CARROSSEL
-// ========================================
-
-document
-  .getElementById("weekly-prev")
-  .addEventListener("click", () => {
-
-    document.getElementById("weekly-list").scrollBy({
-
-      left: -220,
-
-      behavior: "smooth"
-
-    });
-
-  });
-
-
-document
-  .getElementById("weekly-next")
-  .addEventListener("click", () => {
-
-    document.getElementById("weekly-list").scrollBy({
-
-      left: 220,
-
-      behavior: "smooth"
-
-    });
-
-  });
 
 
 // ========================================
@@ -2276,12 +2602,19 @@ document
 
 
 // ========================================
-// INICIALIZAÇÃO
+// INICIALIZAÇÃO E ATUALIZAÇÃO EM TEMPO REAL DO "NO AR"
 // ========================================
 
 checkUserSession();
 
 loadSeries();
+
+setInterval(() => {
+  if (series.length) {
+    updateOnAirBanner();
+    renderWeeklySchedule();
+  }
+}, 60000);
 
 </script>
 

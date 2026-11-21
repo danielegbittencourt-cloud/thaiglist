@@ -2078,13 +2078,38 @@ function showSeries(items) {
     infoWrap.className = "card-info";
 
     const badgeInfo = getReleaseBadgeInfo(item);
-    // Nos cards principais, "Finalizada" fica discreta apenas nos detalhes (drama.html),
-    // exceto quando o usuário seleciona a aba "Finalizadas" ou modo Lista/Tabela.
-    if (badgeInfo && (badgeInfo.type !== "completed" || currentView === "completed" || currentView === "list")) {
+    // Em cards e lista, não exibe selo "Finalizada" (fica oculto na visualização geral,
+    // aparecendo apenas ao filtrar pela aba "Finalizadas").
+    if (badgeInfo && badgeInfo.type !== "completed") {
       const badgeEl = document.createElement("span");
       badgeEl.className = "status-pill " + badgeInfo.type;
       badgeEl.textContent = badgeInfo.label;
       infoWrap.appendChild(badgeEl);
+    } else if (currentView === "completed" && badgeInfo && badgeInfo.type === "completed") {
+      const badgeEl = document.createElement("span");
+      badgeEl.className = "status-pill " + badgeInfo.type;
+      badgeEl.textContent = badgeInfo.label;
+      infoWrap.appendChild(badgeEl);
+    }
+
+    if (currentView === "list") {
+      const userStatus = userListMap.get(item.id);
+      const listStatusLabels = {
+        want_to_watch: "♡ Quero assistir",
+        watching: "▶ Assistindo",
+        completed: "✓ Concluído por você"
+      };
+      if (userStatus && listStatusLabels[userStatus]) {
+        const uTag = document.createElement("span");
+        uTag.className = "status-pill" + (userStatus === "completed" ? " completed" : "");
+        if (userStatus !== "completed") {
+          uTag.style.background = "rgba(168, 117, 245, 0.16)";
+          uTag.style.color = "#e5d4ff";
+          uTag.style.border = "1px solid rgba(168, 117, 245, 0.35)";
+        }
+        uTag.textContent = listStatusLabels[userStatus];
+        infoWrap.appendChild(uTag);
+      }
     }
 
     infoWrap.appendChild(

@@ -1151,6 +1151,43 @@ footer {
 [hidden] {
   display: none !important;
 }
+
+.ship-chip-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  border: 1px solid rgba(240, 91, 168, 0.45);
+  background: rgba(240, 91, 168, 0.14);
+  color: #ff9dd0;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+  text-decoration: none;
+}
+
+.ship-chip-btn:hover {
+  background: rgba(240, 91, 168, 0.28);
+  border-color: var(--pink);
+  transform: translateY(-1px);
+}
+
+.detail-ship-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.detail-ship-label {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: bold;
+}
+
 </style>
 </head>
 
@@ -1291,7 +1328,7 @@ footer {
       <input
         type="text"
         id="search"
-        placeholder="Pesquisar por título, gênero ou elenco..."
+        placeholder="Pesquisar por título, gênero, elenco ou ship (casal)..."
         aria-label="Pesquisar dramas"
         autocomplete="off"
       >
@@ -1329,6 +1366,10 @@ footer {
 
             <option value="cast">
               Elenco principal (A–Z)
+            </option>
+
+            <option value="ship">
+              Ship / Casal (A–Z)
             </option>
 
           </select>
@@ -1985,6 +2026,19 @@ function sortSeries(items) {
 
   }
 
+  else if (order === "ship") {
+
+    sorted.sort((a, b) => {
+
+      return collator.compare(
+        a.ship || "",
+        b.ship || ""
+      );
+
+    });
+
+  }
+
   return sorted;
 
 }
@@ -2289,11 +2343,18 @@ function showSeries(items) {
 // FILTRO E ATUALIZAÇÃO DO CATÁLOGO
 // ========================================
 
+function normalizeSearchText(value) {
+  return String(value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[#&/]/g, " ")
+    .toLocaleLowerCase("pt-BR")
+    .trim();
+}
+
 function filterSeries() {
 
-  const term = search.value
-    .trim()
-    .toLocaleLowerCase("pt-BR");
+  const term = normalizeSearchText(search.value);
 
   const filtered = series.filter(item => {
 
@@ -2305,18 +2366,18 @@ function filterSeries() {
       return false;
     }
 
-    const searchable = [
+    const searchable = normalizeSearchText([
 
       item.title,
       item.original_title,
       item.genre,
       item.status,
+      item.ship,
       getMainCast(item)
 
     ]
       .filter(Boolean)
-      .join(" ")
-      .toLocaleLowerCase("pt-BR");
+      .join(" "));
 
     return searchable.includes(term);
 
@@ -2772,9 +2833,25 @@ document
 // INICIALIZAÇÃO E ATUALIZAÇÃO EM TEMPO REAL DO "NO AR"
 // ========================================
 
+const urlParams = new URLSearchParams(window.location.search);
+const initialShipParam = urlParams.get("ship");
+const initialSearchParam = urlParams.get("search");
+
+if (initialShipParam) {
+  search.value = initialShipParam;
+} else if (initialSearchParam) {
+  search.value = initialSearchParam;
+}
+
 checkUserSession();
 
-loadSeries();
+loadSeries().then(() => {
+  if (initialShipParam || initialSearchParam) {
+    filterSeries();
+    const sec = document.getElementById("catalog-section");
+    if (sec) sec.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+});
 
 setInterval(() => {
   if (series.length) {

@@ -190,12 +190,9 @@ h2 {
   font-size: 25px;
 }
 
-/* PESQUISA, ORDENAÇÃO E MODO DE EXIBIÇÃO */
+/* PESQUISA E BARRA DO CATÁLOGO */
 
-.catalog-controls {
-  display: flex;
-  flex-direction: column;
-  gap: 13px;
+.search-top-box {
   margin-bottom: 25px;
 }
 
@@ -218,6 +215,16 @@ h2 {
 #sort-select:focus {
   border-color: var(--pink);
   box-shadow: 0 0 0 3px #f05ba822;
+}
+
+.catalog-toolbar-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
 }
 
 .controls-toolbar {
@@ -306,19 +313,20 @@ h2 {
   gap: 4px;
   padding: 3px 8px;
   border-radius: 999px;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: bold;
   line-height: 1.2;
+  width: fit-content;
 }
 
 .status-pill.ongoing {
-  background: rgba(255, 92, 138, 0.2);
+  background: rgba(255, 92, 138, 0.22);
   color: #ffa6c0;
   border: 1px solid rgba(255, 92, 138, 0.55);
 }
 
 .status-pill.upcoming {
-  background: rgba(168, 117, 245, 0.2);
+  background: rgba(168, 117, 245, 0.22);
   color: #d6baff;
   border: 1px solid rgba(168, 117, 245, 0.5);
 }
@@ -404,7 +412,7 @@ h2 {
 /* CARROSSEL GLs DA SEMANA */
 
 .weekly-section {
-  margin-bottom: 35px;
+  margin-bottom: 30px;
 }
 
 .weekly-subtitle {
@@ -487,11 +495,11 @@ h2 {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 22px;
-  margin-top: 25px;
+  margin-top: 20px;
 }
 
 #series-list.view-cards .series-card {
-  overflow: hidden;
+  overflow: visible;
   position: relative;
   aspect-ratio: 2 / 3;
   height: auto;
@@ -508,11 +516,17 @@ h2 {
   box-shadow: 0 8px 25px #f05ba822;
 }
 
+#series-list.view-cards .series-card.menu-open {
+  z-index: 30;
+}
+
 #series-list.view-cards .poster {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+  border-radius: 15px;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -537,16 +551,18 @@ h2 {
   left: 0;
   right: 0;
   bottom: 0;
-  min-height: 52%;
+  min-height: 46%;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 12px;
+  padding: 12px 46px 12px 12px;
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    rgba(16, 13, 24, 0.82) 30%,
+    rgba(16, 13, 24, 0.8) 32%,
     rgba(16, 13, 24, 0.98) 100%
   );
   z-index: 1;
@@ -554,16 +570,103 @@ h2 {
 
 #series-list.view-cards .series-card h3 {
   color: #fff;
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.25;
-  margin: 4px 0;
+  margin: 4px 0 3px;
 }
 
-#series-list.view-cards .series-card p {
-  color: #f7efff;
+#series-list.view-cards .series-card p.card-meta {
+  color: #d9cae8;
+  font-size: 10.5px;
+  line-height: 1.3;
+  margin: 1px 0;
+}
+
+/* BOTÃO + FLUTUANTE NO CANTO INFERIOR DIREITO DO CARD */
+
+#series-list.view-cards .quick-plus-wrapper {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 5;
+}
+
+.quick-plus-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.quick-plus-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: linear-gradient(135deg, #f05ba8, #a875f5);
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.55);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.quick-plus-btn:hover {
+  transform: scale(1.08);
+}
+
+.quick-plus-btn.in-list {
+  background: #2b4a3c;
+  border-color: #54c28d;
+  font-size: 14px;
+}
+
+.quick-plus-popover {
+  position: absolute;
+  right: 0;
+  bottom: 40px;
+  width: 158px;
+  padding: 6px;
+  border-radius: 12px;
+  background: #1b1528;
+  border: 1px solid #71428c;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.78);
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 50;
+}
+
+.quick-plus-popover.open {
+  display: flex;
+}
+
+.quick-option-btn {
+  width: 100%;
+  padding: 7px 10px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
   font-size: 12px;
-  line-height: 1.4;
-  margin: 2px 0;
+  font-weight: bold;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.quick-option-btn:hover {
+  background: var(--surface-hover);
+  color: #ffffff;
+}
+
+.quick-option-btn.selected {
+  background: rgba(240, 91, 168, 0.22);
+  color: #ff9dd0;
 }
 
 /* CATÁLOGO — MODO LISTA */
@@ -572,10 +675,11 @@ h2 {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-top: 25px;
+  margin-top: 20px;
 }
 
 #series-list.view-list .series-card {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 16px;
@@ -592,8 +696,8 @@ h2 {
 }
 
 #series-list.view-list .poster {
-  width: 58px;
-  height: 82px;
+  width: 56px;
+  height: 80px;
   border-radius: 8px;
   overflow: hidden;
   flex-shrink: 0;
@@ -616,73 +720,26 @@ h2 {
   flex: 1;
   min-width: 0;
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
 }
 
 #series-list.view-list .card-info {
-  flex: 1 1 260px;
+  flex: 1;
   min-width: 0;
 }
 
 #series-list.view-list .series-card h3 {
-  margin: 4px 0;
-  font-size: 16px;
+  margin: 4px 0 2px;
+  font-size: 15px;
   color: #fff;
 }
 
-#series-list.view-list .series-card p {
-  margin: 2px 0;
-  font-size: 12px;
+#series-list.view-list .series-card p.card-meta {
+  margin: 1px 0;
+  font-size: 11.5px;
   color: var(--muted);
-}
-
-/* ATALHO RÁPIDO PARA MINHA LISTA */
-
-.quick-list-box {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 8px;
-  flex-wrap: wrap;
-}
-
-.quick-list-select {
-  flex: 1;
-  min-width: 105px;
-  padding: 6px 8px;
-  border-radius: 8px;
-  border: 1px solid #4d3b66;
-  background: rgba(20, 15, 30, 0.92);
-  color: #f7efff;
-  font-size: 12px;
-  cursor: pointer;
-}
-
-.quick-list-btn {
-  padding: 6px 10px;
-  border-radius: 8px;
-  border: none;
-  background: linear-gradient(100deg, #f05ba8, #a875f5);
-  color: #ffffff;
-  font-size: 12px;
-  font-weight: bold;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.quick-list-btn.in-list {
-  background: #273d33;
-  border: 1px solid #49a67a;
-}
-
-.quick-list-status {
-  width: 100%;
-  font-size: 11px;
-  color: #ff9dd0;
-  min-height: 14px;
 }
 
 /* CATÁLOGO — MODO TABELA */
@@ -690,7 +747,7 @@ h2 {
 .catalog-table-wrap {
   width: 100%;
   overflow-x: auto;
-  margin-top: 25px;
+  margin-top: 20px;
   background: var(--surface-light);
   border: 1px solid var(--border);
   border-radius: 16px;
@@ -848,16 +905,21 @@ table.catalog-table tbody tr:hover {
   }
 
   #series-list.view-cards .series-card h3 {
-    font-size: 15px;
+    font-size: 13.5px;
   }
 
-  #series-list.view-cards .series-card p {
-    font-size: 11px;
+  #series-list.view-cards .series-card p.card-meta {
+    font-size: 10px;
   }
 
   #series-list.view-cards .card-content {
-    min-height: 55%;
-    padding: 10px;
+    padding: 10px 42px 10px 10px;
+  }
+
+  .quick-plus-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
   }
 
   .weekly-card {
@@ -949,9 +1011,9 @@ footer {
 
   <h2 id="catalog-title">Explore o catálogo</h2>
 
-  <!-- PESQUISA, ORDENAÇÃO E MODO DE EXIBIÇÃO -->
+  <!-- PESQUISA -->
 
-  <section class="catalog-controls">
+  <section class="search-top-box">
 
     <input
       type="text"
@@ -960,43 +1022,6 @@ footer {
       aria-label="Pesquisar dramas"
       autocomplete="off"
     >
-
-    <div class="controls-toolbar">
-
-      <div class="view-switcher" id="view-switcher">
-        <span>Exibir como:</span>
-        <button type="button" class="view-btn active" data-view="cards">⊞ Cards</button>
-        <button type="button" class="view-btn" data-view="list">☰ Lista</button>
-        <button type="button" class="view-btn" data-view="table">▤ Tabela</button>
-      </div>
-
-      <div class="sort-container">
-
-        <label for="sort-select">
-          Organizar por:
-        </label>
-
-        <select id="sort-select">
-
-          <option value="year">
-            Ano (mais recentes)
-          </option>
-
-          <option value="title">
-            Título (A–Z)
-          </option>
-
-          <option value="cast">
-            Elenco principal (A–Z)
-          </option>
-
-        </select>
-
-      </div>
-
-    </div>
-
-    <p id="search-results" aria-live="polite"></p>
 
   </section>
 
@@ -1064,9 +1089,50 @@ footer {
 
   </section>
 
-  <!-- CATÁLOGO -->
+  <!-- EXIBIÇÃO, ORDENAÇÃO E CATÁLOGO -->
 
   <section id="catalog-section">
+
+    <div class="catalog-toolbar-section">
+
+      <div class="controls-toolbar">
+
+        <div class="view-switcher" id="view-switcher">
+          <span>Exibir como:</span>
+          <button type="button" class="view-btn active" data-view="cards">⊞ Cards</button>
+          <button type="button" class="view-btn" data-view="list">☰ Lista</button>
+          <button type="button" class="view-btn" data-view="table">▤ Tabela</button>
+        </div>
+
+        <div class="sort-container">
+
+          <label for="sort-select">
+            Organizar por:
+          </label>
+
+          <select id="sort-select">
+
+            <option value="year">
+              Ano (mais recentes)
+            </option>
+
+            <option value="title">
+              Título (A–Z)
+            </option>
+
+            <option value="cast">
+              Elenco principal (A–Z)
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+      <p id="search-results" aria-live="polite"></p>
+
+    </div>
 
     <div id="series-list" class="view-cards">
       <p>Carregando catálogo... 🌷</p>
@@ -1223,88 +1289,115 @@ function getReleaseBadgeInfo(item) {
 
 
 // ========================================
-// ATALHO RÁPIDO PARA ADICIONAR NA LISTA
+// FECHAR POPOVERS ABERTOS
 // ========================================
 
-function buildQuickListControl(item) {
+function closeAllQuickPopovers(exceptPopover = null) {
+  document.querySelectorAll(".quick-plus-popover.open").forEach(pop => {
+    if (pop !== exceptPopover) {
+      pop.classList.remove("open");
+      const parentCard = pop.closest(".series-card");
+      if (parentCard) parentCard.classList.remove("menu-open");
+    }
+  });
+}
 
-  const existingStatus = userListMap.get(item.id) || "want_to_watch";
-  const isInList = userListMap.has(item.id);
+document.addEventListener("click", () => {
+  closeAllQuickPopovers();
+});
+
+
+// ========================================
+// ATALHO RÁPIDO (+) PARA ADICIONAR NA LISTA
+// ========================================
+
+function buildQuickPlusControl(item) {
+
+  const currentStatus = userListMap.get(item.id) || null;
+  const isInList = Boolean(currentStatus);
 
   const wrapper = document.createElement("div");
-  wrapper.className = "quick-list-box";
+  wrapper.className = "quick-plus-wrapper";
 
   const stopNav = (ev) => ev.stopPropagation();
   wrapper.addEventListener("click", stopNav);
   wrapper.addEventListener("keydown", stopNav);
 
-  const select = document.createElement("select");
-  select.className = "quick-list-select";
-  select.setAttribute("aria-label", "Status na lista para " + (item.title || "drama"));
+  const plusBtn = document.createElement("button");
+  plusBtn.type = "button";
+  plusBtn.className = "quick-plus-btn" + (isInList ? " in-list" : "");
+  plusBtn.textContent = isInList ? "✓" : "+";
+  plusBtn.title = isInList ? "Alterar status na sua lista" : "Adicionar à minha lista";
+  plusBtn.setAttribute("aria-label", plusBtn.title);
+
+  const popover = document.createElement("div");
+  popover.className = "quick-plus-popover";
 
   const options = [
-    { value: "want_to_watch", label: "♡ Quero ver" },
+    { value: "want_to_watch", label: "♡ Quero assistir" },
     { value: "watching", label: "▶ Assistindo" },
     { value: "completed", label: "✓ Concluído" }
   ];
 
   options.forEach(opt => {
-    const optionEl = document.createElement("option");
-    optionEl.value = opt.value;
-    optionEl.textContent = opt.label;
-    if (opt.value === existingStatus) optionEl.selected = true;
-    select.appendChild(optionEl);
+    const optBtn = document.createElement("button");
+    optBtn.type = "button";
+    optBtn.className = "quick-option-btn" + (currentStatus === opt.value ? " selected" : "");
+    optBtn.textContent = opt.label;
+
+    optBtn.addEventListener("click", async () => {
+
+      if (!activeUserId) {
+        window.location.href = "conta.html";
+        return;
+      }
+
+      plusBtn.disabled = true;
+      plusBtn.textContent = "…";
+      closeAllQuickPopovers();
+
+      const { error } = await db
+        .from("user_drama_list")
+        .upsert(
+          {
+            user_id: activeUserId,
+            drama_id: item.id,
+            status: opt.value,
+            updated_at: new Date().toISOString()
+          },
+          { onConflict: "user_id,drama_id" }
+        );
+
+      plusBtn.disabled = false;
+
+      if (error) {
+        console.error("Erro ao salvar na lista:", error);
+        plusBtn.textContent = isInList ? "✓" : "+";
+        return;
+      }
+
+      userListMap.set(item.id, opt.value);
+      plusBtn.textContent = "✓";
+      plusBtn.classList.add("in-list");
+
+      popover.querySelectorAll(".quick-option-btn").forEach(b => {
+        b.classList.toggle("selected", b === optBtn);
+      });
+
+    });
+
+    popover.appendChild(optBtn);
   });
 
-  const btn = document.createElement("button");
-  btn.type = "button";
-  btn.className = "quick-list-btn" + (isInList ? " in-list" : "");
-  btn.textContent = isInList ? "✓ Na lista" : "+ Lista";
-
-  const statusMsg = document.createElement("div");
-  statusMsg.className = "quick-list-status";
-
-  btn.addEventListener("click", async () => {
-
-    if (!activeUserId) {
-      window.location.href = "conta.html";
-      return;
-    }
-
-    btn.disabled = true;
-    const prevLabel = btn.textContent;
-    btn.textContent = "...";
-    statusMsg.textContent = "";
-
-    const { error } = await db
-      .from("user_drama_list")
-      .upsert(
-        {
-          user_id: activeUserId,
-          drama_id: item.id,
-          status: select.value,
-          updated_at: new Date().toISOString()
-        },
-        { onConflict: "user_id,drama_id" }
-      );
-
-    btn.disabled = false;
-
-    if (error) {
-      console.error("Erro ao salvar na lista:", error);
-      btn.textContent = prevLabel;
-      statusMsg.textContent = "Não foi possível salvar.";
-      return;
-    }
-
-    userListMap.set(item.id, select.value);
-    btn.textContent = "✓ Na lista";
-    btn.classList.add("in-list");
-    statusMsg.textContent = "Salvo na sua lista!";
-
+  plusBtn.addEventListener("click", () => {
+    const willOpen = !popover.classList.contains("open");
+    closeAllQuickPopovers(popover);
+    popover.classList.toggle("open", willOpen);
+    const parentCard = wrapper.closest(".series-card");
+    if (parentCard) parentCard.classList.toggle("menu-open", willOpen);
   });
 
-  wrapper.append(select, btn, statusMsg);
+  wrapper.append(plusBtn, popover);
   return wrapper;
 
 }
@@ -1402,7 +1495,7 @@ function showSeries(items) {
           <th>Título</th>
           <th>Ano</th>
           <th>Situação</th>
-          <th>Minha lista</th>
+          <th>Lista</th>
         </tr>
       </thead>
       <tbody></tbody>
@@ -1436,7 +1529,7 @@ function showSeries(items) {
 
       if (item.genre) {
         const g = document.createElement("div");
-        g.style.fontSize = "12px";
+        g.style.fontSize = "11px";
         g.style.color = "var(--muted)";
         g.textContent = item.genre;
         tdTitle.appendChild(g);
@@ -1457,7 +1550,7 @@ function showSeries(items) {
       }
 
       const tdAction = document.createElement("td");
-      tdAction.appendChild(buildQuickListControl(item));
+      tdAction.appendChild(buildQuickPlusControl(item));
 
       tr.append(tdThumb, tdTitle, tdYear, tdStatus, tdAction);
       tbody.appendChild(tr);
@@ -1565,7 +1658,7 @@ function showSeries(items) {
     if (item.year) {
 
       infoWrap.appendChild(
-        createText("p", "", "Ano: " + item.year)
+        createText("p", "card-meta", "Ano: " + item.year)
       );
 
     }
@@ -1573,15 +1666,19 @@ function showSeries(items) {
     if (item.genre) {
 
       infoWrap.appendChild(
-        createText("p", "", "Gênero: " + item.genre)
+        createText("p", "card-meta", "Gênero: " + item.genre)
       );
 
     }
 
     content.appendChild(infoWrap);
-    content.appendChild(buildQuickListControl(item));
 
-    card.append(poster, content);
+    if (currentView === "list") {
+      content.appendChild(buildQuickPlusControl(item));
+      card.append(poster, content);
+    } else {
+      card.append(poster, content, buildQuickPlusControl(item));
+    }
 
     list.appendChild(card);
 
@@ -2011,13 +2108,9 @@ function updateUserMenu(session) {
     userName.textContent =
       "Olá, " + name + " 🌷";
 
-    // Restaura o ícone padrão enquanto carrega a foto
-
     profileLink.classList.remove("has-photo");
 
     profileAvatar.removeAttribute("src");
-
-    // Carrega os dados do perfil e lista
 
     loadProfileAvatar(user.id);
     loadUserListStatuses(user.id);
@@ -2072,8 +2165,6 @@ async function loadProfileAvatar(userId) {
 
     .maybeSingle();
 
-  // Evita aplicar dados de uma sessão anterior
-
   if (activeUserId !== userId) {
     return;
   }
@@ -2093,16 +2184,12 @@ async function loadProfileAvatar(userId) {
     return;
   }
 
-  // Atualiza o nome, caso exista no perfil
-
   if (data.display_name) {
 
     userName.textContent =
       "Olá, " + data.display_name + " 🌷";
 
   }
-
-  // Atualiza a foto de perfil
 
   if (data.avatar_url) {
 

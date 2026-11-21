@@ -885,6 +885,52 @@ h2 {
   min-width: 0;
 }
 
+#series-list.view-list .upcoming-cols {
+  display: grid;
+  grid-template-columns: 165px 210px;
+  gap: 14px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+#series-list.view-list .upcoming-col {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: rgba(16, 13, 24, 0.55);
+  border: 1px solid var(--border);
+}
+
+#series-list.view-list .upcoming-col-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+  font-weight: bold;
+}
+
+#series-list.view-list .upcoming-col-value {
+  font-size: 12.5px;
+  color: #ffffff;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 780px) {
+  #series-list.view-list .card-content {
+    flex-wrap: wrap;
+  }
+  #series-list.view-list .upcoming-cols {
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+    order: 3;
+  }
+}
+
 #series-list.view-list .series-card h3 {
   margin: 4px 0 2px;
   font-size: 15px;
@@ -1160,19 +1206,7 @@ footer {
 
   <h2 id="catalog-title">Explore o catálogo</h2>
 
-  <!-- PESQUISA -->
 
-  <section class="search-top-box">
-
-    <input
-      type="text"
-      id="search"
-      placeholder="Pesquisar por título, gênero ou elenco..."
-      aria-label="Pesquisar dramas"
-      autocomplete="off"
-    >
-
-  </section>
 
   <!-- BANNER DE DESTAQUE -->
 
@@ -1240,7 +1274,19 @@ footer {
 
   <section id="catalog-section">
 
-    <div class="catalog-toolbar-section">
+    <div class="search-top-box" style="margin-top: 8px; margin-bottom: 14px;">
+
+      <input
+        type="text"
+        id="search"
+        placeholder="Pesquisar por título, gênero ou elenco..."
+        aria-label="Pesquisar dramas"
+        autocomplete="off"
+      >
+
+    </div>
+
+    <div class="catalog-toolbar-section" style="margin-top: 0; padding-top: 12px; border-top: none;">
 
       <div class="controls-toolbar">
 
@@ -2012,8 +2058,9 @@ function showSeries(items) {
 
   }
 
-  // MODOS CARDS, LISTA E FINALIZADAS (EXIBE EM CARDS)
-  const layoutClass = currentView === "list" ? "view-list" : "view-cards";
+  // MODOS CARDS, LISTA, PRÓXIMOS LANÇAMENTOS E FINALIZADAS
+  const isListLayout = currentView === "list" || currentView === "upcoming";
+  const layoutClass = isListLayout ? "view-list" : "view-cards";
   list.className = layoutClass;
 
   items.forEach(item => {
@@ -2108,7 +2155,7 @@ function showSeries(items) {
       infoWrap.appendChild(badgeEl);
     }
 
-    if (currentView === "list") {
+    if (isListLayout) {
       const userStatus = userListMap.get(item.id);
       const listStatusLabels = {
         want_to_watch: "♡ Quero assistir",
@@ -2148,26 +2195,37 @@ function showSeries(items) {
 
     }
 
-    if (currentView === "list" && isUpcomingDrama(item)) {
+    content.appendChild(infoWrap);
+
+    if (isListLayout && isUpcomingDrama(item)) {
       const formattedDate = formatPremiereDateBR(item.premiere_date);
       const releaseText = formattedDate
         ? formattedDate
-        : (item.year ? String(item.year) : "A definir");
+        : (item.year ? `Previsto para ${item.year}` : "A definir");
+      const channelText = item.platform || "A definir";
 
-      infoWrap.appendChild(
-        createText("p", "card-meta", "📅 Lançamento: " + releaseText)
+      const colsWrap = document.createElement("div");
+      colsWrap.className = "upcoming-cols";
+
+      const dateCol = document.createElement("div");
+      dateCol.className = "upcoming-col";
+      dateCol.append(
+        createText("span", "upcoming-col-label", "📅 Data prevista"),
+        createText("span", "upcoming-col-value", releaseText)
       );
 
-      if (item.platform) {
-        infoWrap.appendChild(
-          createText("p", "card-meta", "📺 Canal oficial: " + item.platform)
-        );
-      }
+      const channelCol = document.createElement("div");
+      channelCol.className = "upcoming-col";
+      channelCol.append(
+        createText("span", "upcoming-col-label", "📺 Canal oficial"),
+        createText("span", "upcoming-col-value", channelText)
+      );
+
+      colsWrap.append(dateCol, channelCol);
+      content.appendChild(colsWrap);
     }
 
-    content.appendChild(infoWrap);
-
-    if (currentView === "list") {
+    if (isListLayout) {
       content.appendChild(buildQuickPlusControl(item));
       card.append(poster, content);
     } else {

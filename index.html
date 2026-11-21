@@ -1249,6 +1249,7 @@ footer {
           <button type="button" class="view-btn active" data-view="cards">⊞ Cards</button>
           <button type="button" class="view-btn" data-view="list">☰ Lista</button>
           <button type="button" class="view-btn" data-view="table">▤ Tabela</button>
+          <button type="button" class="view-btn" data-view="upcoming">⏳ Próximos lançamentos</button>
           <button type="button" class="view-btn" data-view="completed">✓ Finalizadas</button>
         </div>
 
@@ -1526,10 +1527,30 @@ async function syncAutoFinishedDramas(dramasList) {
 // SELOS DE SITUAÇÃO (EM ANDAMENTO / EM BREVE / FINALIZADA)
 // ========================================
 
+function isUpcomingDrama(item) {
+  const effectiveStatus = getEffectiveStatus(item);
+  const year = Number(item.year) || 0;
+  return (
+    effectiveStatus === "teaser / piloto" ||
+    effectiveStatus === "em breve" ||
+    effectiveStatus === "previsto" ||
+    year > 2026
+  );
+}
+
+function formatPremiereDateBR(rawDate) {
+  if (!rawDate) return "";
+  const str = String(rawDate).trim();
+  const match = str.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (match) {
+    return `${match[3]}/${match[2]}/${match[1]}`;
+  }
+  return str;
+}
+
 function getReleaseBadgeInfo(item) {
 
   const effectiveStatus = getEffectiveStatus(item);
-  const year = Number(item.year) || 0;
 
   if (effectiveStatus === "em andamento") {
     return {
@@ -1538,12 +1559,7 @@ function getReleaseBadgeInfo(item) {
     };
   }
 
-  if (
-    effectiveStatus === "teaser / piloto" ||
-    effectiveStatus === "em breve" ||
-    effectiveStatus === "previsto" ||
-    year > 2026
-  ) {
+  if (isUpcomingDrama(item)) {
     return {
       type: "upcoming",
       label: "⏳ Em breve"
@@ -2132,6 +2148,23 @@ function showSeries(items) {
 
     }
 
+    if (currentView === "list" && isUpcomingDrama(item)) {
+      const formattedDate = formatPremiereDateBR(item.premiere_date);
+      const releaseText = formattedDate
+        ? formattedDate
+        : (item.year ? String(item.year) : "A definir");
+
+      infoWrap.appendChild(
+        createText("p", "card-meta", "📅 Lançamento: " + releaseText)
+      );
+
+      if (item.platform) {
+        infoWrap.appendChild(
+          createText("p", "card-meta", "📺 Canal oficial: " + item.platform)
+        );
+      }
+    }
+
     content.appendChild(infoWrap);
 
     if (currentView === "list") {
@@ -2160,6 +2193,10 @@ function filterSeries() {
 
   const filtered = series.filter(item => {
 
+    if (currentView === "upcoming" && !isUpcomingDrama(item)) {
+      return false;
+    }
+
     if (currentView === "completed" && getEffectiveStatus(item) !== "finalizada") {
       return false;
     }
@@ -2185,7 +2222,7 @@ function filterSeries() {
 
   showSeries(ordered);
 
-  if (term || currentView === "completed") {
+  if (term || currentView === "completed" || currentView === "upcoming") {
 
     searchResults.textContent =
       filtered.length +

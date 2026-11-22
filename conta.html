@@ -193,6 +193,50 @@ main {
   color: #ff9dd0;
 }
 
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0;
+  color: var(--muted);
+  font-size: 12.5px;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.google-btn {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border-radius: 11px;
+  border: 1px solid #493956;
+  background: #ffffff;
+  color: #1f1f1f;
+  font-size: 14.5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+}
+
+.google-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.14);
+}
+
+.google-btn:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
 /* PERFIL LIMPO */
 .profile-top {
   display: flex;
@@ -569,6 +613,18 @@ footer {
         <button type="submit" class="primary-btn" id="auth-submit-btn">Entrar 🌷</button>
         <p id="auth-msg" class="status-msg"></p>
       </form>
+
+      <div class="auth-divider">ou</div>
+
+      <button type="button" class="google-btn" id="google-login-btn">
+        <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true">
+          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+          <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+        </svg>
+        <span>Continuar com Google</span>
+      </button>
     </section>
 
     <!-- PERFIL LIMPO (LOGADO OU VISUALIZAÇÃO PÚBLICA ?user=...) -->
@@ -745,7 +801,30 @@ document.getElementById("auth-form").addEventListener("submit", async (e) => {
     }
   }
 
-  await initAccountPage();
+  await db.auth.onAuthStateChange((event) => {
+  if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED") {
+    initAccountPage();
+  }
+});
+
+initAccountPage();
+});
+
+document.getElementById("google-login-btn").addEventListener("click", async () => {
+  const googleBtn = document.getElementById("google-login-btn");
+  googleBtn.disabled = true;
+  authMsg.textContent = "Redirecionando para o Google...";
+
+  const redirectTo = window.location.origin + window.location.pathname;
+  const { error } = await db.auth.signInWithOAuth({
+    provider: "google",
+    options: { redirectTo }
+  });
+
+  if (error) {
+    googleBtn.disabled = false;
+    authMsg.textContent = "Erro ao conectar com Google: " + error.message;
+  }
 });
 
 document.getElementById("logout-btn").addEventListener("click", async () => {
@@ -852,11 +931,35 @@ function renderBadges(stats, commentsCount, profile) {
 }
 
 async function renderProfileView(targetUserId, isOwnProfile, authUser = null) {
-  const { data: profile } = await db
+  let { data: profile } = await db
     .from("profiles")
     .select("*")
     .eq("id", targetUserId)
     .maybeSingle();
+
+  if (isOwnProfile && !profile && authUser) {
+    const googleName =
+      authUser.user_metadata?.full_name ||
+      authUser.user_metadata?.name ||
+      authUser.email?.split("@")[0] ||
+      "Fã do ThaiGList";
+    const googleAvatar =
+      authUser.user_metadata?.avatar_url ||
+      authUser.user_metadata?.picture ||
+      null;
+
+    const { data: created } = await db
+      .from("profiles")
+      .upsert({
+        id: targetUserId,
+        display_name: googleName,
+        avatar_url: googleAvatar
+      })
+      .select("*")
+      .maybeSingle();
+
+    profile = created || { display_name: googleName, avatar_url: googleAvatar };
+  }
 
   if (!isOwnProfile && profile && profile.public_profile === false) {
     loadingBox.hidden = false;
@@ -875,9 +978,13 @@ async function renderProfileView(targetUserId, isOwnProfile, authUser = null) {
 
   const avatarWrap = document.getElementById("profile-avatar-wrap");
   avatarWrap.innerHTML = "";
-  if (profile?.avatar_url) {
+  const effectiveAvatar =
+    profile?.avatar_url ||
+    (isOwnProfile ? (authUser?.user_metadata?.avatar_url || authUser?.user_metadata?.picture) : null);
+
+  if (effectiveAvatar) {
     const img = document.createElement("img");
-    img.src = profile.avatar_url;
+    img.src = effectiveAvatar;
     img.alt = displayName;
     img.onerror = () => { avatarWrap.textContent = "🌷"; };
     avatarWrap.appendChild(img);

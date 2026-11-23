@@ -627,7 +627,7 @@ footer {
     </div>
 
     <div class="checklist-bg-picker">
-      <label for="checklist-bg-select">💕 Imagem de casal GL no fundo (em degradê):</label>
+      <label for="checklist-bg-select">💕 Casal de fundo:</label>
       <select id="checklist-bg-select">
         <option value="auto">Automático (da sua lista / catálogo GL)</option>
       </select>
@@ -647,6 +647,9 @@ footer {
       <a id="share-x-link" href="#" target="_blank" rel="noopener noreferrer" class="checklist-action-btn">
         𝕏 Postar no X
       </a>
+      <button type="button" id="share-ig-btn" class="checklist-action-btn">
+        📸 Postar no Instagram
+      </button>
     </div>
 
     <div class="checklist-share-status" id="checklist-share-status"></div>
@@ -940,7 +943,8 @@ const BADGE_DEFINITIONS = [
 let checklistState = {
   displayName: "Fã do ThaiGList",
   allBadges: [],
-  eligibleDramas: [],
+  completedDramas: [],
+  airingDramas: [],
   bgCandidates: [],
   generatedDataUrl: null,
   generatedBlob: null
@@ -1055,15 +1059,19 @@ async function prepareChecklistData() {
     unlocked: b.check(stats, commentsCount, prof)
   }));
 
-  const eligibleDramas = allDramas.filter(d => {
+  const completedDramas = [];
+  const airingDramas = [];
+
+  allDramas.forEach(d => {
     const cat = getChecklistDramaCategory(d);
-    return cat === "completed" || cat === "airing";
+    if (cat === "completed") completedDramas.push(d);
+    else if (cat === "airing") airingDramas.push(d);
   });
 
-  // Candidatos de imagem de casal GL (prioriza séries da lista do usuário que têm poster_url e ship ou poster_url no catálogo)
   const myDramaIds = new Set(myEntries.map(e => e.drama_id));
-  const userDramasWithPoster = eligibleDramas.filter(d => myDramaIds.has(d.id) && d.poster_url);
-  const catalogWithPoster = eligibleDramas.filter(d => d.poster_url);
+  const combinedEligible = [...completedDramas, ...airingDramas];
+  const userDramasWithPoster = combinedEligible.filter(d => myDramaIds.has(d.id) && d.poster_url);
+  const catalogWithPoster = combinedEligible.filter(d => d.poster_url);
   const bgCandidates = [...userDramasWithPoster, ...catalogWithPoster].filter(
     (item, idx, arr) => arr.findIndex(x => x.poster_url === item.poster_url) === idx
   );
@@ -1088,8 +1096,106 @@ async function prepareChecklistData() {
     currentUser.email?.split("@")[0] ||
     "Fã do ThaiGList";
   checklistState.allBadges = allBadges;
-  checklistState.eligibleDramas = eligibleDramas;
+  checklistState.completedDramas = completedDramas;
+  checklistState.airingDramas = airingDramas;
   checklistState.bgCandidates = bgCandidates;
+}
+
+function drawYearOrSectionBlock(ctx, xCol, cursorY, colWidth, grp, statusByDramaId, isAiringBlock) {
+  const rowHeight = 25;
+  const groupHeaderHeight = 34;
+  const boxHeight = groupHeaderHeight + grp.items.length * rowHeight + 12;
+
+  // Bloco claro/branco para facilitar a leitura das séries
+  drawRoundedRect(ctx, xCol, cursorY, colWidth, boxHeight, 12);
+  ctx.fillStyle = "rgba(255, 252, 255, 0.98)";
+  ctx.fill();
+  ctx.lineWidth = 1.5;
+  ctx.strokeStyle = isAiringBlock ? "#f29bc9" : "#d9b8f0";
+  ctx.stroke();
+
+  // Cabeçalho do bloco
+  drawRoundedRect(ctx, xCol, cursorY, colWidth, groupHeaderHeight, 12);
+  const headerGrad = ctx.createLinearGradient(xCol, cursorY, xCol + colWidth, cursorY);
+  if (isAiringBlock) {
+    headerGrad.addColorStop(0, "#b82973");
+    headerGrad.addColorStop(1, "#6d2899");
+  } else {
+    headerGrad.addColorStop(0, "#7c2d6e");
+    headerGrad.addColorStop(1, "#592678");
+  }
+  ctx.fillStyle = headerGrad;
+  ctx.fill();
+
+  ctx.fillStyle = "#ffffff";
+  ctx.font = "bold 15.5px Arial, sans-serif";
+  ctx.fillText(`${grp.label} (${grp.items.length})`, xCol + 14, cursorY + 22);
+
+  let itemY = cursorY + groupHeaderHeight + 18;
+
+  grp.items.forEach(item => {
+    const userStatus = statusByDramaId.get(item.id);
+    const isChecked = userStatus === "completed" || userStatus === "watching";
+    const isCompleted = userStatus === "completed";
+
+    const boxSize = 14;
+    const boxX = xCol + 12;
+    const boxY = itemY - 11;
+
+    drawRoundedRect(ctx, boxX, boxY, boxSize, boxSize, 3);
+    if (isCompleted) {
+      ctx.fillStyle = "#d93b8b";
+      ctx.fill();
+      ctx.strokeStyle = "#d93b8b";
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(boxX + 3, boxY + 7);
+      ctx.lineTo(boxX + 6, boxY + 10.5);
+      ctx.lineTo(boxX + 11.5, boxY + 3.5);
+      ctx.stroke();
+    } else if (isChecked) {
+      ctx.fillStyle = "#7c3aed";
+      ctx.fill();
+      ctx.strokeStyle = "#7c3aed";
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(boxX + 3, boxY + 7);
+      ctx.lineTo(boxX + 6, boxY + 10.5);
+      ctx.lineTo(boxX + 11.5, boxY + 3.5);
+      ctx.stroke();
+    } else {
+      ctx.fillStyle = "#ffffff";
+      ctx.fill();
+      ctx.strokeStyle = "#8e73ab";
+      ctx.lineWidth = 1.4;
+      ctx.stroke();
+    }
+
+    const maxTitleW = colWidth - 36 - (isAiringBlock ? 54 : 0);
+    ctx.fillStyle = isChecked ? "#160921" : "#2f2240";
+    ctx.font = (isChecked ? "bold " : "") + "13px Arial, sans-serif";
+    const clippedTitle = truncateCanvasText(ctx, item.title || "Sem título", maxTitleW);
+    ctx.fillText(clippedTitle, boxX + boxSize + 8, itemY);
+
+    if (isAiringBlock) {
+      const titleW = ctx.measureText(clippedTitle).width;
+      ctx.fillStyle = "#d93b8b";
+      ctx.font = "bold 10px Arial, sans-serif";
+      ctx.fillText(" NO AR", boxX + boxSize + 10 + titleW, itemY);
+    }
+
+    itemY += rowHeight;
+  });
+
+  return boxHeight;
 }
 
 async function renderChecklistCanvas() {
@@ -1101,10 +1207,13 @@ async function renderChecklistCanvas() {
   const statusByDramaId = new Map();
   myEntries.forEach(e => statusByDramaId.set(e.drama_id, e.status));
 
-  const eligible = checklistState.eligibleDramas;
+  const completedList = checklistState.completedDramas;
+  const airingList = checklistState.airingDramas;
+  const eligible = [...completedList, ...airingList];
 
+  // Agrupa finalizadas por ano (ex: 2022, 2023, 2024, 2025, 2026)
   const groupedByYear = new Map();
-  eligible.forEach(item => {
+  completedList.forEach(item => {
     const yr = item.year ? String(item.year) : "Outros";
     if (!groupedByYear.has(yr)) groupedByYear.set(yr, []);
     groupedByYear.get(yr).push(item);
@@ -1117,30 +1226,49 @@ async function renderChecklistCanvas() {
     return a.localeCompare(b, "pt-BR");
   });
 
+  const yearBlocks = sortedYears.map(yr => ({
+    label: yr,
+    items: groupedByYear.get(yr),
+    isAiring: false
+  }));
+
+  // Bloco separado para séries que ainda estão sendo exibidas ("Em Exibição")
+  const airingBlock = airingList.length > 0
+    ? { label: "📺 Em Exibição", items: airingList, isAiring: true }
+    : null;
+
   const numCols = 3;
   const colGroups = [[], [], []];
   const colWeights = [0, 0, 0];
 
-  sortedYears.forEach(yr => {
-    const items = groupedByYear.get(yr);
-    const weight = items.length + 3;
+  yearBlocks.forEach(blk => {
+    const weight = blk.items.length + 3;
     let minIdx = 0;
     for (let i = 1; i < numCols; i++) {
       if (colWeights[i] < colWeights[minIdx]) minIdx = i;
     }
-    colGroups[minIdx].push({ year: yr, items });
+    colGroups[minIdx].push(blk);
     colWeights[minIdx] += weight;
   });
 
+  if (airingBlock) {
+    const airWeight = airingBlock.items.length + 4;
+    let minIdx = 0;
+    for (let i = 1; i < numCols; i++) {
+      if (colWeights[i] < colWeights[minIdx]) minIdx = i;
+    }
+    colGroups[minIdx].push(airingBlock);
+    colWeights[minIdx] += airWeight;
+  }
+
   const rowHeight = 25;
-  const groupHeaderHeight = 34;
   const groupGap = 18;
-  const maxColWeight = Math.max(...colWeights, 10);
+  const maxColWeight = Math.max(...colWeights, 12);
 
   const canvasWidth = 1080;
   const topHeaderHeight = 264;
   const bottomFooterHeight = 128;
-  const bodyHeight = Math.max(520, maxColWeight * rowHeight + 48);
+  const bodyHeight = Math.max(540, maxColWeight * rowHeight + 56);
   const canvasHeight = topHeaderHeight + bodyHeight + bottomFooterHeight;
 
   const canvas = document.createElement("canvas");
@@ -1148,15 +1276,35 @@ async function renderChecklistCanvas() {
   canvas.height = canvasHeight;
   const ctx = canvas.getContext("2d");
 
-  // Fundo escuro principal
+  // Fundo escuro um pouco mais claro sem perder a identidade roxa/rosa do ThaiGList
   const darkBg = ctx.createLinearGradient(0, 0, canvasWidth, canvasHeight);
-  darkBg.addColorStop(0, "#100c1a");
-  darkBg.addColorStop(0.5, "#191129");
-  darkBg.addColorStop(1, "#0d0914");
+  darkBg.addColorStop(0, "#1c142e");
+  darkBg.addColorStop(0.5, "#281b42");
+  darkBg.addColorStop(1, "#181026");
   ctx.fillStyle = darkBg;
   ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
-  // Imagem de casal GL nas áreas vazias em degradê suave com o fundo escuro
+  const marginX = 36;
+  const colGap = 20;
+  const colWidth = (canvasWidth - marginX * 2 - colGap * (numCols - 1)) / numCols;
+  const colsStartY = topHeaderHeight;
+
+  // Desenha as colunas primeiro para saber onde há espaço aberto no canto inferior direito
+  ctx.textAlign = "left";
+  const colEndYs = [colsStartY, colsStartY, colsStartY];
+
+  for (let c = 0; c < numCols; c++) {
+    const xCol = marginX + c * (colWidth + colGap);
+    let cursorY = colsStartY;
+
+    colGroups[c].forEach(grp => {
+      const h = drawYearOrSectionBlock(ctx, xCol, cursorY, colWidth, grp, statusByDramaId, grp.isAiring);
+      cursorY += h + groupGap;
+    });
+    colEndYs[c] = cursorY;
+  }
+
+  // Imagem de casal GL posicionada no canto inferior direito (onde sobra espaço sem coluna), integrando em degradê ao fundo
   const chosenBgUrl =
     bgSelect.value && bgSelect.value !== "auto"
       ? bgSelect.value
@@ -1164,39 +1312,57 @@ async function renderChecklistCanvas() {
 
   const bgImg = await loadImageSafe(chosenBgUrl);
   if (bgImg) {
-    ctx.save();
-    ctx.globalAlpha = 0.24;
-    const imgRatio = bgImg.width / bgImg.height;
-    const canvasRatio = canvasWidth / canvasHeight;
-    let drawW, drawH, drawX, drawY;
-    if (imgRatio > canvasRatio) {
-      drawH = canvasHeight;
-      drawW = drawH * imgRatio;
-      drawX = (canvasWidth - drawW) / 2;
-      drawY = 0;
-    } else {
-      drawW = canvasWidth;
-      drawH = drawW / imgRatio;
-      drawX = 0;
-      drawY = (canvasHeight - drawH) / 2;
-    }
-    ctx.drawImage(bgImg, drawX, drawY, drawW, drawH);
-    ctx.restore();
+    const rightColX = marginX + 2 * (colWidth + colGap);
+    const maxOpenTop = Math.max(colEndYs[2], topHeaderHeight + 120);
+    const availableBottom = canvasHeight - bottomFooterHeight - 8;
+    const boxW = colWidth;
+    const boxH = Math.max(180, availableBottom - maxOpenTop);
+    const boxX = rightColX;
+    const boxY = Math.min(maxOpenTop, availableBottom - boxH);
 
-    // Gradiente radial e vertical para integrar a imagem de casal ao fundo escuro sem competir com a leitura
-    const fadeOverlay = ctx.createRadialGradient(
-      canvasWidth * 0.5,
-      canvasHeight * 0.52,
-      80,
-      canvasWidth * 0.5,
-      canvasHeight * 0.52,
-      canvasWidth * 0.72
-    );
-    fadeOverlay.addColorStop(0, "rgba(18, 12, 30, 0.42)");
-    fadeOverlay.addColorStop(0.65, "rgba(16, 11, 26, 0.78)");
-    fadeOverlay.addColorStop(1, "rgba(12, 8, 20, 0.94)");
-    ctx.fillStyle = fadeOverlay;
-    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+    if (boxH > 120) {
+      ctx.save();
+      drawRoundedRect(ctx, boxX, boxY, boxW, boxH, 16);
+      ctx.clip();
+
+      // Preenche o quadro do canto inferior direito com a imagem do casal
+      const imgRatio = bgImg.width / bgImg.height;
+      const frameRatio = boxW / boxH;
+      let drawW, drawH, drawX, drawY;
+      if (imgRatio > frameRatio) {
+        drawH = boxH;
+        drawW = drawH * imgRatio;
+        drawX = boxX + (boxW - drawW) / 2;
+        drawY = boxY;
+      } else {
+        drawW = boxW;
+        drawH = drawW / imgRatio;
+        drawX = boxX;
+        drawY = boxY + (boxH - drawH) / 2;
+      }
+
+      ctx.globalAlpha = 0.72;
+      ctx.drawImage(bgImg, drawX, drawY, drawW, drawH);
+
+      // Degradê suave nas bordas para fundir a imagem do casal ao resto da página
+      const edgeFade = ctx.createLinearGradient(boxX, boxY, boxX, boxY + boxH);
+      edgeFade.addColorStop(0, "rgba(28, 20, 46, 0.92)");
+      edgeFade.addColorStop(0.26, "rgba(28, 20, 46, 0.14)");
+      edgeFade.addColorStop(0.76, "rgba(24, 16, 38, 0.18)");
+      edgeFade.addColorStop(1, "rgba(24, 16, 38, 0.95)");
+      ctx.fillStyle = edgeFade;
+      ctx.fillRect(boxX, boxY, boxW, boxH);
+
+      const sideFade = ctx.createLinearGradient(boxX, boxY, boxX + boxW, boxY);
+      sideFade.addColorStop(0, "rgba(28, 20, 46, 0.72)");
+      sideFade.addColorStop(0.2, "rgba(28, 20, 46, 0.05)");
+      sideFade.addColorStop(0.85, "rgba(28, 20, 46, 0.05)");
+      sideFade.addColorStop(1, "rgba(28, 20, 46, 0.72)");
+      ctx.fillStyle = sideFade;
+      ctx.fillRect(boxX, boxY, boxW, boxH);
+
+      ctx.restore();
+    }
   }
 
   // Faixa superior em roxo e rosa
@@ -1207,9 +1373,9 @@ async function renderChecklistCanvas() {
   ctx.fillStyle = topBarGrad;
   ctx.fillRect(0, 0, canvasWidth, 12);
 
-  // Cabeçalho escuro com nome do usuário e progresso
+  // Cabeçalho com nome do usuário e progresso
   ctx.textAlign = "center";
-  ctx.fillStyle = "#ff9dd0";
+  ctx.fillStyle = "#ffadd6";
   ctx.font = "bold 16px Arial, sans-serif";
   ctx.fillText("ThaiGList 🌷 • Checklist Oficial de GLs", canvasWidth / 2, 44);
 
@@ -1226,7 +1392,7 @@ async function renderChecklistCanvas() {
     return st === "completed" || st === "watching";
   }).length;
 
-  ctx.fillStyle = "#d5c5e8";
+  ctx.fillStyle = "#e6d8f5";
   ctx.font = "14.5px Arial, sans-serif";
   ctx.fillText(
     `Séries finalizadas e em exibição • ${activeCount} de ${eligible.length} marcadas como assistindo ou concluídas`,
@@ -1234,19 +1400,19 @@ async function renderChecklistCanvas() {
     118
   );
 
-  // Todos os badges e conquistas do usuário logado (desbloqueados destacados + bloqueados indicados)
+  // Todos os badges e conquistas do usuário logado
   const badges = checklistState.allBadges;
   const badgeBoxY = 136;
   const badgeBoxH = 98;
   drawRoundedRect(ctx, 36, badgeBoxY, canvasWidth - 72, badgeBoxH, 14);
-  ctx.fillStyle = "rgba(27, 20, 42, 0.88)";
+  ctx.fillStyle = "rgba(43, 30, 68, 0.9)";
   ctx.fill();
   ctx.lineWidth = 1.2;
-  ctx.strokeStyle = "rgba(168, 117, 245, 0.45)";
+  ctx.strokeStyle = "rgba(192, 145, 255, 0.55)";
   ctx.stroke();
 
   ctx.textAlign = "left";
-  ctx.fillStyle = "#f2b8dc";
+  ctx.fillStyle = "#ffc2e2";
   ctx.font = "bold 12px Arial, sans-serif";
   const unlockedTotal = badges.filter(b => b.unlocked).length;
   ctx.fillText(`🏆 CONQUISTAS E BADGES (${unlockedTotal}/${badges.length} DESBLOQUEADOS)`, 54, badgeBoxY + 22);
@@ -1258,7 +1424,7 @@ async function renderChecklistCanvas() {
     const bx = 54 + col * (badgeColW + 4);
     const by = badgeBoxY + 42 + row * 26;
 
-    ctx.fillStyle = b.unlocked ? "#ffffff" : "rgba(184, 169, 201, 0.42)";
+    ctx.fillStyle = b.unlocked ? "#ffffff" : "rgba(214, 198, 232, 0.45)";
     ctx.font = (b.unlocked ? "bold " : "") + "12.5px Arial, sans-serif";
     const lockMark = b.unlocked ? "✓ " : "🔒 ";
     ctx.fillText(
@@ -1268,124 +1434,17 @@ async function renderChecklistCanvas() {
     );
   });
 
-  // Colunas por ano com blocos claros/brancos para alta legibilidade
-  const marginX = 36;
-  const colGap = 20;
-  const colWidth = (canvasWidth - marginX * 2 - colGap * (numCols - 1)) / numCols;
-  const colsStartY = topHeaderHeight;
-
-  ctx.textAlign = "left";
-
-  for (let c = 0; c < numCols; c++) {
-    const xCol = marginX + c * (colWidth + colGap);
-    let cursorY = colsStartY;
-
-    const groups = colGroups[c];
-    if (!groups.length) continue;
-
-    groups.forEach(grp => {
-      const boxHeight = groupHeaderHeight + grp.items.length * rowHeight + 12;
-
-      // Bloco claro/branco para facilitar a leitura das séries
-      drawRoundedRect(ctx, xCol, cursorY, colWidth, boxHeight, 12);
-      ctx.fillStyle = "rgba(255, 250, 255, 0.96)";
-      ctx.fill();
-      ctx.lineWidth = 1.5;
-      ctx.strokeStyle = "#d9b8f0";
-      ctx.stroke();
-
-      // Cabeçalho do ano
-      drawRoundedRect(ctx, xCol, cursorY, colWidth, groupHeaderHeight, 12);
-      const headerGrad = ctx.createLinearGradient(xCol, cursorY, xCol + colWidth, cursorY);
-      headerGrad.addColorStop(0, "#7c2d6e");
-      headerGrad.addColorStop(1, "#592678");
-      ctx.fillStyle = headerGrad;
-      ctx.fill();
-
-      ctx.fillStyle = "#ffffff";
-      ctx.font = "bold 16px Arial, sans-serif";
-      ctx.fillText(`${grp.year} (${grp.items.length})`, xCol + 14, cursorY + 22);
-
-      let itemY = cursorY + groupHeaderHeight + 18;
-
-      grp.items.forEach(item => {
-        const userStatus = statusByDramaId.get(item.id);
-        const isChecked = userStatus === "completed" || userStatus === "watching";
-        const isCompleted = userStatus === "completed";
-        const isAiring = getChecklistDramaCategory(item) === "airing";
-
-        const boxSize = 14;
-        const boxX = xCol + 12;
-        const boxY = itemY - 11;
-
-        drawRoundedRect(ctx, boxX, boxY, boxSize, boxSize, 3);
-        if (isCompleted) {
-          ctx.fillStyle = "#d93b8b";
-          ctx.fill();
-          ctx.strokeStyle = "#d93b8b";
-          ctx.lineWidth = 1.5;
-          ctx.stroke();
-
-          ctx.strokeStyle = "#ffffff";
-          ctx.lineWidth = 2;
-          ctx.beginPath();
-          ctx.moveTo(boxX + 3, boxY + 7);
-          ctx.lineTo(boxX + 6, boxY + 10.5);
-          ctx.lineTo(boxX + 11.5, boxY + 3.5);
-          ctx.stroke();
-        } else if (isChecked) {
-          ctx.fillStyle = "#7c3aed";
-          ctx.fill();
-          ctx.strokeStyle = "#7c3aed";
-          ctx.lineWidth = 1.5;
-          ctx.stroke();
-
-          ctx.strokeStyle = "#ffffff";
-          ctx.lineWidth = 2;
-          ctx.beginPath();
-          ctx.moveTo(boxX + 3, boxY + 7);
-          ctx.lineTo(boxX + 6, boxY + 10.5);
-          ctx.lineTo(boxX + 11.5, boxY + 3.5);
-          ctx.stroke();
-        } else {
-          ctx.fillStyle = "#ffffff";
-          ctx.fill();
-          ctx.strokeStyle = "#8e73ab";
-          ctx.lineWidth = 1.4;
-          ctx.stroke();
-        }
-
-        const maxTitleW = colWidth - 36 - (isAiring ? 66 : 0);
-        ctx.fillStyle = isChecked ? "#160921" : "#2f2240";
-        ctx.font = (isChecked ? "bold " : "") + "13px Arial, sans-serif";
-        const clippedTitle = truncateCanvasText(ctx, item.title || "Sem título", maxTitleW);
-        ctx.fillText(clippedTitle, boxX + boxSize + 8, itemY);
-
-        if (isAiring) {
-          const titleW = ctx.measureText(clippedTitle).width;
-          ctx.fillStyle = "#d93b8b";
-          ctx.font = "bold 10px Arial, sans-serif";
-          ctx.fillText(" NO AR", boxX + boxSize + 10 + titleW, itemY);
-        }
-
-        itemY += rowHeight;
-      });
-
-      cursorY += boxHeight + groupGap;
-    });
-  }
-
-  // Rodapé escuro convidando para thaiglist.pages.dev
+  // Rodapé convidando para thaiglist.pages.dev
   const footerY = canvasHeight - bottomFooterHeight + 14;
   drawRoundedRect(ctx, marginX, footerY, canvasWidth - marginX * 2, 88, 16);
   const footerGrad = ctx.createLinearGradient(marginX, footerY, canvasWidth - marginX, footerY);
-  footerGrad.addColorStop(0, "#241138");
-  footerGrad.addColorStop(0.55, "#541f63");
-  footerGrad.addColorStop(1, "#852868");
+  footerGrad.addColorStop(0, "#331752");
+  footerGrad.addColorStop(0.55, "#69267d");
+  footerGrad.addColorStop(1, "#9c307a");
   ctx.fillStyle = footerGrad;
   ctx.fill();
   ctx.lineWidth = 1.5;
-  ctx.strokeStyle = "rgba(255, 157, 208, 0.45)";
+  ctx.strokeStyle = "rgba(255, 173, 214, 0.55)";
   ctx.stroke();
 
   ctx.textAlign = "center";
@@ -1393,7 +1452,7 @@ async function renderChecklistCanvas() {
   ctx.font = "bold 18px Arial, sans-serif";
   ctx.fillText("Faça o seu também! Acesse: thaiglist.pages.dev", canvasWidth / 2, footerY + 36);
 
-  ctx.fillStyle = "#ffd6ec";
+  ctx.fillStyle = "#ffe0f0";
   ctx.font = "13.5px Arial, sans-serif";
   ctx.fillText("Monte sua lista de Thai GLs, acompanhe lançamentos e compartilhe com suas amigas 🌷", canvasWidth / 2, footerY + 64);
 
@@ -1417,6 +1476,7 @@ const checklistBgSelect = document.getElementById("checklist-bg-select");
 const downloadChecklistBtn = document.getElementById("download-checklist-btn");
 const shareChecklistBtn = document.getElementById("share-checklist-btn");
 const shareXLink = document.getElementById("share-x-link");
+const shareIgBtn = document.getElementById("share-ig-btn");
 const checklistShareStatus = document.getElementById("checklist-share-status");
 
 openChecklistBtn.addEventListener("click", async () => {
@@ -1491,6 +1551,54 @@ shareChecklistBtn.addEventListener("click", async () => {
   } catch {
     checklistShareStatus.textContent = "Baixe a imagem pelo botão ao lado ou use o botão Postar no X 🌷";
   }
+});
+
+
+shareIgBtn.addEventListener("click", async () => {
+  checklistShareStatus.textContent = "";
+  const igCaption = "Meu checklist de Thai GLs no ThaiGList! Faça o seu também, acesse: https://thaiglist.pages.dev 🌷 #ThaiGL #GL #ThaiGList";
+
+  try {
+    await navigator.clipboard.writeText(igCaption);
+  } catch {}
+
+  try {
+    if (
+      navigator.share &&
+      checklistState.generatedBlob &&
+      typeof File !== "undefined"
+    ) {
+      const file = new File([checklistState.generatedBlob], "checklist-thaiglist.png", {
+        type: "image/png"
+      });
+      if (!navigator.canShare || navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          title: "Meu Checklist ThaiGList",
+          text: igCaption,
+          files: [file]
+        });
+        checklistShareStatus.textContent = "Compartilhado! Legenda copiada caso queira colar no Instagram 🌷";
+        return;
+      }
+    }
+  } catch (err) {
+    if (err && err.name === "AbortError") return;
+  }
+
+  // Fallback para desktop: baixa a imagem automaticamente, copia a legenda e abre o Instagram
+  if (checklistState.generatedDataUrl) {
+    const link = document.createElement("a");
+    const slug = (checklistState.displayName || "thaiglist")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "");
+    link.download = `checklist-${slug || "thaiglist"}.png`;
+    link.href = checklistState.generatedDataUrl;
+    link.click();
+  }
+
+  window.open("https://www.instagram.com/", "_blank", "noopener,noreferrer");
+  checklistShareStatus.textContent = "Imagem baixada e legenda copiada! Agora é só publicar no Instagram 🌷";
 });
 
 db.auth.onAuthStateChange((event, session) => {

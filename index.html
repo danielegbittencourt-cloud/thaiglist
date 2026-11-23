@@ -1351,18 +1351,18 @@ footer {
   <section class="schedule-section" aria-label="Calendário semanal de GLs em andamento">
 
     <div class="schedule-header">
-      <h2>📅 Agenda Semanal</h2>
+      <h2>📅 Agenda Semanal <span id="schedule-week-range" style="font-size: 13px; font-weight: normal; color: var(--muted);"></span></h2>
       <p class="schedule-subtitle">Episódios novos exibidos semanalmente nas plataformas oficiais (horário de Brasília)</p>
     </div>
 
     <div class="day-tabs" id="day-tabs">
-      <button type="button" class="day-tab" data-day="0">Dom <span class="day-count" id="cnt-0">0</span></button>
-      <button type="button" class="day-tab" data-day="1">Seg <span class="day-count" id="cnt-1">0</span></button>
-      <button type="button" class="day-tab" data-day="2">Ter <span class="day-count" id="cnt-2">0</span></button>
-      <button type="button" class="day-tab" data-day="3">Qua <span class="day-count" id="cnt-3">0</span></button>
-      <button type="button" class="day-tab" data-day="4">Qui <span class="day-count" id="cnt-4">0</span></button>
-      <button type="button" class="day-tab" data-day="5">Sex <span class="day-count" id="cnt-5">0</span></button>
-      <button type="button" class="day-tab" data-day="6">Sáb <span class="day-count" id="cnt-6">0</span></button>
+      <button type="button" class="day-tab" data-day="0"><span id="lbl-0">Dom</span> <span class="day-count" id="cnt-0">0</span></button>
+      <button type="button" class="day-tab" data-day="1"><span id="lbl-1">Seg</span> <span class="day-count" id="cnt-1">0</span></button>
+      <button type="button" class="day-tab" data-day="2"><span id="lbl-2">Ter</span> <span class="day-count" id="cnt-2">0</span></button>
+      <button type="button" class="day-tab" data-day="3"><span id="lbl-3">Qua</span> <span class="day-count" id="cnt-3">0</span></button>
+      <button type="button" class="day-tab" data-day="4"><span id="lbl-4">Qui</span> <span class="day-count" id="cnt-4">0</span></button>
+      <button type="button" class="day-tab" data-day="5"><span id="lbl-5">Sex</span> <span class="day-count" id="cnt-5">0</span></button>
+      <button type="button" class="day-tab" data-day="6"><span id="lbl-6">Sáb</span> <span class="day-count" id="cnt-6">0</span></button>
       <button type="button" class="day-tab" data-day="all">Todos <span class="day-count" id="cnt-all">0</span></button>
     </div>
 
@@ -1648,15 +1648,42 @@ function getEffectiveStatus(item) {
   return rawStatus;
 }
 
-function getCurrentEpisodeNumber(item) {
+function getCurrentWeekDates(baseDate = new Date()) {
+  const startOfWeek = new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate());
+  startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay()); // Domingo da semana atual
+
+  const dates = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(startOfWeek);
+    d.setDate(startOfWeek.getDate() + i);
+    dates.push(d);
+  }
+  return dates;
+}
+
+function formatShortDayMonth(dateObj) {
+  const dd = String(dateObj.getDate()).padStart(2, "0");
+  const mm = String(dateObj.getMonth() + 1).padStart(2, "0");
+  return `${dd}/${mm}`;
+}
+
+function getEpisodeForTargetDate(item, targetDate) {
   const totalEps = Number(item.episodes) || 0;
   if (!item.premiere_date) return null;
 
-  const startTs = new Date(item.premiere_date + "T00:00:00").getTime();
-  if (Number.isNaN(startTs) || Date.now() < startTs) return null;
+  const startDate = new Date(item.premiere_date + "T00:00:00");
+  if (Number.isNaN(startDate.getTime())) return null;
 
-  const ep = Math.floor((Date.now() - startTs) / (7 * 24 * 60 * 60 * 1000)) + 1;
-  return totalEps > 0 ? Math.min(ep, totalEps) : ep;
+  const refDate = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate(), 23, 59, 59);
+  if (refDate.getTime() < startDate.getTime()) return null;
+
+  const ep = Math.floor((refDate.getTime() - startDate.getTime()) / (7 * 24 * 60 * 60 * 1000)) + 1;
+  if (totalEps > 0 && ep > totalEps) return null;
+  return ep;
+}
+
+function getCurrentEpisodeNumber(item) {
+  return getEpisodeForTargetDate(item, new Date());
 }
 
 function isSeriesOnAirNow(item, nowDate = new Date()) {
@@ -1789,20 +1816,61 @@ function updateOnAirBanner() {
 // AGENDA SEMANAL DE LANÇAMENTOS
 // ========================================
 
+const SHORT_DAY_NAMES = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+
+function isDramaScheduledOnWeekDate(item, targetDate) {
+  if (getEffectiveStatus(item) !== "em andamento") return false;
+  if (parseAirDay(item.air_day) !== targetDate.getDay()) return false;
+
+  const dayEnd = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate(), 23, 59, 59).getTime();
+  const dayStart = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate(), 0, 0, 0).getTime();
+
+  if (item.premiere_date) {
+    const startTs = new Date(item.premiere_date + "T00:00:00").getTime();
+    if (!Number.isNaN(startTs) && dayEnd < startTs) return false;
+  }
+
+  if (item.end_date) {
+    const endTs = new Date(item.end_date + "T23:59:59").getTime();
+    if (!Number.isNaN(endTs) && dayStart > endTs) return false;
+  }
+
+  const totalEps = Number(item.episodes) || 0;
+  if (item.premiere_date && totalEps > 0) {
+    const ep = getEpisodeForTargetDate(item, targetDate);
+    if (ep === null) return false;
+  }
+
+  return true;
+}
+
 function renderWeeklySchedule() {
   const scheduleList = document.getElementById("schedule-list");
-  const todayIdx = new Date().getDay();
+  const now = new Date();
+  const todayIdx = now.getDay();
+  const weekDates = getCurrentWeekDates(now);
 
-  const ongoingDramas = series.filter(item => getEffectiveStatus(item) === "em andamento");
+  const weekRangeEl = document.getElementById("schedule-week-range");
+  if (weekRangeEl) {
+    weekRangeEl.textContent = `(${formatShortDayMonth(weekDates[0])} a ${formatShortDayMonth(weekDates[6])})`;
+  }
 
-  // Atualiza contadores por dia da semana
+  // Atualiza rótulo (Dia + DD/MM) e contador de cada aba da semana atual
+  let totalWeekCount = 0;
   for (let d = 0; d <= 6; d++) {
-    const count = ongoingDramas.filter(item => parseAirDay(item.air_day) === d).length;
+    const targetDate = weekDates[d];
+    const lbl = document.getElementById("lbl-" + d);
+    if (lbl) {
+      lbl.textContent = `${SHORT_DAY_NAMES[d]} ${formatShortDayMonth(targetDate)}`;
+    }
+
+    const count = series.filter(item => isDramaScheduledOnWeekDate(item, targetDate)).length;
+    totalWeekCount += count;
     const badge = document.getElementById("cnt-" + d);
     if (badge) badge.textContent = count;
   }
   const allBadge = document.getElementById("cnt-all");
-  if (allBadge) allBadge.textContent = ongoingDramas.length;
+  if (allBadge) allBadge.textContent = totalWeekCount;
 
   dayTabButtons.forEach(btn => {
     const dVal = btn.dataset.day;
@@ -1810,10 +1878,16 @@ function renderWeeklySchedule() {
     btn.classList.toggle("today", dVal === String(todayIdx));
   });
 
-  let filtered = ongoingDramas;
+  let filtered = [];
   if (selectedScheduleDay !== "all") {
     const dayNum = Number(selectedScheduleDay);
-    filtered = ongoingDramas.filter(item => parseAirDay(item.air_day) === dayNum);
+    const targetDate = weekDates[dayNum];
+    filtered = series.filter(item => isDramaScheduledOnWeekDate(item, targetDate));
+  } else {
+    filtered = series.filter(item => {
+      const dIdx = parseAirDay(item.air_day);
+      return dIdx !== null && isDramaScheduledOnWeekDate(item, weekDates[dIdx]);
+    });
   }
 
   filtered.sort((a, b) => {
@@ -1828,15 +1902,15 @@ function renderWeeklySchedule() {
   if (!filtered.length) {
     const msg = document.createElement("p");
     msg.className = "schedule-empty";
-    msg.textContent =
-      selectedScheduleDay === "all"
-        ? "Nenhum GL em andamento cadastrado na agenda desta semana 🌷"
-        : `Nenhum lançamento agendado para ${DAY_NAMES[Number(selectedScheduleDay)]} 🌷`;
+    if (selectedScheduleDay === "all") {
+      msg.textContent = "Nenhum GL em andamento cadastrado na agenda desta semana 🌷";
+    } else {
+      const dNum = Number(selectedScheduleDay);
+      msg.textContent = `Nenhum lançamento agendado para ${DAY_NAMES[dNum]} (${formatShortDayMonth(weekDates[dNum])}) 🌷`;
+    }
     scheduleList.appendChild(msg);
     return;
   }
-
-  const now = new Date();
 
   filtered.forEach(item => {
     const liveNow = isSeriesOnAirNow(item, now);
@@ -1875,15 +1949,16 @@ function renderWeeklySchedule() {
     }
 
     const dayIdx = parseAirDay(item.air_day);
-    const dayPrefix = selectedScheduleDay === "all" && dayIdx !== null ? `${DAY_NAMES[dayIdx].slice(0, 3)} · ` : "";
-    const timeLabel = item.air_time ? `${dayPrefix}⏰ ${String(item.air_time).slice(0, 5)}` : `${dayPrefix}Horário a definir`;
+    const targetDate = dayIdx !== null ? weekDates[dayIdx] : now;
+    const dateLabel = dayIdx !== null ? `${SHORT_DAY_NAMES[dayIdx]} ${formatShortDayMonth(targetDate)} · ` : "";
+    const timeLabel = item.air_time ? `${dateLabel}⏰ ${String(item.air_time).slice(0, 5)}` : `${dateLabel}Horário a definir`;
 
     const timeSpan = document.createElement("span");
     timeSpan.className = "schedule-time";
     timeSpan.textContent = timeLabel;
     topTags.appendChild(timeSpan);
 
-    const epNum = getCurrentEpisodeNumber(item);
+    const epNum = getEpisodeForTargetDate(item, targetDate);
     const totalEps = Number(item.episodes) || 0;
     if (epNum || totalEps) {
       const epSpan = document.createElement("span");
@@ -3012,7 +3087,21 @@ loadSeries().then(() => {
   }
 });
 
-setInterval(() => {
+let lastRenderedDateKey = new Date().toDateString();
+
+setInterval(async () => {
+  const now = new Date();
+  const currentKey = now.toDateString();
+  if (currentKey !== lastRenderedDateKey) {
+    lastRenderedDateKey = currentKey;
+    if (selectedScheduleDay !== "all") {
+      selectedScheduleDay = String(now.getDay());
+    }
+    if (series.length) {
+      await syncAutoFinishedDramas(series);
+      filterSeries();
+    }
+  }
   if (series.length) {
     updateOnAirBanner();
     renderWeeklySchedule();

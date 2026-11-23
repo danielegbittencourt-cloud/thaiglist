@@ -634,7 +634,7 @@ footer {
     </div>
 
     <div class="checklist-preview-frame" id="checklist-preview-frame">
-      <p style="color: var(--muted); font-size: 13.5px; padding: 20px;">Gerando seu checklist escuro em imagem...</p>
+      <p style="color: var(--muted); font-size: 13.5px; padding: 20px;">Gerando seu checklist em imagem...</p>
     </div>
 
     <div class="checklist-actions-bar">
@@ -945,7 +945,6 @@ let checklistState = {
   allBadges: [],
   completedDramas: [],
   airingDramas: [],
-  bgCandidates: [],
   generatedDataUrl: null,
   generatedBlob: null
 };
@@ -1021,24 +1020,13 @@ function truncateCanvasText(ctx, text, maxWidth) {
   return str + "…";
 }
 
-function loadImageSafe(url) {
-  return new Promise((resolve) => {
-    if (!url) return resolve(null);
-    const img = new Image();
-    img.crossOrigin = "anonymous";
-    img.onload = () => resolve(img);
-    img.onerror = () => resolve(null);
-    img.src = url;
-  });
-}
-
 async function prepareChecklistData() {
   if (!currentUser) return;
 
   const [profRes, commentsRes, dramasRes] = await Promise.all([
     db.from("profiles").select("display_name, favorite_ship").eq("id", currentUser.id).maybeSingle(),
     db.from("drama_comments").select("id", { count: "exact", head: true }).eq("user_id", currentUser.id),
-    db.from("dramas").select("id, title, year, status, episodes, premiere_date, end_date, poster_url, ship").order("title")
+    db.from("dramas").select("id, title, year, status, episodes, premiere_date, end_date").order("title")
   ]);
 
   const prof = profRes.data || null;
@@ -1068,14 +1056,6 @@ async function prepareChecklistData() {
     else if (cat === "airing") airingDramas.push(d);
   });
 
-  const myDramaIds = new Set(myEntries.map(e => e.drama_id));
-  const combinedEligible = [...completedDramas, ...airingDramas];
-  const userDramasWithPoster = combinedEligible.filter(d => myDramaIds.has(d.id) && d.poster_url);
-  const catalogWithPoster = combinedEligible.filter(d => d.poster_url);
-  const bgCandidates = [...userDramasWithPoster, ...catalogWithPoster].filter(
-    (item, idx, arr) => arr.findIndex(x => x.poster_url === item.poster_url) === idx
-  );
-
   checklistState.displayName =
     (prof?.display_name || "").trim() ||
     currentUser.user_metadata?.full_name ||
@@ -1084,40 +1064,55 @@ async function prepareChecklistData() {
   checklistState.allBadges = allBadges;
   checklistState.completedDramas = completedDramas;
   checklistState.airingDramas = airingDramas;
-  checklistState.bgCandidates = bgCandidates;
 }
 
-function drawYearOrSectionBlock(ctx, xCol, cursorY, colWidth, grp, statusByDramaId, isAiringBlock) {
+function getBlockHeight(itemCount) {
   const rowHeight = 25;
-  const groupHeaderHeight = 34;
-  const boxHeight = groupHeaderHeight + grp.items.length * rowHeight + 12;
+  const groupHeaderHeight = 36;
+  return groupHeaderHeight + itemCount * rowHeight + 14;
+}
 
-  // Bloco claro/branco para facilitar a leitura das séries
-  drawRoundedRect(ctx, xCol, cursorY, colWidth, boxHeight, 12);
-  ctx.fillStyle = "rgba(255, 253, 255, 0.99)";
+function drawYearOrSectionBlock(ctx, xCol, cursorY, colWidth, grp, statusByDramaId, forcedHeight) {
+  const rowHeight = 25;
+  const groupHeaderHeight = 36;
+  const naturalHeight = getBlockHeight(grp.items.length);
+  const boxHeight = Math.max(naturalHeight, forcedHeight || 0);
+  const isAiringBlock = Boolean(grp.isAiring);
+
+  // Cartão branco bem claro com sombra suave para leitura nítida
+  ctx.save();
+  ctx.shadowColor = "rgba(95, 53, 138, 0.10)";
+  ctx.shadowBlur = 12;
+  ctx.shadowOffsetY = 4;
+  drawRoundedRect(ctx, xCol, cursorY, colWidth, boxHeight, 14);
+  ctx.fillStyle = "#ffffff";
   ctx.fill();
+  ctx.restore();
+
+  drawRoundedRect(ctx, xCol, cursorY, colWidth, boxHeight, 14);
   ctx.lineWidth = 1.5;
-  ctx.strokeStyle = isAiringBlock ? "#f29bc9" : "#d9b8f0";
+  ctx.strokeStyle = isAiringBlock ? "#f5a3ce" : "#dec7f5";
   ctx.stroke();
 
   // Cabeçalho do bloco
-  drawRoundedRect(ctx, xCol, cursorY, colWidth, groupHeaderHeight, 12);
+  drawRoundedRect(ctx, xCol, cursorY, colWidth, groupHeaderHeight, 14);
   const headerGrad = ctx.createLinearGradient(xCol, cursorY, xCol + colWidth, cursorY);
   if (isAiringBlock) {
-    headerGrad.addColorStop(0, "#c72d7c");
-    headerGrad.addColorStop(1, "#7b2fb0");
+    headerGrad.addColorStop(0, "#e64596");
+    headerGrad.addColorStop(1, "#9b51e0");
   } else {
-    headerGrad.addColorStop(0, "#8c337d");
-    headerGrad.addColorStop(1, "#672c8c");
+    headerGrad.addColorStop(0, "#b83b92");
+    headerGrad.addColorStop(1, "#7d4bc4");
   }
   ctx.fillStyle = headerGrad;
   ctx.fill();
 
   ctx.fillStyle = "#ffffff";
-  ctx.font = "bold 15.5px Arial, sans-serif";
-  ctx.fillText(`${grp.label} (${grp.items.length})`, xCol + 14, cursorY + 22);
+  ctx.font = "bold 15px Arial, sans-serif";
+  const countText = grp.subLabel ? grp.subLabel : `(${grp.items.length})`;
+  ctx.fillText(`${grp.label} ${countText}`, xCol + 14, cursorY + 23);
 
-  let itemY = cursorY + groupHeaderHeight + 18;
+  let itemY = cursorY + groupHeaderHeight + 19;
 
   grp.items.forEach(item => {
     const userStatus = statusByDramaId.get(item.id);
@@ -1125,14 +1120,14 @@ function drawYearOrSectionBlock(ctx, xCol, cursorY, colWidth, grp, statusByDrama
     const isCompleted = userStatus === "completed";
 
     const boxSize = 14;
-    const boxX = xCol + 12;
+    const boxX = xCol + 13;
     const boxY = itemY - 11;
 
-    drawRoundedRect(ctx, boxX, boxY, boxSize, boxSize, 3);
+    drawRoundedRect(ctx, boxX, boxY, boxSize, boxSize, 3.5);
     if (isCompleted) {
-      ctx.fillStyle = "#d93b8b";
+      ctx.fillStyle = "#e64596";
       ctx.fill();
-      ctx.strokeStyle = "#d93b8b";
+      ctx.strokeStyle = "#e64596";
       ctx.lineWidth = 1.5;
       ctx.stroke();
 
@@ -1144,9 +1139,9 @@ function drawYearOrSectionBlock(ctx, xCol, cursorY, colWidth, grp, statusByDrama
       ctx.lineTo(boxX + 11.5, boxY + 3.5);
       ctx.stroke();
     } else if (isChecked) {
-      ctx.fillStyle = "#7c3aed";
+      ctx.fillStyle = "#8b5cf6";
       ctx.fill();
-      ctx.strokeStyle = "#7c3aed";
+      ctx.strokeStyle = "#8b5cf6";
       ctx.lineWidth = 1.5;
       ctx.stroke();
 
@@ -1158,22 +1153,22 @@ function drawYearOrSectionBlock(ctx, xCol, cursorY, colWidth, grp, statusByDrama
       ctx.lineTo(boxX + 11.5, boxY + 3.5);
       ctx.stroke();
     } else {
-      ctx.fillStyle = "#ffffff";
+      ctx.fillStyle = "#faf6ff";
       ctx.fill();
-      ctx.strokeStyle = "#8e73ab";
+      ctx.strokeStyle = "#a589c4";
       ctx.lineWidth = 1.4;
       ctx.stroke();
     }
 
-    const maxTitleW = colWidth - 36 - (isAiringBlock ? 54 : 0);
-    ctx.fillStyle = isChecked ? "#160921" : "#2f2240";
+    const maxTitleW = colWidth - 38 - (isAiringBlock ? 54 : 0);
+    ctx.fillStyle = isChecked ? "#1d0c2e" : "#3a294d";
     ctx.font = (isChecked ? "bold " : "") + "13px Arial, sans-serif";
     const clippedTitle = truncateCanvasText(ctx, item.title || "Sem título", maxTitleW);
     ctx.fillText(clippedTitle, boxX + boxSize + 8, itemY);
 
     if (isAiringBlock) {
       const titleW = ctx.measureText(clippedTitle).width;
-      ctx.fillStyle = "#d93b8b";
+      ctx.fillStyle = "#e64596";
       ctx.font = "bold 10px Arial, sans-serif";
       ctx.fillText(" NO AR", boxX + boxSize + 10 + titleW, itemY);
     }
@@ -1182,6 +1177,54 @@ function drawYearOrSectionBlock(ctx, xCol, cursorY, colWidth, grp, statusByDrama
   });
 
   return boxHeight;
+}
+
+function buildBalancedColumns(yearBlocks, airingBlock, numCols) {
+  // Se algum ano for muito longo comparado ao total, divide em partes (ex: "2024 (1/2)" e "2024 (2/2)")
+  // para que as 3 colunas fiquem com alturas praticamente idênticas e sem espaços vazios
+  const allRawBlocks = [...yearBlocks];
+  if (airingBlock) allRawBlocks.push(airingBlock);
+
+  const totalItems = allRawBlocks.reduce((acc, b) => acc + b.items.length, 0);
+  const maxChunkSize = Math.max(12, Math.ceil(totalItems / numCols) + 2);
+
+  const normalizedBlocks = [];
+  allRawBlocks.forEach(blk => {
+    if (blk.items.length <= maxChunkSize) {
+      normalizedBlocks.push(blk);
+    } else {
+      const parts = Math.ceil(blk.items.length / maxChunkSize);
+      const perPart = Math.ceil(blk.items.length / parts);
+      for (let p = 0; p < parts; p++) {
+        const slice = blk.items.slice(p * perPart, (p + 1) * perPart);
+        if (slice.length) {
+          normalizedBlocks.push({
+            label: blk.label,
+            subLabel: `(${p + 1}/${parts} • ${blk.items.length})`,
+            items: slice,
+            isAiring: blk.isAiring
+          });
+        }
+      }
+    }
+  });
+
+  // Distribui os blocos nas 3 colunas preservando a ordem cronológica e equilibrando as alturas
+  const colGroups = Array.from({ length: numCols }, () => []);
+  const colHeights = Array.from({ length: numCols }, () => 0);
+  const gap = 16;
+
+  normalizedBlocks.forEach(blk => {
+    const h = getBlockHeight(blk.items.length);
+    let bestCol = 0;
+    for (let c = 1; c < numCols; c++) {
+      if (colHeights[c] < colHeights[bestCol]) bestCol = c;
+    }
+    colGroups[bestCol].push(blk);
+    colHeights[bestCol] += h + gap;
+  });
+
+  return colGroups;
 }
 
 async function renderChecklistCanvas() {
@@ -1222,37 +1265,18 @@ async function renderChecklistCanvas() {
     : null;
 
   const numCols = 3;
-  const colGroups = [[], [], []];
-  const colWeights = [0, 0, 0];
+  const colGroups = buildBalancedColumns(yearBlocks, airingBlock, numCols);
+  const groupGap = 16;
 
-  yearBlocks.forEach(blk => {
-    const weight = blk.items.length + 3;
-    let minIdx = 0;
-    for (let i = 1; i < numCols; i++) {
-      if (colWeights[i] < colWeights[minIdx]) minIdx = i;
-    }
-    colGroups[minIdx].push(blk);
-    colWeights[minIdx] += weight;
+  const naturalColHeights = colGroups.map(groups => {
+    if (!groups.length) return 180;
+    return groups.reduce((sum, g, idx) => sum + getBlockHeight(g.items.length) + (idx > 0 ? groupGap : 0), 0);
   });
 
-  if (airingBlock) {
-    const airWeight = airingBlock.items.length + 4;
-    let minIdx = 0;
-    for (let i = 1; i < numCols; i++) {
-      if (colWeights[i] < colWeights[minIdx]) minIdx = i;
-    }
-    colGroups[minIdx].push(airingBlock);
-    colWeights[minIdx] += airWeight;
-  }
-
-  const rowHeight = 25;
-  const groupGap = 18;
-  const maxColWeight = Math.max(...colWeights, 12);
-
+  const bodyHeight = Math.max(...naturalColHeights, 240);
   const canvasWidth = 1080;
-  const topHeaderHeight = showBadges ? 260 : 154;
-  const bottomFooterHeight = 124;
-  const bodyHeight = Math.max(540, maxColWeight * rowHeight + 56);
+  const topHeaderHeight = showBadges ? 256 : 150;
+  const bottomFooterHeight = 118;
   const canvasHeight = topHeaderHeight + bodyHeight + bottomFooterHeight;
 
   const canvas = document.createElement("canvas");
@@ -1260,103 +1284,42 @@ async function renderChecklistCanvas() {
   canvas.height = canvasHeight;
   const ctx = canvas.getContext("2d");
 
-  // Visual mais claro sem perder a identidade roxa/rosa do ThaiGList
-  const lightPurpleBg = ctx.createLinearGradient(0, 0, canvasWidth, canvasHeight);
-  lightPurpleBg.addColorStop(0, "#2d2147");
-  lightPurpleBg.addColorStop(0.5, "#3d2b61");
-  lightPurpleBg.addColorStop(1, "#291d42");
-  ctx.fillStyle = lightPurpleBg;
+  // Fundo bem claro e luminoso em tons suaves de lilás/rosa pastel (identidade ThaiGList)
+  const brightBg = ctx.createLinearGradient(0, 0, canvasWidth, canvasHeight);
+  brightBg.addColorStop(0, "#faf4ff");
+  brightBg.addColorStop(0.5, "#f5ebff");
+  brightBg.addColorStop(1, "#fdf2f8");
+  ctx.fillStyle = brightBg;
   ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
-  const marginX = 36;
-  const colGap = 20;
-  const colWidth = (canvasWidth - marginX * 2 - colGap * (numCols - 1)) / numCols;
-  const colsStartY = topHeaderHeight;
+  // Detalhes decorativos sutis no fundo claro
+  const glowLeft = ctx.createRadialGradient(140, 120, 10, 140, 120, 340);
+  glowLeft.addColorStop(0, "rgba(240, 91, 168, 0.10)");
+  glowLeft.addColorStop(1, "rgba(240, 91, 168, 0)");
+  ctx.fillStyle = glowLeft;
+  ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
-  ctx.textAlign = "left";
-  const colEndYs = [colsStartY, colsStartY, colsStartY];
-
-  for (let c = 0; c < numCols; c++) {
-    const xCol = marginX + c * (colWidth + colGap);
-    let cursorY = colsStartY;
-
-    colGroups[c].forEach(grp => {
-      const h = drawYearOrSectionBlock(ctx, xCol, cursorY, colWidth, grp, statusByDramaId, grp.isAiring);
-      cursorY += h + groupGap;
-    });
-    colEndYs[c] = cursorY;
-  }
-
-  // Imagem de casal GL no canto inferior direito em degradê suave com o resto da imagem
-  const autoBgUrl = checklistState.bgCandidates[0]?.poster_url || null;
-  const bgImg = await loadImageSafe(autoBgUrl);
-  if (bgImg) {
-    const rightColX = marginX + 2 * (colWidth + colGap);
-    const maxOpenTop = Math.max(colEndYs[2], topHeaderHeight + 120);
-    const availableBottom = canvasHeight - bottomFooterHeight - 8;
-    const boxW = colWidth;
-    const boxH = Math.max(180, availableBottom - maxOpenTop);
-    const boxX = rightColX;
-    const boxY = Math.min(maxOpenTop, availableBottom - boxH);
-
-    if (boxH > 120) {
-      ctx.save();
-      drawRoundedRect(ctx, boxX, boxY, boxW, boxH, 16);
-      ctx.clip();
-
-      const imgRatio = bgImg.width / bgImg.height;
-      const frameRatio = boxW / boxH;
-      let drawW, drawH, drawX, drawY;
-      if (imgRatio > frameRatio) {
-        drawH = boxH;
-        drawW = drawH * imgRatio;
-        drawX = boxX + (boxW - drawW) / 2;
-        drawY = boxY;
-      } else {
-        drawW = boxW;
-        drawH = drawW / imgRatio;
-        drawX = boxX;
-        drawY = boxY + (boxH - drawH) / 2;
-      }
-
-      ctx.globalAlpha = 0.75;
-      ctx.drawImage(bgImg, drawX, drawY, drawW, drawH);
-
-      const edgeFade = ctx.createLinearGradient(boxX, boxY, boxX, boxY + boxH);
-      edgeFade.addColorStop(0, "rgba(45, 33, 71, 0.92)");
-      edgeFade.addColorStop(0.26, "rgba(45, 33, 71, 0.12)");
-      edgeFade.addColorStop(0.76, "rgba(41, 29, 66, 0.16)");
-      edgeFade.addColorStop(1, "rgba(41, 29, 66, 0.95)");
-      ctx.fillStyle = edgeFade;
-      ctx.fillRect(boxX, boxY, boxW, boxH);
-
-      const sideFade = ctx.createLinearGradient(boxX, boxY, boxX + boxW, boxY);
-      sideFade.addColorStop(0, "rgba(45, 33, 71, 0.72)");
-      sideFade.addColorStop(0.2, "rgba(45, 33, 71, 0.05)");
-      sideFade.addColorStop(0.85, "rgba(45, 33, 71, 0.05)");
-      sideFade.addColorStop(1, "rgba(45, 33, 71, 0.72)");
-      ctx.fillStyle = sideFade;
-      ctx.fillRect(boxX, boxY, boxW, boxH);
-
-      ctx.restore();
-    }
-  }
+  const glowRight = ctx.createRadialGradient(canvasWidth - 140, canvasHeight - 160, 10, canvasWidth - 140, canvasHeight - 160, 360);
+  glowRight.addColorStop(0, "rgba(168, 117, 245, 0.12)");
+  glowRight.addColorStop(1, "rgba(168, 117, 245, 0)");
+  ctx.fillStyle = glowRight;
+  ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
   // Faixa superior em roxo e rosa
   const topBarGrad = ctx.createLinearGradient(0, 0, canvasWidth, 0);
   topBarGrad.addColorStop(0, "#f05ba8");
-  topBarGrad.addColorStop(0.5, "#b787ff");
+  topBarGrad.addColorStop(0.5, "#a875f5");
   topBarGrad.addColorStop(1, "#f05ba8");
   ctx.fillStyle = topBarGrad;
   ctx.fillRect(0, 0, canvasWidth, 12);
 
-  // Cabeçalho
+  // Cabeçalho escuro/contrastante sobre o fundo claro
   ctx.textAlign = "center";
-  ctx.fillStyle = "#ffc2e2";
+  ctx.fillStyle = "#c92e7e";
   ctx.font = "bold 16px Arial, sans-serif";
   ctx.fillText("ThaiGList 🌷 • Checklist Oficial de GLs", canvasWidth / 2, 44);
 
-  ctx.fillStyle = "#ffffff";
+  ctx.fillStyle = "#241138";
   ctx.font = "bold 38px Georgia, 'Times New Roman', serif";
   ctx.fillText(
     truncateCanvasText(ctx, `Checklist de ${checklistState.displayName}`, 980),
@@ -1369,7 +1332,7 @@ async function renderChecklistCanvas() {
     return st === "completed" || st === "watching";
   }).length;
 
-  ctx.fillStyle = "#f2e8ff";
+  ctx.fillStyle = "#5c4575";
   ctx.font = "14.5px Arial, sans-serif";
   ctx.fillText(
     `Séries finalizadas e em exibição • ${activeCount} de ${eligible.length} marcadas como assistindo ou concluídas`,
@@ -1380,17 +1343,17 @@ async function renderChecklistCanvas() {
   // Conquistas e badges (opcional via caixa de seleção)
   if (showBadges) {
     const badges = checklistState.allBadges;
-    const badgeBoxY = 136;
+    const badgeBoxY = 134;
     const badgeBoxH = 98;
     drawRoundedRect(ctx, 36, badgeBoxY, canvasWidth - 72, badgeBoxH, 14);
-    ctx.fillStyle = "rgba(68, 49, 108, 0.88)";
+    ctx.fillStyle = "#ffffff";
     ctx.fill();
-    ctx.lineWidth = 1.2;
-    ctx.strokeStyle = "rgba(218, 182, 255, 0.55)";
+    ctx.lineWidth = 1.4;
+    ctx.strokeStyle = "#dfc6f7";
     ctx.stroke();
 
     ctx.textAlign = "left";
-    ctx.fillStyle = "#ffd1e9";
+    ctx.fillStyle = "#b82e78";
     ctx.font = "bold 12px Arial, sans-serif";
     const unlockedTotal = badges.filter(b => b.unlocked).length;
     ctx.fillText(`🏆 CONQUISTAS E BADGES (${unlockedTotal}/${badges.length} DESBLOQUEADOS)`, 54, badgeBoxY + 22);
@@ -1402,7 +1365,7 @@ async function renderChecklistCanvas() {
       const bx = 54 + col * (badgeColW + 4);
       const by = badgeBoxY + 42 + row * 26;
 
-      ctx.fillStyle = b.unlocked ? "#ffffff" : "rgba(232, 218, 248, 0.45)";
+      ctx.fillStyle = b.unlocked ? "#241138" : "#9c88b3";
       ctx.font = (b.unlocked ? "bold " : "") + "12.5px Arial, sans-serif";
       const lockMark = b.unlocked ? "✓ " : "🔒 ";
       ctx.fillText(
@@ -1413,27 +1376,46 @@ async function renderChecklistCanvas() {
     });
   }
 
-  // Rodapé convidando para thaiglist.pages.dev
-  const footerY = canvasHeight - bottomFooterHeight + 14;
-  drawRoundedRect(ctx, marginX, footerY, canvasWidth - marginX * 2, 86, 16);
+  // Desenha as 3 colunas equilibradas e ajusta o último bloco de cada coluna para fechar alinhado no rodapé sem espaço vazio
+  const marginX = 36;
+  const colGap = 20;
+  const colWidth = (canvasWidth - marginX * 2 - colGap * (numCols - 1)) / numCols;
+  const colsStartY = topHeaderHeight;
+
+  ctx.textAlign = "left";
+  for (let c = 0; c < numCols; c++) {
+    const xCol = marginX + c * (colWidth + colGap);
+    let cursorY = colsStartY;
+    const groups = colGroups[c];
+    const remainingSlack = Math.max(0, bodyHeight - naturalColHeights[c]);
+
+    groups.forEach((grp, idx) => {
+      const isLastInCol = idx === groups.length - 1;
+      const naturalH = getBlockHeight(grp.items.length);
+      const targetH = isLastInCol ? naturalH + remainingSlack : naturalH;
+      const drawnH = drawYearOrSectionBlock(ctx, xCol, cursorY, colWidth, grp, statusByDramaId, targetH);
+      cursorY += drawnH + groupGap;
+    });
+  }
+
+  // Rodapé convidando para thaiglist.pages.dev (sem imagem)
+  const footerY = canvasHeight - bottomFooterHeight + 16;
+  drawRoundedRect(ctx, marginX, footerY, canvasWidth - marginX * 2, 82, 16);
   const footerGrad = ctx.createLinearGradient(marginX, footerY, canvasWidth - marginX, footerY);
-  footerGrad.addColorStop(0, "#4a2275");
-  footerGrad.addColorStop(0.55, "#7e3196");
-  footerGrad.addColorStop(1, "#b53b8e");
+  footerGrad.addColorStop(0, "#d94391");
+  footerGrad.addColorStop(0.55, "#9c5ce6");
+  footerGrad.addColorStop(1, "#d94391");
   ctx.fillStyle = footerGrad;
   ctx.fill();
-  ctx.lineWidth = 1.5;
-  ctx.strokeStyle = "rgba(255, 194, 226, 0.65)";
-  ctx.stroke();
 
   ctx.textAlign = "center";
   ctx.fillStyle = "#ffffff";
   ctx.font = "bold 18px Arial, sans-serif";
-  ctx.fillText("Faça o seu também! Acesse: thaiglist.pages.dev", canvasWidth / 2, footerY + 35);
+  ctx.fillText("Faça o seu também! Acesse: thaiglist.pages.dev", canvasWidth / 2, footerY + 33);
 
-  ctx.fillStyle = "#ffe8f3";
+  ctx.fillStyle = "#fff0f8";
   ctx.font = "13.5px Arial, sans-serif";
-  ctx.fillText("Monte sua lista de Thai GLs, acompanhe lançamentos e compartilhe com suas amigas 🌷", canvasWidth / 2, footerY + 62);
+  ctx.fillText("Monte sua lista de Thai GLs, acompanhe lançamentos e compartilhe com suas amigas 🌷", canvasWidth / 2, footerY + 59);
 
   const dataUrl = canvas.toDataURL("image/png");
   checklistState.generatedDataUrl = dataUrl;

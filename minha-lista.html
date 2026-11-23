@@ -618,6 +618,42 @@ footer {
 
 </div>
 
+<!-- MODAL DE CHECKLIST EM IMAGEM -->
+<div class="checklist-modal-backdrop" id="checklist-modal-backdrop" hidden>
+  <div class="checklist-modal" role="dialog" aria-modal="true" aria-labelledby="checklist-modal-title">
+    <div class="checklist-modal-top">
+      <h3 id="checklist-modal-title">🌷 Seu Checklist de GLs</h3>
+      <button type="button" class="modal-close-btn" id="close-checklist-btn" aria-label="Fechar">✕</button>
+    </div>
+
+    <div class="checklist-bg-picker">
+      <label for="checklist-bg-select">💕 Imagem de casal GL no fundo (em degradê):</label>
+      <select id="checklist-bg-select">
+        <option value="auto">Automático (da sua lista / catálogo GL)</option>
+      </select>
+    </div>
+
+    <div class="checklist-preview-frame" id="checklist-preview-frame">
+      <p style="color: var(--muted); font-size: 13.5px; padding: 20px;">Gerando seu checklist escuro em imagem...</p>
+    </div>
+
+    <div class="checklist-actions-bar">
+      <button type="button" class="checklist-action-btn primary" id="download-checklist-btn">
+        ⬇️ Baixar imagem (PNG)
+      </button>
+      <button type="button" class="checklist-action-btn" id="share-checklist-btn">
+        📤 Compartilhar
+      </button>
+      <a id="share-x-link" href="#" target="_blank" rel="noopener noreferrer" class="checklist-action-btn">
+        𝕏 Postar no X
+      </a>
+    </div>
+
+    <div class="checklist-share-status" id="checklist-share-status"></div>
+  </div>
+</div>
+
+
 <script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
 const SUPABASE_URL = "https://jjybnidhwfimcdwygafk.supabase.co";
@@ -1457,44 +1493,17 @@ shareChecklistBtn.addEventListener("click", async () => {
   }
 });
 
+db.auth.onAuthStateChange((event, session) => {
+  if ((event === "SIGNED_IN" || event === "TOKEN_REFRESHED" || event === "INITIAL_SESSION") && session?.user) {
+    if (!currentUser || currentUser.id !== session.user.id) {
+      loadMyList();
+    }
+  }
+});
+
 loadMyList();
 </script>
 
-
-<!-- MODAL DE CHECKLIST EM IMAGEM -->
-<div class="checklist-modal-backdrop" id="checklist-modal-backdrop" hidden>
-  <div class="checklist-modal" role="dialog" aria-modal="true" aria-labelledby="checklist-modal-title">
-    <div class="checklist-modal-top">
-      <h3 id="checklist-modal-title">🌷 Seu Checklist de GLs</h3>
-      <button type="button" class="modal-close-btn" id="close-checklist-btn" aria-label="Fechar">✕</button>
-    </div>
-
-    <div class="checklist-bg-picker">
-      <label for="checklist-bg-select">💕 Imagem de casal GL no fundo (em degradê):</label>
-      <select id="checklist-bg-select">
-        <option value="auto">Automático (da sua lista / catálogo GL)</option>
-      </select>
-    </div>
-
-    <div class="checklist-preview-frame" id="checklist-preview-frame">
-      <p style="color: var(--muted); font-size: 13.5px; padding: 20px;">Gerando seu checklist escuro em imagem...</p>
-    </div>
-
-    <div class="checklist-actions-bar">
-      <button type="button" class="checklist-action-btn primary" id="download-checklist-btn">
-        ⬇️ Baixar imagem (PNG)
-      </button>
-      <button type="button" class="checklist-action-btn" id="share-checklist-btn">
-        📤 Compartilhar
-      </button>
-      <a id="share-x-link" href="#" target="_blank" rel="noopener noreferrer" class="checklist-action-btn">
-        𝕏 Postar no X
-      </a>
-    </div>
-
-    <div class="checklist-share-status" id="checklist-share-status"></div>
-  </div>
-</div>
 
 </body>
 </html>

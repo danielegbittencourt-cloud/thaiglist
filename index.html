@@ -176,19 +176,31 @@ header {
 
   color: white;
   text-align: center;
+  cursor: pointer;
 }
 
-header h1 {
-  color: white;
-  font-size: 46px;
-  margin: 0 0 8px;
-  letter-spacing: 1px;
+.header-banner-link {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
 }
 
-header p {
-  color: #f1dcef;
-  font-size: 15px;
-  margin: 0;
+.header-logo-wrap {
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header-logo-img {
+  max-width: 310px;
+  width: 82%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.65));
 }
 
 /* BANNER DE IDENTIDADE */
@@ -1102,14 +1114,9 @@ table.catalog-table tbody tr:hover {
     background-position: right center;
   }
 
-  header h1 {
-    font-size: 34px;
-  }
-
-  header p {
-    font-size: 13px;
-    max-width: 300px;
-    line-height: 1.5;
+  .header-logo-img {
+    max-width: 220px;
+    width: 78%;
   }
 
   main {
@@ -1285,13 +1292,20 @@ footer {
 <!-- BANNER PRINCIPAL -->
 
 <header>
+  <a
+    href="index.html"
+    class="header-banner-link"
+    aria-label="Ir para a página principal do ThaiGList"
+    title="Página principal"
+  ></a>
 
-  <h1>ThaiGList 🌷</h1>
-
-  <p>
-   Sua coleção de GL de forma fácil e organizada
-  </p>
-
+  <div class="header-logo-wrap">
+    <img
+      src="./logo_transparente.png"
+      alt="ThaiGList — Sua coleção de GL"
+      class="header-logo-img"
+    >
+  </div>
 </header>
 
 <section class="brand-banner"></section>

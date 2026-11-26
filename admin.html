@@ -1419,22 +1419,52 @@ checkSession();
     return [];
   }
 
-  function loadImageCorsSafe(url) {
+  function trySingleImageUrl(srcUrl, timeoutMs = 4800) {
     return new Promise((resolve) => {
-      if (!url) return resolve(null);
+      if (!srcUrl) return resolve(null);
       const img = new Image();
       img.crossOrigin = "anonymous";
-      const timer = setTimeout(() => resolve(null), 5000);
+      const timer = setTimeout(() => {
+        img.src = "";
+        resolve(null);
+      }, timeoutMs);
       img.onload = () => {
         clearTimeout(timer);
-        resolve(img);
+        if (img.naturalWidth > 0 && img.naturalHeight > 0) {
+          resolve(img);
+        } else {
+          resolve(null);
+        }
       };
       img.onerror = () => {
         clearTimeout(timer);
         resolve(null);
       };
-      img.src = url;
+      img.src = srcUrl;
     });
+  }
+
+  async function loadImageCorsSafe(url) {
+    if (!url) return null;
+    const cleanUrl = String(url).trim();
+    if (!cleanUrl) return null;
+
+    // 1) Tenta carregar diretamente com CORS anônimo
+    const direct = await trySingleImageUrl(cleanUrl, 4000);
+    if (direct) return direct;
+
+    // 2) Se falhar por bloqueio de CORS externo, usa proxy de imagem com CORS habilitado
+    if (/^https?:\/\//i.test(cleanUrl)) {
+      const proxiedWsrv = `https://wsrv.nl/?url=${encodeURIComponent(cleanUrl)}&output=jpg&q=88`;
+      const viaWsrv = await trySingleImageUrl(proxiedWsrv, 5500);
+      if (viaWsrv) return viaWsrv;
+
+      const proxiedWeserv = `https://images.weserv.nl/?url=${encodeURIComponent(cleanUrl)}&output=jpg&q=88`;
+      const viaWeserv = await trySingleImageUrl(proxiedWeserv, 5500);
+      if (viaWeserv) return viaWeserv;
+    }
+
+    return null;
   }
 
   function drawRoundRect(ctx, x, y, w, h, r) {
@@ -1457,7 +1487,37 @@ checkSession();
     return s + "…";
   }
 
-  function drawPosterCover(ctx, img, x, y, w, h, radius = 7) {
+  function drawPill(ctx, text, x, y, bgColor, borderColor, textColor, fontSpec = "bold 11.5px Arial, sans-serif", padX = 9, height = 22) {
+    ctx.save();
+    ctx.font = fontSpec;
+    const w = Math.ceil(ctx.measureText(text).width + padX * 2);
+    drawRoundRect(ctx, x, y, w, height, 999);
+    ctx.fillStyle = bgColor;
+    ctx.fill();
+    if (borderColor) {
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = borderColor;
+      ctx.stroke();
+    }
+    ctx.textAlign = "left";
+    ctx.fillStyle = textColor;
+    ctx.fillText(text, x + padX, y + Math.round(height * 0.69));
+    ctx.restore();
+    return w;
+  }
+
+  function drawPosterCover(ctx, img, x, y, w, h, radius = 9, withShadow = true) {
+    if (withShadow) {
+      ctx.save();
+      ctx.shadowColor = "rgba(0, 0, 0, 0.55)";
+      ctx.shadowBlur = 12;
+      ctx.shadowOffsetY = 5;
+      drawRoundRect(ctx, x, y, w, h, radius);
+      ctx.fillStyle = "#170e26";
+      ctx.fill();
+      ctx.restore();
+    }
+
     ctx.save();
     drawRoundRect(ctx, x, y, w, h, radius);
     ctx.clip();
@@ -1480,13 +1540,14 @@ checkSession();
       ctx.drawImage(img, dx, dy, dw, dh);
     } else {
       const ph = ctx.createLinearGradient(x, y, x + w, y + h);
-      ph.addColorStop(0, "#4c276e");
-      ph.addColorStop(1, "#8e3271");
+      ph.addColorStop(0, "#3c1f5c");
+      ph.addColorStop(0.5, "#6b2b6b");
+      ph.addColorStop(1, "#2a1642");
       ctx.fillStyle = ph;
       ctx.fillRect(x, y, w, h);
 
       ctx.fillStyle = "#ffd1e9";
-      ctx.font = `bold ${Math.max(11, Math.round(w * 0.42))}px Arial, sans-serif`;
+      ctx.font = `bold ${Math.max(13, Math.round(w * 0.36))}px Arial, sans-serif`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillText("🌷", x + w / 2, y + h / 2);
@@ -1497,35 +1558,81 @@ checkSession();
 
     ctx.save();
     drawRoundRect(ctx, x, y, w, h, radius);
-    ctx.lineWidth = 1.1;
-    ctx.strokeStyle = "rgba(255, 194, 226, 0.45)";
+    ctx.lineWidth = 1.25;
+    ctx.strokeStyle = "rgba(255, 194, 226, 0.42)";
     ctx.stroke();
     ctx.restore();
   }
 
-  async function drawBrandTop(ctx, width, kicker, title, subtitle) {
-    const bgGrad = ctx.createLinearGradient(0, 0, width, ctx.canvas.height);
-    bgGrad.addColorStop(0, "#1d1230");
-    bgGrad.addColorStop(0.5, "#2d1a4c");
-    bgGrad.addColorStop(1, "#170e26");
+  function paintAtmosphericBackground(ctx, width, height) {
+    const bgGrad = ctx.createLinearGradient(0, 0, width * 0.3, height);
+    bgGrad.addColorStop(0, "#150c24");
+    bgGrad.addColorStop(0.45, "#23123c");
+    bgGrad.addColorStop(0.85, "#190e2b");
+    bgGrad.addColorStop(1, "#11091f");
     ctx.fillStyle = bgGrad;
-    ctx.fillRect(0, 0, width, ctx.canvas.height);
+    ctx.fillRect(0, 0, width, height);
 
+    // Glow radial rosa no topo central
+    const topGlow = ctx.createRadialGradient(width * 0.5, 90, 20, width * 0.5, 110, width * 0.65);
+    topGlow.addColorStop(0, "rgba(240, 91, 168, 0.28)");
+    topGlow.addColorStop(0.55, "rgba(168, 117, 245, 0.12)");
+    topGlow.addColorStop(1, "rgba(21, 12, 36, 0)");
+    ctx.fillStyle = topGlow;
+    ctx.fillRect(0, 0, width, height);
+
+    // Glow lateral roxo no meio/rodapé
+    const bottomGlow = ctx.createRadialGradient(width * 0.85, height * 0.8, 10, width * 0.85, height * 0.8, width * 0.55);
+    bottomGlow.addColorStop(0, "rgba(168, 117, 245, 0.2)");
+    bottomGlow.addColorStop(1, "rgba(21, 12, 36, 0)");
+    ctx.fillStyle = bottomGlow;
+    ctx.fillRect(0, 0, width, height);
+
+    // Textura sutil de estrelas/pontos decorativos
+    ctx.save();
+    for (let i = 0; i < 42; i++) {
+      const sx = ((i * 197 + 43) % (width - 60)) + 30;
+      const sy = ((i * 311 + 29) % (height - 60)) + 30;
+      const r = (i % 3 === 0) ? 1.8 : 1.1;
+      ctx.beginPath();
+      ctx.arc(sx, sy, r, 0, Math.PI * 2);
+      ctx.fillStyle = i % 2 === 0 ? "rgba(255, 194, 226, 0.16)" : "rgba(195, 155, 255, 0.15)";
+      ctx.fill();
+    }
+    ctx.restore();
+
+    // Moldura interna sutil
+    ctx.save();
+    drawRoundRect(ctx, 16, 16, width - 32, height - 32, 22);
+    ctx.lineWidth = 1.2;
+    ctx.strokeStyle = "rgba(240, 91, 168, 0.24)";
+    ctx.stroke();
+    ctx.restore();
+
+    // Barra superior degradê
     const topBar = ctx.createLinearGradient(0, 0, width, 0);
     topBar.addColorStop(0, "#f05ba8");
     topBar.addColorStop(0.5, "#b787ff");
     topBar.addColorStop(1, "#f05ba8");
     ctx.fillStyle = topBar;
-    ctx.fillRect(0, 0, width, 12);
+    ctx.fillRect(0, 0, width, 10);
+  }
+
+  async function drawBrandTop(ctx, width, kicker, title, subtitle) {
+    paintAtmosphericBackground(ctx, width, ctx.canvas.height);
 
     const logoImg = await loadImageCorsSafe(LOGO_PATH);
-    let y = 24;
+    let y = 26;
 
     if (logoImg && logoImg.width > 0 && logoImg.height > 0) {
-      const h = 48;
+      const h = 50;
       const w = (logoImg.width / logoImg.height) * h;
+      ctx.save();
+      ctx.shadowColor = "rgba(240, 91, 168, 0.45)";
+      ctx.shadowBlur = 14;
       ctx.drawImage(logoImg, (width - w) / 2, y, w, h);
-      y += h + 10;
+      ctx.restore();
+      y += h + 12;
     } else {
       ctx.textAlign = "center";
       ctx.fillStyle = "#ffffff";
@@ -1534,33 +1641,68 @@ checkSession();
       y += 40;
     }
 
-    ctx.textAlign = "center";
-    ctx.fillStyle = "#ffc2e2";
-    ctx.font = "bold 16px Arial, sans-serif";
-    ctx.fillText(kicker, width / 2, y + 16);
-    y += 22;
+    // Pílula do kicker
+    ctx.font = "bold 13.5px Arial, sans-serif";
+    const kickerW = Math.ceil(ctx.measureText(kicker).width + 30);
+    const kickerH = 26;
+    const kickerX = (width - kickerW) / 2;
+    drawRoundRect(ctx, kickerX, y, kickerW, kickerH, 999);
+    ctx.fillStyle = "rgba(240, 91, 168, 0.2)";
+    ctx.fill();
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = "rgba(255, 157, 208, 0.55)";
+    ctx.stroke();
 
+    ctx.textAlign = "center";
+    ctx.fillStyle = "#ffd1e9";
+    ctx.fillText(kicker, width / 2, y + 18);
+    y += kickerH + 12;
+
+    // Título principal com sombra suave
+    ctx.save();
+    ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
+    ctx.shadowBlur = 12;
+    ctx.shadowOffsetY = 3;
     ctx.fillStyle = "#ffffff";
-    ctx.font = "bold 38px Georgia, 'Times New Roman', serif";
-    ctx.fillText(title, width / 2, y + 36);
+    ctx.font = "bold 40px Georgia, 'Times New Roman', serif";
+    ctx.fillText(title, width / 2, y + 34);
+    ctx.restore();
     y += 44;
 
+    // Subtítulo
     ctx.fillStyle = "#e2c8ff";
     ctx.font = "15.5px Arial, sans-serif";
     ctx.fillText(subtitle, width / 2, y + 16);
+    y += 28;
 
-    return y + 34;
+    // Divisor luminoso
+    const divGrad = ctx.createLinearGradient(width * 0.15, 0, width * 0.85, 0);
+    divGrad.addColorStop(0, "rgba(240, 91, 168, 0)");
+    divGrad.addColorStop(0.5, "rgba(240, 91, 168, 0.7)");
+    divGrad.addColorStop(1, "rgba(168, 117, 245, 0)");
+    ctx.fillStyle = divGrad;
+    ctx.fillRect(width * 0.15, y, width * 0.7, 2);
+
+    return y + 18;
   }
 
   function drawBrandBottom(ctx, width, height, footerH) {
     const footY = height - footerH;
+
+    const lineGrad = ctx.createLinearGradient(width * 0.18, 0, width * 0.82, 0);
+    lineGrad.addColorStop(0, "rgba(168, 117, 245, 0)");
+    lineGrad.addColorStop(0.5, "rgba(255, 194, 226, 0.45)");
+    lineGrad.addColorStop(1, "rgba(168, 117, 245, 0)");
+    ctx.fillStyle = lineGrad;
+    ctx.fillRect(width * 0.18, footY + 4, width * 0.64, 1.5);
+
     ctx.textAlign = "center";
-    ctx.fillStyle = "#ffc2e2";
+    ctx.fillStyle = "#ffd1e9";
     ctx.font = "bold 15px Arial, sans-serif";
-    ctx.fillText("Acompanhe todos os horários em thaiglist.pages.dev", width / 2, footY + 28);
+    ctx.fillText("Acompanhe todos os horários em thaiglist.pages.dev", width / 2, footY + 32);
     ctx.fillStyle = "#cbb2eb";
     ctx.font = "13px Arial, sans-serif";
-    ctx.fillText("ThaiGList • Comunidade & Catálogo de Thai GLs", width / 2, footY + 52);
+    ctx.fillText("ThaiGList • Comunidade & Catálogo de Thai GLs", width / 2, footY + 55);
   }
 
   window.updateAdminScheduleLabels = function () {
@@ -1639,8 +1781,8 @@ checkSession();
     );
 
     const marginX = 36;
-    const footerH = 84;
-    const gridH = height - topAreaY - footerH - 18;
+    const footerH = 82;
+    const gridH = height - topAreaY - footerH - 14;
 
     const cols = format === "wide" ? 4 : 2;
     const rows = Math.ceil(7 / cols);
@@ -1654,39 +1796,79 @@ checkSession();
       const row = Math.floor(idx / cols);
       const x = marginX + col * (cellW + gapX);
       const y = topAreaY + row * (cellH + gapY);
+      const hasItems = grp.items.length > 0;
 
-      drawRoundRect(ctx, x, y, cellW, cellH, 14);
-      ctx.fillStyle = "rgba(38, 23, 64, 0.92)";
+      // Sombra e card do dia
+      ctx.save();
+      if (hasItems) {
+        ctx.shadowColor = "rgba(240, 91, 168, 0.22)";
+        ctx.shadowBlur = 16;
+        ctx.shadowOffsetY = 4;
+      }
+      drawRoundRect(ctx, x, y, cellW, cellH, 16);
+      const cardGrad = ctx.createLinearGradient(x, y, x, y + cellH);
+      if (hasItems) {
+        cardGrad.addColorStop(0, "rgba(49, 28, 82, 0.96)");
+        cardGrad.addColorStop(1, "rgba(31, 18, 54, 0.96)");
+      } else {
+        cardGrad.addColorStop(0, "rgba(32, 20, 54, 0.72)");
+        cardGrad.addColorStop(1, "rgba(24, 15, 41, 0.72)");
+      }
+      ctx.fillStyle = cardGrad;
       ctx.fill();
-      ctx.lineWidth = 1.5;
-      ctx.strokeStyle = grp.items.length ? "#b86cff" : "#4a3369";
+      ctx.restore();
+
+      ctx.save();
+      drawRoundRect(ctx, x, y, cellW, cellH, 16);
+      ctx.lineWidth = hasItems ? 1.8 : 1.1;
+      ctx.strokeStyle = hasItems ? "#d173ff" : "rgba(114, 78, 156, 0.45)";
       ctx.stroke();
+      ctx.restore();
 
-      const hdrH = 34;
-      drawRoundRect(ctx, x, y, cellW, hdrH, 14);
-      ctx.fillStyle = grp.items.length ? "rgba(240, 91, 168, 0.25)" : "rgba(74, 51, 105, 0.4)";
-      ctx.fill();
+      // Cabeçalho do dia
+      const hdrH = 36;
+      ctx.save();
+      drawRoundRect(ctx, x, y, cellW, hdrH, 16);
+      ctx.clip();
+      const hdrGrad = ctx.createLinearGradient(x, y, x + cellW, y);
+      if (hasItems) {
+        hdrGrad.addColorStop(0, "rgba(240, 91, 168, 0.42)");
+        hdrGrad.addColorStop(1, "rgba(168, 117, 245, 0.32)");
+      } else {
+        hdrGrad.addColorStop(0, "rgba(74, 51, 105, 0.35)");
+        hdrGrad.addColorStop(1, "rgba(54, 37, 79, 0.35)");
+      }
+      ctx.fillStyle = hdrGrad;
+      ctx.fillRect(x, y, cellW, hdrH);
+      ctx.restore();
 
       ctx.textAlign = "left";
-      ctx.fillStyle = "#ffffff";
-      ctx.font = "bold 14px Arial, sans-serif";
-      ctx.fillText(`${SCHED_SHORT_DAYS[grp.dayIdx]} (${schedFormatDM(grp.targetDate)})`, x + 12, y + 22);
+      ctx.fillStyle = hasItems ? "#ffffff" : "#cbb2eb";
+      ctx.font = "bold 14.5px Arial, sans-serif";
+      ctx.fillText(`${SCHED_SHORT_DAYS[grp.dayIdx]} • ${schedFormatDM(grp.targetDate)}`, x + 14, y + 23);
 
-      ctx.textAlign = "right";
-      ctx.fillStyle = "#ffc2e2";
-      ctx.font = "bold 12px Arial, sans-serif";
-      ctx.fillText(`${grp.items.length}`, x + cellW - 12, y + 22);
+      if (hasItems) {
+        const badgeTxt = `${grp.items.length}`;
+        ctx.font = "bold 12px Arial, sans-serif";
+        const bw = Math.max(24, ctx.measureText(badgeTxt).width + 14);
+        drawRoundRect(ctx, x + cellW - bw - 12, y + 7, bw, 22, 999);
+        ctx.fillStyle = "rgba(240, 91, 168, 0.85)";
+        ctx.fill();
+        ctx.textAlign = "center";
+        ctx.fillStyle = "#ffffff";
+        ctx.fillText(badgeTxt, x + cellW - bw / 2 - 12, y + 22);
+      }
 
       const contentY = y + hdrH + 10;
       const availH = cellH - hdrH - 16;
 
-      if (!grp.items.length) {
+      if (!hasItems) {
         ctx.textAlign = "left";
-        ctx.fillStyle = "rgba(226, 200, 255, 0.5)";
+        ctx.fillStyle = "rgba(226, 200, 255, 0.42)";
         ctx.font = "italic 12.5px Arial, sans-serif";
-        ctx.fillText("Sem estreias agendadas", x + 12, contentY + 18);
+        ctx.fillText("Sem estreias agendadas", x + 14, contentY + 20);
       } else {
-        const lineStep = format === "story" ? 72 : 62;
+        const lineStep = format === "story" ? 78 : 66;
         const maxLines = Math.max(1, Math.floor(availH / lineStep));
         const pH = lineStep - 10;
         const pW = Math.round(pH * 0.72);
@@ -1694,32 +1876,66 @@ checkSession();
         grp.items.slice(0, maxLines).forEach((it, itemIdx) => {
           const iy = contentY + itemIdx * lineStep;
           const posterImg = it.poster_url ? posterMap.get(it.poster_url) : null;
-          drawPosterCover(ctx, posterImg, x + 12, iy, pW, pH, 6);
+          drawPosterCover(ctx, posterImg, x + 13, iy, pW, pH, 7, true);
 
-          const textX = x + 12 + pW + 10;
-          const maxW = Math.max(40, x + cellW - 12 - textX);
+          const textX = x + 13 + pW + 11;
+          const maxW = Math.max(40, x + cellW - 13 - textX);
 
           const timeStr = it.air_time ? String(it.air_time).slice(0, 5) : "--:--";
           const epNum = schedGetEpisodeNumber(it, grp.targetDate);
           const totalEps = Number(it.episodes) || 0;
-          const epStr = showEp && epNum ? (totalEps ? ` EP ${epNum}/${totalEps}` : ` EP ${epNum}`) : "";
-          const platStr = showPlat && it.platform ? ` • ${it.platform}` : "";
+          const epStr = showEp && epNum ? (totalEps ? `EP ${epNum}/${totalEps}` : `EP ${epNum}`) : "";
 
+          // Pílula de horário + EP
+          let pillCursorX = textX;
+          const timeW = drawPill(
+            ctx,
+            timeStr,
+            pillCursorX,
+            iy + 2,
+            "rgba(240, 91, 168, 0.28)",
+            "rgba(255, 133, 194, 0.65)",
+            "#ffd1e9",
+            "bold 11px Arial, sans-serif",
+            7,
+            19
+          );
+          pillCursorX += timeW + 6;
+
+          if (epStr && pillCursorX + 42 < x + cellW - 10) {
+            drawPill(
+              ctx,
+              epStr,
+              pillCursorX,
+              iy + 2,
+              "rgba(168, 117, 245, 0.28)",
+              "rgba(195, 155, 255, 0.6)",
+              "#efe2ff",
+              "bold 11px Arial, sans-serif",
+              7,
+              19
+            );
+          }
+
+          // Título da série
           ctx.textAlign = "left";
-          ctx.fillStyle = "#ff85c2";
-          ctx.font = "bold 12px Arial, sans-serif";
-          ctx.fillText(truncateTxt(ctx, `${timeStr}${epStr}`, maxW), textX, iy + 16);
-
           ctx.fillStyle = "#ffffff";
-          ctx.font = "bold 13px Arial, sans-serif";
-          ctx.fillText(truncateTxt(ctx, `${it.title || "Sem título"}${platStr}`, maxW), textX, iy + 35);
+          ctx.font = "bold 13.5px Arial, sans-serif";
+          ctx.fillText(truncateTxt(ctx, it.title || "Sem título", maxW), textX, iy + 36);
+
+          // Plataforma
+          if (showPlat && it.platform) {
+            ctx.fillStyle = "#cbb2eb";
+            ctx.font = "11.5px Arial, sans-serif";
+            ctx.fillText(truncateTxt(ctx, `📺 ${it.platform}`, maxW), textX, iy + 52);
+          }
         });
 
         if (grp.items.length > maxLines) {
           ctx.textAlign = "left";
           ctx.fillStyle = "#ffc2e2";
           ctx.font = "bold 11.5px Arial, sans-serif";
-          ctx.fillText(`+${grp.items.length - maxLines} séries neste dia`, x + 12, y + cellH - 8);
+          ctx.fillText(`+${grp.items.length - maxLines} séries neste dia`, x + 14, y + cellH - 8);
         }
       }
     });
@@ -1788,8 +2004,8 @@ checkSession();
     );
 
     const marginX = 36;
-    const footerH = 84;
-    const gridH = height - topAreaY - footerH - 18;
+    const footerH = 82;
+    const gridH = height - topAreaY - footerH - 14;
 
     if (!visible.length) {
       ctx.textAlign = "center";
@@ -1797,8 +2013,8 @@ checkSession();
       ctx.font = "bold 18px Arial, sans-serif";
       ctx.fillText("Nenhum próximo lançamento encontrado para este filtro.", width / 2, topAreaY + 80);
     } else {
-      const gapX = 16;
-      const gapY = 16;
+      const gapX = 18;
+      const gapY = 18;
       const cardW = (width - marginX * 2 - gapX * (cols - 1)) / cols;
       const cardH = (gridH - gapY * (rows - 1)) / rows;
 
@@ -1808,12 +2024,25 @@ checkSession();
         const x = marginX + col * (cardW + gapX);
         const y = topAreaY + row * (cardH + gapY);
 
-        drawRoundRect(ctx, x, y, cardW, cardH, 14);
-        ctx.fillStyle = "rgba(38, 23, 64, 0.94)";
+        // Card vitrine com sombra
+        ctx.save();
+        ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
+        ctx.shadowBlur = 16;
+        ctx.shadowOffsetY = 5;
+        drawRoundRect(ctx, x, y, cardW, cardH, 16);
+        const cardGrad = ctx.createLinearGradient(x, y, x, y + cardH);
+        cardGrad.addColorStop(0, "rgba(49, 28, 82, 0.96)");
+        cardGrad.addColorStop(1, "rgba(28, 16, 48, 0.98)");
+        ctx.fillStyle = cardGrad;
         ctx.fill();
-        ctx.lineWidth = 1.5;
-        ctx.strokeStyle = "#b86cff";
+        ctx.restore();
+
+        ctx.save();
+        drawRoundRect(ctx, x, y, cardW, cardH, 16);
+        ctx.lineWidth = 1.6;
+        ctx.strokeStyle = "#c86dff";
         ctx.stroke();
+        ctx.restore();
 
         const pad = 10;
         const infoSpace = 66;
@@ -1821,40 +2050,51 @@ checkSession();
         const posterH = Math.max(95, cardH - pad * 2 - infoSpace);
 
         const posterImg = item.poster_url ? posterMap.get(item.poster_url) : null;
-        drawPosterCover(ctx, posterImg, x + pad, y + pad, posterW, posterH, 10);
+        drawPosterCover(ctx, posterImg, x + pad, y + pad, posterW, posterH, 11, false);
 
+        // Vinheta sutil na base do pôster para acabamento editorial
+        ctx.save();
+        drawRoundRect(ctx, x + pad, y + pad, posterW, posterH, 11);
+        ctx.clip();
+        const fade = ctx.createLinearGradient(0, y + pad + posterH * 0.62, 0, y + pad + posterH);
+        fade.addColorStop(0, "rgba(18, 10, 32, 0)");
+        fade.addColorStop(1, "rgba(18, 10, 32, 0.72)");
+        ctx.fillStyle = fade;
+        ctx.fillRect(x + pad, y + pad, posterW, posterH);
+        ctx.restore();
+
+        // Pílula com data/ano no topo do pôster
         const dateTag = item.premiere_date
           ? `📅 ${schedFormatDateBR(item.premiere_date)}`
           : (item.year ? `⏳ ${item.year}` : "⏳ Em breve");
 
-        ctx.font = "bold 11.5px Arial, sans-serif";
-        const tagW = Math.min(posterW - 14, ctx.measureText(dateTag).width + 18);
-        const tagH = 22;
-        const tagX = x + pad + 7;
-        const tagY = y + pad + 7;
+        drawPill(
+          ctx,
+          truncateTxt(ctx, dateTag, posterW - 22),
+          x + pad + 8,
+          y + pad + 8,
+          "rgba(20, 11, 36, 0.9)",
+          "#f05ba8",
+          "#ffd1e9",
+          "bold 11.5px Arial, sans-serif",
+          9,
+          23
+        );
 
-        drawRoundRect(ctx, tagX, tagY, tagW, tagH, 999);
-        ctx.fillStyle = "rgba(18, 11, 31, 0.88)";
-        ctx.fill();
-        ctx.strokeStyle = "#f05ba8";
-        ctx.lineWidth = 1.1;
-        ctx.stroke();
-
+        // Título do drama
+        const ty = y + pad + posterH + 21;
         ctx.textAlign = "left";
-        ctx.fillStyle = "#ffc2e2";
-        ctx.fillText(truncateTxt(ctx, dateTag, tagW - 12), tagX + 9, tagY + 15);
-
-        const ty = y + pad + posterH + 20;
         ctx.fillStyle = "#ffffff";
-        ctx.font = "bold 14px Arial, sans-serif";
-        ctx.fillText(truncateTxt(ctx, item.title || "Sem título", posterW), x + pad, ty);
+        ctx.font = "bold 14.5px Arial, sans-serif";
+        ctx.fillText(truncateTxt(ctx, item.title || "Sem título", posterW), x + pad + 2, ty);
 
+        // Status + episódios + plataforma
         const stTxt = item.status || "Em breve";
         const epsTxt = item.episodes ? ` • ${item.episodes} eps` : "";
         const platTxt = showPlat && item.platform ? ` • ${item.platform}` : "";
-        ctx.fillStyle = "#ff85c2";
+        ctx.fillStyle = "#ff94cc";
         ctx.font = "bold 11.5px Arial, sans-serif";
-        ctx.fillText(truncateTxt(ctx, `${stTxt}${epsTxt}${platTxt}`, posterW), x + pad, ty + 19);
+        ctx.fillText(truncateTxt(ctx, `${stTxt}${epsTxt}${platTxt}`, posterW), x + pad + 2, ty + 19);
       });
     }
 
@@ -1869,7 +2109,7 @@ checkSession();
   async function renderScheduleCanvas() {
     const preview = document.getElementById("sched-img-preview");
     const statusEl = document.getElementById("sched-img-status");
-    if (statusEl) statusEl.textContent = "";
+    if (statusEl) statusEl.textContent = "Carregando pôsteres e montando arte...";
 
     syncModeControls();
 
@@ -1892,6 +2132,8 @@ checkSession();
       img.alt = "Agenda de GLs ThaiGList";
       preview.appendChild(img);
     }
+
+    if (statusEl) statusEl.textContent = "";
 
     const xLink = document.getElementById("share-sched-x-link");
     if (xLink) {

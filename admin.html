@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Administração | ThaiGList</title>
-</head>
 
 <style>
 *,
@@ -47,9 +46,21 @@ header {
   box-shadow: 0 8px 30px #00000044;
 }
 
+.admin-header-logo {
+  max-height: 56px;
+  width: auto;
+  display: inline-block;
+  margin-bottom: 6px;
+}
+
 header h1 {
   color: white;
   margin: 0;
+}
+
+header p {
+  margin: 6px 0 0;
+  color: var(--muted);
 }
 
 main {
@@ -136,14 +147,244 @@ button:disabled {
 
 #dashboard[hidden],
 #login-section[hidden],
-#cancel-edit-button[hidden] {
-  display: none;
+#cancel-edit-button[hidden],
+.sched-img-backdrop[hidden] {
+  display: none !important;
 }
 
 .form-section {
   margin-top: 25px;
   padding-top: 15px;
   border-top: 1px solid var(--border);
+}
+
+/* Geradores de agenda em imagem no painel administrativo */
+.admin-generators-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin: 18px 0;
+}
+
+.admin-schedule-generator {
+  padding: 16px 18px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(61, 35, 92, 0.85), rgba(34, 21, 54, 0.92));
+  border: 1px solid #6b428c;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.admin-schedule-generator.upcoming-card {
+  background: linear-gradient(135deg, rgba(78, 31, 79, 0.85), rgba(34, 21, 54, 0.92));
+  border-color: #8c4589;
+}
+
+.admin-schedule-generator h3 {
+  margin: 0 0 4px;
+  color: #ffffff;
+  font-size: 16px;
+}
+
+.admin-schedule-generator p {
+  margin: 0;
+  color: #e4caff;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.btn-generate-sched {
+  width: 100%;
+  margin-top: 0;
+  padding: 10px 16px;
+  border-radius: 11px;
+  border: none;
+  background: linear-gradient(100deg, #f05ba8, #9b5cf6);
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: transform 0.15s, filter 0.15s;
+}
+
+.btn-generate-sched.upcoming-btn {
+  background: linear-gradient(100deg, #ff5f9e, #b76df5);
+}
+
+.btn-generate-sched:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+
+/* Modal de agenda em imagem */
+.sched-img-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 4, 16, 0.88);
+  backdrop-filter: blur(6px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.sched-img-modal {
+  width: 100%;
+  max-width: 780px;
+  max-height: 92vh;
+  overflow-y: auto;
+  background: #1b1329;
+  border: 1px solid #724696;
+  border-radius: 20px;
+  padding: 22px;
+  color: #ffffff;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.85);
+}
+
+.sched-img-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.sched-img-top h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.sched-img-close {
+  width: 38px;
+  height: 38px;
+  margin-top: 0;
+  padding: 0;
+  border-radius: 10px;
+  border: 1px solid #6c4a94;
+  background: #2c1e45;
+  color: #ffffff;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sched-img-close:hover {
+  background: #a94369;
+  border-color: #ff85b3;
+  transform: none;
+}
+
+.sched-img-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 18px;
+  align-items: center;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #25193a;
+  border: 1px solid #4c3369;
+  margin-bottom: 14px;
+  font-size: 13px;
+}
+
+.sched-ctrl-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: #ebd9ff;
+  font-weight: bold;
+}
+
+.sched-ctrl-item select {
+  width: auto;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #634387;
+  background: #140d21;
+  color: #ffffff;
+  font-size: 12.5px;
+}
+
+.sched-ctrl-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  cursor: pointer;
+  color: #ffffff;
+  font-weight: normal;
+}
+
+.sched-ctrl-check input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+  cursor: pointer;
+}
+
+.sched-img-preview {
+  width: 100%;
+  min-height: 240px;
+  border-radius: 14px;
+  background: #110b1c;
+  border: 1px solid #452e61;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.sched-img-preview img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.sched-img-footer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.sched-act-btn {
+  flex: 1 1 160px;
+  margin-top: 0;
+  padding: 11px 14px;
+  border-radius: 11px;
+  border: 1px solid #593d7a;
+  background: #291d3f;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.sched-act-btn.primary {
+  background: linear-gradient(100deg, #f05ba8, #9b5cf6);
+  border-color: transparent;
+}
+
+.sched-img-status {
+  margin-top: 10px;
+  min-height: 18px;
+  font-size: 12.5px;
+  color: #ff9dd0;
 }
 
 /* Barra de filtro e ordenação da lista */
@@ -278,7 +519,7 @@ button:disabled {
   color: white;
 }
 
-a {
+main > a {
   display: block;
   margin-top: 20px;
   text-align: center;
@@ -286,7 +527,7 @@ a {
   text-decoration: none;
 }
 
-a:hover {
+main > a:hover {
   color: var(--purple);
 }
 
@@ -303,6 +544,10 @@ footer {
 
   main {
     padding: 18px;
+  }
+
+  .admin-generators-grid {
+    grid-template-columns: 1fr;
   }
 
   .drama-row {
@@ -325,11 +570,18 @@ footer {
   }
 }
 </style>
+</head>
 
 <body>
 <div class="container">
 
 <header>
+  <img
+    src="./logo_transparente.png"
+    alt="ThaiGList"
+    class="admin-header-logo"
+    onerror="this.style.display='none'"
+  >
   <h1>ThaiGList 🌷</h1>
   <p>Área administrativa</p>
 </header>
@@ -341,12 +593,10 @@ footer {
 
     <form id="login-form">
       <label for="email">E-mail</label>
-      <input type="email" id="email"
-        autocomplete="username" required>
+      <input type="email" id="email" autocomplete="username" required>
 
       <label for="password">Senha</label>
-      <input type="password" id="password"
-        autocomplete="current-password" required>
+      <input type="password" id="password" autocomplete="current-password" required>
 
       <button type="submit" id="login-button">Entrar</button>
     </form>
@@ -355,650 +605,32 @@ footer {
   <section id="dashboard" hidden>
     <h2>Acesso autorizado! 🌷</h2>
     <p id="user-email"></p>
-<!-- =========================================
-     GERADOR DE AGENDA SEMANAL EM IMAGEM (ADM)
-     ========================================= -->
-<div class="admin-schedule-generator" id="admin-schedule-generator">
-  <div class="admin-sched-header">
-    <div>
-      <h3>📅 Gerador de Agenda Semanal em Imagem</h3>
-      <p id="admin-sched-range-label">Semana atual • Carregando datas...</p>
-    </div>
-    <div class="admin-sched-actions-top">
-      <button type="button" class="btn-generate-sched" id="open-schedule-img-modal-btn">
-        🖼️ Gerar Imagem da Agenda
-      </button>
-    </div>
-  </div>
-</div>
 
-<!-- MODAL DE AGENDA SEMANAL EM IMAGEM -->
-<div class="sched-img-backdrop" id="sched-img-backdrop" hidden>
-  <div class="sched-img-modal" role="dialog" aria-modal="true" aria-labelledby="sched-img-title">
-    <div class="sched-img-top">
-      <h3 id="sched-img-title">📅 Agenda Semanal de GLs • Imagem</h3>
-      <button type="button" class="sched-img-close" id="close-sched-img-btn" aria-label="Fechar">✕</button>
-    </div>
+    <!-- =========================================
+         GERADORES DE AGENDA EM IMAGEM (ADM)
+         ========================================= -->
+    <div class="admin-generators-grid">
+      <div class="admin-schedule-generator" id="admin-schedule-generator">
+        <div>
+          <h3>📅 Gerador de Agenda Semanal</h3>
+          <p id="admin-sched-range-label">Semana atual • Carregando datas...</p>
+        </div>
+        <button type="button" class="btn-generate-sched" id="open-schedule-img-modal-btn">
+          🖼️ Gerar Agenda Semanal
+        </button>
+      </div>
 
-    <div class="sched-img-controls">
-      <label class="sched-ctrl-item">
-        <span>Semana:</span>
-        <select id="sched-week-offset">
-          <option value="0" selected>Semana atual</option>
-          <option value="1">Próxima semana</option>
-          <option value="-1">Semana passada</option>
-        </select>
-      </label>
-
-      <label class="sched-ctrl-item">
-        <span>Formato:</span>
-        <select id="sched-img-format">
-          <option value="feed" selected>Feed / Post (1080×1350)</option>
-          <option value="wide">Banner / X (1200×900)</option>
-          <option value="story">Stories (1080×1920)</option>
-        </select>
-      </label>
-
-      <label class="sched-ctrl-check">
-        <input type="checkbox" id="sched-show-ep" checked />
-        <span>Mostrar episódio (EP X/Y)</span>
-      </label>
-
-      <label class="sched-ctrl-check">
-        <input type="checkbox" id="sched-show-platform" checked />
-        <span>Mostrar plataforma</span>
-      </label>
+      <div class="admin-schedule-generator upcoming-card" id="admin-upcoming-generator">
+        <div>
+          <h3>⏳ Próximos Lançamentos</h3>
+          <p id="admin-upcoming-count-label">Em breve & Teasers • Gerar arte com pôsteres.</p>
+        </div>
+        <button type="button" class="btn-generate-sched upcoming-btn" id="open-upcoming-img-modal-btn">
+          ✨ Gerar Próximos Lançamentos
+        </button>
+      </div>
     </div>
 
-    <div class="sched-img-preview" id="sched-img-preview">
-      <p>Gerando imagem da agenda semanal...</p>
-    </div>
-
-    <div class="sched-img-footer-actions">
-      <button type="button" class="sched-act-btn primary" id="download-sched-img-btn">
-        ⬇️ Baixar PNG
-      </button>
-      <button type="button" class="sched-act-btn" id="share-sched-img-btn">
-        📤 Compartilhar
-      </button>
-      <a id="share-sched-x-link" href="#" target="_blank" rel="noopener noreferrer" class="sched-act-btn">
-        𝕏 Postar no X
-      </a>
-      <button type="button" id="share-sched-ig-btn" class="sched-act-btn">
-        📸 Postar no Instagram
-      </button>
-    </div>
-
-    <div class="sched-img-status" id="sched-img-status"></div>
-  </div>
-</div>
-
-<style>
-.admin-schedule-generator {
-  margin: 18px 0;
-  padding: 16px 20px;
-  border-radius: 16px;
-  background: linear-gradient(135deg, rgba(61, 35, 92, 0.85), rgba(34, 21, 54, 0.92));
-  border: 1px solid #6b428c;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-}
-.admin-sched-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-.admin-sched-header h3 {
-  margin: 0 0 4px;
-  color: #ffffff;
-  font-size: 17px;
-}
-.admin-sched-header p {
-  margin: 0;
-  color: #e4caff;
-  font-size: 13px;
-}
-.btn-generate-sched {
-  padding: 10px 18px;
-  border-radius: 11px;
-  border: none;
-  background: linear-gradient(100deg, #f05ba8, #9b5cf6);
-  color: #ffffff;
-  font-weight: bold;
-  font-size: 13.5px;
-  cursor: pointer;
-  transition: transform 0.15s, filter 0.15s;
-}
-.btn-generate-sched:hover {
-  transform: translateY(-1px);
-  filter: brightness(1.08);
-}
-
-.sched-img-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(8, 4, 16, 0.88);
-  backdrop-filter: blur(6px);
-  z-index: 999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-  overflow-y: auto;
-}
-.sched-img-modal {
-  width: 100%;
-  max-width: 780px;
-  max-height: 92vh;
-  overflow-y: auto;
-  background: #1b1329;
-  border: 1px solid #724696;
-  border-radius: 20px;
-  padding: 22px;
-  color: #ffffff;
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.85);
-}
-.sched-img-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 14px;
-}
-.sched-img-top h3 {
-  margin: 0;
-  font-size: 18px;
-}
-.sched-img-close {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  border: 1px solid #553973;
-  background: #281c3d;
-  color: #ffffff;
-  font-size: 18px;
-  cursor: pointer;
-}
-.sched-img-controls {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px 18px;
-  align-items: center;
-  padding: 12px 14px;
-  border-radius: 12px;
-  background: #25193a;
-  border: 1px solid #4c3369;
-  margin-bottom: 14px;
-  font-size: 13px;
-}
-.sched-ctrl-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: #ebd9ff;
-  font-weight: bold;
-}
-.sched-ctrl-item select {
-  padding: 6px 10px;
-  border-radius: 8px;
-  border: 1px solid #634387;
-  background: #140d21;
-  color: #ffffff;
-  font-size: 12.5px;
-}
-.sched-ctrl-check {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  color: #ffffff;
-}
-.sched-img-preview {
-  width: 100%;
-  min-height: 240px;
-  border-radius: 14px;
-  background: #110b1c;
-  border: 1px solid #452e61;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-.sched-img-preview img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-.sched-img-footer-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 16px;
-}
-.sched-act-btn {
-  flex: 1 1 160px;
-  padding: 11px 14px;
-  border-radius: 11px;
-  border: 1px solid #593d7a;
-  background: #291d3f;
-  color: #ffffff;
-  font-size: 13px;
-  font-weight: bold;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-}
-.sched-act-btn.primary {
-  background: linear-gradient(100deg, #f05ba8, #9b5cf6);
-  border-color: transparent;
-}
-.sched-img-status {
-  margin-top: 10px;
-  min-height: 18px;
-  font-size: 12.5px;
-  color: #ff9dd0;
-}
-</style>
-
-<script>
-(function () {
-  const SCHED_SHORT_DAYS = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SÁB"];
-
-  let schedImgState = {
-    dataUrl: null,
-    blob: null,
-    weekLabel: ""
-  };
-
-  function schedParseAirDay(rawDay) {
-    if (typeof parseAirDay === "function") return parseAirDay(rawDay);
-    if (rawDay === null || rawDay === undefined || rawDay === "") return null;
-    if (typeof rawDay === "number" && rawDay >= 0 && rawDay <= 6) return rawDay;
-    const str = String(rawDay).trim().toLowerCase();
-    if (/^[0-6]$/.test(str)) return Number(str);
-    if (str.startsWith("dom")) return 0;
-    if (str.startsWith("seg")) return 1;
-    if (str.startsWith("ter")) return 2;
-    if (str.startsWith("qua")) return 3;
-    if (str.startsWith("qui")) return 4;
-    if (str.startsWith("sex")) return 5;
-    if (str.startsWith("sáb") || str.startsWith("sab")) return 6;
-    return null;
-  }
-
-  function schedGetEffectiveStatus(item) {
-    if (typeof getEffectiveStatus === "function") return getEffectiveStatus(item);
-    return (item.status || "").trim().toLowerCase();
-  }
-
-  function schedGetWeekDates(offsetWeeks = 0, baseDate = new Date()) {
-    const start = new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate());
-    start.setDate(start.getDate() - start.getDay() + offsetWeeks * 7);
-    const list = [];
-    for (let i = 0; i < 7; i++) {
-      const d = new Date(start);
-      d.setDate(start.getDate() + i);
-      list.push(d);
-    }
-    return list;
-  }
-
-  function schedFormatDM(d) {
-    return `${String(d.getDate()).padStart(2, "0")}/${String(d.getMonth() + 1).padStart(2, "0")}`;
-  }
-
-  function schedGetEpisodeNumber(item, targetDate) {
-    if (typeof getEpisodeForTargetDate === "function") {
-      return getEpisodeForTargetDate(item, targetDate);
-    }
-    const totalEps = Number(item.episodes) || 0;
-    if (!item.premiere_date) return null;
-    const startDate = new Date(item.premiere_date + "T00:00:00");
-    if (Number.isNaN(startDate.getTime())) return null;
-    const refDate = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate(), 23, 59, 59);
-    if (refDate.getTime() < startDate.getTime()) return null;
-    const ep = Math.floor((refDate.getTime() - startDate.getTime()) / (7 * 24 * 60 * 60 * 1000)) + 1;
-    if (totalEps > 0 && ep > totalEps) return null;
-    return ep;
-  }
-
-  function schedIsScheduledOnDate(item, targetDate) {
-    if (typeof isDramaScheduledOnWeekDate === "function") {
-      return isDramaScheduledOnWeekDate(item, targetDate);
-    }
-    if (schedGetEffectiveStatus(item) !== "em andamento") return false;
-    if (schedParseAirDay(item.air_day) !== targetDate.getDay()) return false;
-
-    const dayStart = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate(), 0, 0, 0).getTime();
-    const dayEnd = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate(), 23, 59, 59).getTime();
-
-    if (item.premiere_date) {
-      const sTs = new Date(item.premiere_date + "T00:00:00").getTime();
-      if (!Number.isNaN(sTs) && dayEnd < sTs) return false;
-    }
-    if (item.end_date) {
-      const eTs = new Date(item.end_date + "T23:59:59").getTime();
-      if (!Number.isNaN(eTs) && dayStart > eTs) return false;
-    }
-    const totalEps = Number(item.episodes) || 0;
-    if (item.premiere_date && totalEps > 0) {
-      if (schedGetEpisodeNumber(item, targetDate) === null) return false;
-    }
-    return true;
-  }
-
-  function getAdminDramasArray() {
-    if (Array.isArray(window.allDramas)) return window.allDramas;
-    if (Array.isArray(window.dramas)) return window.dramas;
-    if (Array.isArray(window.series)) return window.series;
-    return [];
-  }
-
-  async function fetchAdminDramasFallback() {
-    const localArr = getAdminDramasArray();
-    if (localArr.length) return localArr;
-    if (typeof db !== "undefined" && db && typeof db.from === "function") {
-      const { data, error } = await db.from("dramas").select("*");
-      if (!error && Array.isArray(data)) return data;
-    }
-    return [];
-  }
-
-  function drawRoundRect(ctx, x, y, w, h, r) {
-    const rad = Math.min(r, w / 2, h / 2);
-    ctx.beginPath();
-    ctx.moveTo(x + rad, y);
-    ctx.arcTo(x + w, y, x + w, y + h, rad);
-    ctx.arcTo(x + w, y + h, x, y + h, rad);
-    ctx.arcTo(x, y + h, x, y, rad);
-    ctx.arcTo(x, y, x + w, y, rad);
-    ctx.closePath();
-  }
-
-  function truncateTxt(ctx, text, maxW) {
-    let s = String(text || "");
-    if (ctx.measureText(s).width <= maxW) return s;
-    while (s.length > 1 && ctx.measureText(s + "…").width > maxW) {
-      s = s.slice(0, -1);
-    }
-    return s + "…";
-  }
-
-  function updateAdminRangeLabel() {
-    const el = document.getElementById("admin-sched-range-label");
-    if (!el) return;
-    const wk = schedGetWeekDates(0);
-    el.textContent = `Semana atual: ${schedFormatDM(wk[0])} a ${schedFormatDM(wk[6])} • Gere uma arte pronta para postar`;
-  }
-
-  async function renderWeeklyScheduleCanvas() {
-    const preview = document.getElementById("sched-img-preview");
-    const statusEl = document.getElementById("sched-img-status");
-    if (statusEl) statusEl.textContent = "";
-
-    const offset = Number(document.getElementById("sched-week-offset")?.value || 0);
-    const format = document.getElementById("sched-img-format")?.value || "feed";
-    const showEp = Boolean(document.getElementById("sched-show-ep")?.checked);
-    const showPlat = Boolean(document.getElementById("sched-show-platform")?.checked);
-
-    const weekDates = schedGetWeekDates(offset);
-    const weekRangeStr = `${schedFormatDM(weekDates[0])} a ${schedFormatDM(weekDates[6])}`;
-    schedImgState.weekLabel = weekRangeStr;
-
-    const dramas = await fetchAdminDramasFallback();
-
-    const byDay = Array.from({ length: 7 }, (_, dayIdx) => {
-      const targetDate = weekDates[dayIdx];
-      const items = dramas
-        .filter(d => schedIsScheduledOnDate(d, targetDate))
-        .sort((a, b) => (a.air_time || "99:99").localeCompare(b.air_time || "99:99"));
-      return { dayIdx, targetDate, items };
-    });
-
-    const totalItems = byDay.reduce((acc, g) => acc + g.items.length, 0);
-
-    let width = 1080;
-    let height = 1350;
-    if (format === "wide") {
-      width = 1200;
-      height = 900;
-    } else if (format === "story") {
-      width = 1080;
-      height = 1920;
-    }
-
-    const canvas = document.createElement("canvas");
-    canvas.width = width;
-    canvas.height = height;
-    const ctx = canvas.getContext("2d");
-
-    const bgGrad = ctx.createLinearGradient(0, 0, width, height);
-    bgGrad.addColorStop(0, "#1d1230");
-    bgGrad.addColorStop(0.5, "#2d1a4c");
-    bgGrad.addColorStop(1, "#170e26");
-    ctx.fillStyle = bgGrad;
-    ctx.fillRect(0, 0, width, height);
-
-    const topBar = ctx.createLinearGradient(0, 0, width, 0);
-    topBar.addColorStop(0, "#f05ba8");
-    topBar.addColorStop(0.5, "#b787ff");
-    topBar.addColorStop(1, "#f05ba8");
-    ctx.fillStyle = topBar;
-    ctx.fillRect(0, 0, width, 12);
-
-    ctx.textAlign = "center";
-    ctx.fillStyle = "#ffc2e2";
-    ctx.font = "bold 18px Arial, sans-serif";
-    ctx.fillText("THAIGLIST • AGENDA SEMANAL DE LANÇAMENTOS", width / 2, 52);
-
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "bold 40px Georgia, 'Times New Roman', serif";
-    ctx.fillText(`Semana ${weekRangeStr}`, width / 2, 98);
-
-    ctx.fillStyle = "#e2c8ff";
-    ctx.font = "16px Arial, sans-serif";
-    ctx.fillText(`${totalItems} ${totalItems === 1 ? "GL em exibição" : "GLs em exibição"} nesta semana`, width / 2, 128);
-
-    const marginX = 36;
-    const topAreaY = 152;
-    const footerH = 84;
-    const gridH = height - topAreaY - footerH - 18;
-
-    const cols = format === "wide" ? 4 : 2;
-    const rows = Math.ceil(7 / cols);
-    const gapX = 16;
-    const gapY = 14;
-    const cellW = (width - marginX * 2 - gapX * (cols - 1)) / cols;
-    const cellH = (gridH - gapY * (rows - 1)) / rows;
-
-    byDay.forEach((grp, idx) => {
-      const col = idx % cols;
-      const row = Math.floor(idx / cols);
-      const x = marginX + col * (cellW + gapX);
-      const y = topAreaY + row * (cellH + gapY);
-
-      drawRoundRect(ctx, x, y, cellW, cellH, 14);
-      ctx.fillStyle = "rgba(38, 23, 64, 0.92)";
-      ctx.fill();
-      ctx.lineWidth = 1.5;
-      ctx.strokeStyle = grp.items.length ? "#b86cff" : "#4a3369";
-      ctx.stroke();
-
-      const hdrH = 34;
-      drawRoundRect(ctx, x, y, cellW, hdrH, 14);
-      ctx.fillStyle = grp.items.length ? "rgba(240, 91, 168, 0.25)" : "rgba(74, 51, 105, 0.4)";
-      ctx.fill();
-
-      ctx.textAlign = "left";
-      ctx.fillStyle = "#ffffff";
-      ctx.font = "bold 14px Arial, sans-serif";
-      ctx.fillText(`${SCHED_SHORT_DAYS[grp.dayIdx]} (${schedFormatDM(grp.targetDate)})`, x + 12, y + 22);
-
-      ctx.textAlign = "right";
-      ctx.fillStyle = "#ffc2e2";
-      ctx.font = "bold 12px Arial, sans-serif";
-      ctx.fillText(`${grp.items.length}`, x + cellW - 12, y + 22);
-
-      let curY = y + hdrH + 18;
-      const maxLines = Math.max(1, Math.floor((cellH - hdrH - 14) / 28));
-
-      if (!grp.items.length) {
-        ctx.textAlign = "left";
-        ctx.fillStyle = "rgba(226, 200, 255, 0.5)";
-        ctx.font = "italic 12.5px Arial, sans-serif";
-        ctx.fillText("Sem estreias agendadas", x + 12, curY);
-      } else {
-        grp.items.slice(0, maxLines).forEach(it => {
-          const timeStr = it.air_time ? String(it.air_time).slice(0, 5) : "--:--";
-          const epNum = schedGetEpisodeNumber(it, grp.targetDate);
-          const totalEps = Number(it.episodes) || 0;
-          const epStr = showEp && epNum ? (totalEps ? ` EP ${epNum}/${totalEps}` : ` EP ${epNum}`) : "";
-          const platStr = showPlat && it.platform ? ` • ${it.platform}` : "";
-
-          ctx.textAlign = "left";
-          ctx.fillStyle = "#ff85c2";
-          ctx.font = "bold 12px Arial, sans-serif";
-          ctx.fillText(`${timeStr}${epStr}`, x + 12, curY - 1);
-
-          const titleX = x + 12 + ctx.measureText(`${timeStr}${epStr}`).width + 8;
-          const maxTitleW = Math.max(40, x + cellW - 12 - titleX);
-          ctx.fillStyle = "#ffffff";
-          ctx.font = "bold 12.5px Arial, sans-serif";
-          ctx.fillText(truncateTxt(ctx, `${it.title || "Sem título"}${platStr}`, maxTitleW), titleX, curY - 1);
-
-          curY += 28;
-        });
-
-        if (grp.items.length > maxLines) {
-          ctx.textAlign = "left";
-          ctx.fillStyle = "#ffc2e2";
-          ctx.font = "bold 11.5px Arial, sans-serif";
-          ctx.fillText(`+${grp.items.length - maxLines} séries neste dia`, x + 12, y + cellH - 8);
-        }
-      }
-    });
-
-    const footY = height - footerH;
-    ctx.textAlign = "center";
-    ctx.fillStyle = "#ffc2e2";
-    ctx.font = "bold 15px Arial, sans-serif";
-    ctx.fillText("Acompanhe todos os horários em thaiglist.pages.dev", width / 2, footY + 28);
-    ctx.fillStyle = "#cbb2eb";
-    ctx.font = "13px Arial, sans-serif";
-    ctx.fillText("ThaiGList • Comunidade & Catálogo de Thai GLs", width / 2, footY + 52);
-
-    const dataUrl = canvas.toDataURL("image/png");
-    schedImgState.dataUrl = dataUrl;
-    canvas.toBlob(b => { schedImgState.blob = b; }, "image/png");
-
-    if (preview) {
-      preview.innerHTML = "";
-      const img = document.createElement("img");
-      img.src = dataUrl;
-      img.alt = `Agenda Semanal ${weekRangeStr}`;
-      preview.appendChild(img);
-    }
-
-    const xLink = document.getElementById("share-sched-x-link");
-    if (xLink) {
-      const tweet = encodeURIComponent(
-        `📅 Agenda Semanal de Thai GLs (${weekRangeStr}) no ThaiGList! Confira em: https://thaiglist.pages.dev #ThaiGL #GL #ThaiGList`
-      );
-      xLink.href = `https://twitter.com/intent/tweet?text=${tweet}`;
-    }
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    updateAdminRangeLabel();
-
-    const backdrop = document.getElementById("sched-img-backdrop");
-    const openBtn = document.getElementById("open-schedule-img-modal-btn");
-    const closeBtn = document.getElementById("close-sched-img-btn");
-    const dlBtn = document.getElementById("download-sched-img-btn");
-    const shareBtn = document.getElementById("share-sched-img-btn");
-    const igBtn = document.getElementById("share-sched-ig-btn");
-    const statusEl = document.getElementById("sched-img-status");
-
-    ["sched-week-offset", "sched-img-format", "sched-show-ep", "sched-show-platform"].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.addEventListener("change", renderWeeklyScheduleCanvas);
-    });
-
-    if (openBtn && backdrop) {
-      openBtn.addEventListener("click", async () => {
-        backdrop.hidden = false;
-        document.body.style.overflow = "hidden";
-        await renderWeeklyScheduleCanvas();
-      });
-    }
-
-    function closeModal() {
-      if (!backdrop) return;
-      backdrop.hidden = true;
-      document.body.style.overflow = "";
-    }
-
-    if (closeBtn) closeBtn.addEventListener("click", closeModal);
-    if (backdrop) {
-      backdrop.addEventListener("click", e => {
-        if (e.target === backdrop) closeModal();
-      });
-    }
-
-    if (dlBtn) {
-      dlBtn.addEventListener("click", () => {
-        if (!schedImgState.dataUrl) return;
-        const a = document.createElement("a");
-        const cleanRange = (schedImgState.weekLabel || "semana").replace(/[^0-9a-zA-Z]+/g, "-");
-        a.download = `agenda-semanal-${cleanRange}.png`;
-        a.href = schedImgState.dataUrl;
-        a.click();
-        if (statusEl) statusEl.textContent = "Imagem PNG baixada com sucesso!";
-      });
-    }
-
-    if (shareBtn) {
-      shareBtn.addEventListener("click", async () => {
-        const text = `Agenda Semanal de GLs (${schedImgState.weekLabel}) • https://thaiglist.pages.dev`;
-        try {
-          if (navigator.share && schedImgState.blob && typeof File !== "undefined") {
-            const file = new File([schedImgState.blob], "agenda-semanal-thaiglist.png", { type: "image/png" });
-            if (!navigator.canShare || navigator.canShare({ files: [file] })) {
-              await navigator.share({ title: "Agenda Semanal ThaiGList", text, files: [file] });
-              if (statusEl) statusEl.textContent = "Agenda compartilhada!";
-              return;
-            }
-          }
-        } catch (err) {
-          if (err && err.name === "AbortError") return;
-        }
-        try {
-          await navigator.clipboard.writeText(text);
-          if (statusEl) statusEl.textContent = "Link copiado! Baixe o PNG ao lado para anexar.";
-        } catch {
-          if (statusEl) statusEl.textContent = "Use o botão Baixar PNG para salvar a imagem.";
-        }
-      });
-    }
-
-    if (igBtn) {
-      igBtn.addEventListener("click", async () => {
-        const caption = `📅 Agenda Semanal de Thai GLs (${schedImgState.weekLabel}) no ThaiGList! Confira em: https://thaiglist.pages.dev #ThaiGL #GL #ThaiGList`;
-        try { await navigator.clipboard.writeText(caption); } catch {}
-        if (schedImgState.dataUrl) {
-          const a = document.createElement("a");
-          a.download = "agenda-semanal-thaiglist.png";
-          a.href = schedImgState.dataUrl;
-          a.click();
-        }
-        window.open("https://www.instagram.com/", "_blank", "noopener,noreferrer");
-        if (statusEl) statusEl.textContent = "Imagem baixada e legenda copiada para o Instagram!";
-      });
-    }
-  });
-})();
-</script>
     <div class="form-section">
       <h2 id="form-title">Cadastrar novo drama</h2>
       <p>Preencha as informações do drama.</p>
@@ -1026,12 +658,13 @@ footer {
         <label for="genre">Gênero</label>
         <input id="genre">
 
-         <label for="status">Status da série</label>
-<select id="status">
-  <option value="Concluída">Concluída</option>
-  <option value="Em andamento">Em andamento</option>
-  <option value="Em breve">Em breve</option>
-</select>
+        <label for="status">Status da série</label>
+        <select id="status">
+          <option value="Concluída">Concluída</option>
+          <option value="Em andamento">Em andamento</option>
+          <option value="Em breve">Em breve</option>
+          <option value="Teaser / Piloto">Teaser / Piloto</option>
+        </select>
 
         <label for="country">País</label>
         <input id="country" value="Tailândia">
@@ -1089,6 +722,85 @@ footer {
 </main>
 
 <footer>ThaiGList © 2026</footer>
+</div>
+
+<!-- MODAL DE AGENDA EM IMAGEM (SEMANAL & PRÓXIMOS LANÇAMENTOS) -->
+<div class="sched-img-backdrop" id="sched-img-backdrop" hidden>
+  <div class="sched-img-modal" role="dialog" aria-modal="true" aria-labelledby="sched-img-title">
+    <div class="sched-img-top">
+      <h3 id="sched-img-title">📅 Agenda Semanal de GLs • Imagem</h3>
+      <button type="button" class="sched-img-close" id="close-sched-img-btn" aria-label="Fechar">✕</button>
+    </div>
+
+    <div class="sched-img-controls">
+      <label class="sched-ctrl-item">
+        <span>Tipo:</span>
+        <select id="sched-generator-mode">
+          <option value="weekly" selected>📅 Agenda Semanal</option>
+          <option value="upcoming">⏳ Próximos Lançamentos</option>
+        </select>
+      </label>
+
+      <label class="sched-ctrl-item" id="sched-week-offset-wrap">
+        <span>Semana:</span>
+        <select id="sched-week-offset">
+          <option value="0" selected>Semana atual</option>
+          <option value="1">Próxima semana</option>
+          <option value="-1">Semana passada</option>
+        </select>
+      </label>
+
+      <label class="sched-ctrl-item" id="sched-upcoming-filter-wrap" hidden>
+        <span>Filtro:</span>
+        <select id="sched-upcoming-filter">
+          <option value="all" selected>Todos (Em breve + Teasers)</option>
+          <option value="dated">Com data definida</option>
+          <option value="2026">Previstos 2026</option>
+          <option value="2027_plus">2027+</option>
+        </select>
+      </label>
+
+      <label class="sched-ctrl-item">
+        <span>Formato:</span>
+        <select id="sched-img-format">
+          <option value="feed" selected>Feed / Post (1080×1350)</option>
+          <option value="wide">Banner / X (1200×900)</option>
+          <option value="story">Stories (1080×1920)</option>
+        </select>
+      </label>
+
+      <label class="sched-ctrl-check" id="sched-show-ep-wrap">
+        <input type="checkbox" id="sched-show-ep" checked />
+        <span>Mostrar episódio (EP X/Y)</span>
+      </label>
+
+      <label class="sched-ctrl-check">
+        <input type="checkbox" id="sched-show-platform" checked />
+        <span>Mostrar plataforma</span>
+      </label>
+    </div>
+
+    <div class="sched-img-preview" id="sched-img-preview">
+      <p>Gerando imagem da agenda...</p>
+    </div>
+
+    <div class="sched-img-footer-actions">
+      <button type="button" class="sched-act-btn primary" id="download-sched-img-btn">
+        ⬇️ Baixar PNG
+      </button>
+      <button type="button" class="sched-act-btn" id="share-sched-img-btn">
+        📤 Compartilhar
+      </button>
+      <a id="share-sched-x-link" href="#" target="_blank" rel="noopener noreferrer" class="sched-act-btn">
+        𝕏 Postar no X
+      </a>
+      <button type="button" id="share-sched-ig-btn" class="sched-act-btn">
+        📸 Postar no Instagram
+      </button>
+    </div>
+
+    <div class="sched-img-status" id="sched-img-status"></div>
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1189,7 +901,6 @@ function getSortedAndFilteredDramas() {
       if (yearA !== yearB) return yearA - yearB;
       return (a.title || "").localeCompare(b.title || "", "pt-BR", { sensitivity: "base" });
     }
-    // Padrão: id_desc
     return (b.id ?? 0) - (a.id ?? 0);
   });
 }
@@ -1242,7 +953,6 @@ function renderDramaList() {
     const controls = document.createElement("div");
     controls.className = "drama-controls";
 
-    // Seleção GL da Semana
     const featuredLabel = document.createElement("label");
     featuredLabel.className = "featured-toggle";
 
@@ -1314,7 +1024,7 @@ async function loadDramas() {
 
   const { data, error } = await db
     .from("dramas")
-    .select("id, title, year, status, weekly_featured")
+    .select("*")
     .order("id", { ascending: false });
 
   if (error) {
@@ -1325,12 +1035,14 @@ async function loadDramas() {
 
   allDramas = data || [];
   renderDramaList();
+  if (typeof window.updateAdminScheduleLabels === "function") {
+    window.updateAdminScheduleLabels();
+  }
 }
 
 sortSelect.addEventListener("change", renderDramaList);
 searchInput.addEventListener("input", renderDramaList);
 
-// Função para excluir um drama
 async function deleteDrama(id) {
   const confirmed = confirm(
     "Tem certeza de que deseja excluir este drama?"
@@ -1533,6 +1245,777 @@ db.auth.onAuthStateChange((_event, session) => {
 });
 
 checkSession();
+</script>
+
+<!-- =======================================================
+     GERADORES DE IMAGEM: AGENDA SEMANAL & PRÓXIMOS LANÇAMENTOS
+     ======================================================= -->
+<script>
+(function () {
+  const SCHED_SHORT_DAYS = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SÁB"];
+  const LOGO_PATH = "./logo_transparente.png";
+
+  let schedImgState = {
+    dataUrl: null,
+    blob: null,
+    fileSlug: "agenda-thaiglist",
+    shareCaption: ""
+  };
+
+  function closeScheduleModal() {
+    const backdrop = document.getElementById("sched-img-backdrop");
+    if (backdrop) {
+      backdrop.hidden = true;
+      backdrop.setAttribute("hidden", "");
+    }
+    document.body.style.overflow = "";
+    document.documentElement.style.overflow = "";
+  }
+
+  function schedParseAirDay(rawDay) {
+    if (rawDay === null || rawDay === undefined || rawDay === "") return null;
+    if (typeof rawDay === "number" && rawDay >= 0 && rawDay <= 6) return rawDay;
+    const str = String(rawDay).trim().toLowerCase();
+    if (/^[0-6]$/.test(str)) return Number(str);
+    if (str.startsWith("dom")) return 0;
+    if (str.startsWith("seg")) return 1;
+    if (str.startsWith("ter")) return 2;
+    if (str.startsWith("qua")) return 3;
+    if (str.startsWith("qui")) return 4;
+    if (str.startsWith("sex")) return 5;
+    if (str.startsWith("sáb") || str.startsWith("sab")) return 6;
+    return null;
+  }
+
+  function schedGetEffectiveStatus(item) {
+    const rawStatus = (item.status || "").trim().toLowerCase();
+    const totalEps = Number(item.episodes) || 0;
+    const year = Number(item.year) || 0;
+
+    if (rawStatus === "em andamento") {
+      if (item.end_date) {
+        const endTs = new Date(item.end_date + "T23:59:59").getTime();
+        if (!Number.isNaN(endTs) && Date.now() > endTs) return "finalizada";
+      }
+      if (item.premiere_date && totalEps > 0) {
+        const startTs = new Date(item.premiere_date + "T00:00:00").getTime();
+        if (!Number.isNaN(startTs) && Date.now() >= startTs) {
+          const weeksElapsed = Math.floor((Date.now() - startTs) / (7 * 24 * 60 * 60 * 1000)) + 1;
+          if (weeksElapsed > totalEps) return "finalizada";
+        }
+      }
+      return "em andamento";
+    }
+
+    if (
+      rawStatus.includes("finaliz") ||
+      rawStatus.includes("conclu") ||
+      rawStatus.includes("complet") ||
+      rawStatus.includes("encerrad") ||
+      rawStatus === "finished" ||
+      rawStatus === "completed" ||
+      rawStatus === "ended"
+    ) {
+      return "finalizada";
+    }
+
+    const isExplicitUpcoming =
+      rawStatus.includes("teaser") ||
+      rawStatus.includes("piloto") ||
+      rawStatus.includes("breve") ||
+      rawStatus.includes("previst") ||
+      rawStatus.includes("anunciad") ||
+      rawStatus.includes("upcoming") ||
+      year > 2026;
+
+    if (!isExplicitUpcoming && year > 0 && year <= 2026) {
+      return "finalizada";
+    }
+
+    return rawStatus;
+  }
+
+  function schedIsUpcomingDrama(item) {
+    const st = schedGetEffectiveStatus(item);
+    const year = Number(item.year) || 0;
+    return (
+      st === "teaser / piloto" ||
+      st === "em breve" ||
+      st === "previsto" ||
+      st.includes("teaser") ||
+      st.includes("breve") ||
+      st.includes("previst") ||
+      year > 2026
+    );
+  }
+
+  function schedGetWeekDates(offsetWeeks = 0, baseDate = new Date()) {
+    const start = new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate());
+    start.setDate(start.getDate() - start.getDay() + offsetWeeks * 7);
+    const list = [];
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(start);
+      d.setDate(start.getDate() + i);
+      list.push(d);
+    }
+    return list;
+  }
+
+  function schedFormatDM(d) {
+    return `${String(d.getDate()).padStart(2, "0")}/${String(d.getMonth() + 1).padStart(2, "0")}`;
+  }
+
+  function schedFormatDateBR(rawDate) {
+    if (!rawDate) return "";
+    const str = String(rawDate).trim();
+    const match = str.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (match) return `${match[3]}/${match[2]}/${match[1]}`;
+    return str;
+  }
+
+  function schedGetEpisodeNumber(item, targetDate) {
+    const totalEps = Number(item.episodes) || 0;
+    if (!item.premiere_date) return null;
+    const startDate = new Date(item.premiere_date + "T00:00:00");
+    if (Number.isNaN(startDate.getTime())) return null;
+    const refDate = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate(), 23, 59, 59);
+    if (refDate.getTime() < startDate.getTime()) return null;
+    const ep = Math.floor((refDate.getTime() - startDate.getTime()) / (7 * 24 * 60 * 60 * 1000)) + 1;
+    if (totalEps > 0 && ep > totalEps) return null;
+    return ep;
+  }
+
+  function schedIsScheduledOnDate(item, targetDate) {
+    if (schedGetEffectiveStatus(item) !== "em andamento") return false;
+    if (schedParseAirDay(item.air_day) !== targetDate.getDay()) return false;
+
+    const dayStart = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate(), 0, 0, 0).getTime();
+    const dayEnd = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate(), 23, 59, 59).getTime();
+
+    if (item.premiere_date) {
+      const sTs = new Date(item.premiere_date + "T00:00:00").getTime();
+      if (!Number.isNaN(sTs) && dayEnd < sTs) return false;
+    }
+    if (item.end_date) {
+      const eTs = new Date(item.end_date + "T23:59:59").getTime();
+      if (!Number.isNaN(eTs) && dayStart > eTs) return false;
+    }
+    const totalEps = Number(item.episodes) || 0;
+    if (item.premiere_date && totalEps > 0) {
+      if (schedGetEpisodeNumber(item, targetDate) === null) return false;
+    }
+    return true;
+  }
+
+  async function fetchAdminDramas() {
+    if (Array.isArray(allDramas) && allDramas.length) return allDramas;
+    if (typeof db !== "undefined" && db && typeof db.from === "function") {
+      const { data, error } = await db.from("dramas").select("*");
+      if (!error && Array.isArray(data)) {
+        allDramas = data;
+        return data;
+      }
+    }
+    return [];
+  }
+
+  function loadImageCorsSafe(url) {
+    return new Promise((resolve) => {
+      if (!url) return resolve(null);
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      const timer = setTimeout(() => resolve(null), 5000);
+      img.onload = () => {
+        clearTimeout(timer);
+        resolve(img);
+      };
+      img.onerror = () => {
+        clearTimeout(timer);
+        resolve(null);
+      };
+      img.src = url;
+    });
+  }
+
+  function drawRoundRect(ctx, x, y, w, h, r) {
+    const rad = Math.min(r, w / 2, h / 2);
+    ctx.beginPath();
+    ctx.moveTo(x + rad, y);
+    ctx.arcTo(x + w, y, x + w, y + h, rad);
+    ctx.arcTo(x + w, y + h, x, y + h, rad);
+    ctx.arcTo(x, y + h, x, y, rad);
+    ctx.arcTo(x, y, x + w, y, rad);
+    ctx.closePath();
+  }
+
+  function truncateTxt(ctx, text, maxW) {
+    let s = String(text || "");
+    if (ctx.measureText(s).width <= maxW) return s;
+    while (s.length > 1 && ctx.measureText(s + "…").width > maxW) {
+      s = s.slice(0, -1);
+    }
+    return s + "…";
+  }
+
+  function drawPosterCover(ctx, img, x, y, w, h, radius = 7) {
+    ctx.save();
+    drawRoundRect(ctx, x, y, w, h, radius);
+    ctx.clip();
+
+    if (img && img.width > 0 && img.height > 0) {
+      const imgRatio = img.width / img.height;
+      const boxRatio = w / h;
+      let dw, dh, dx, dy;
+      if (imgRatio > boxRatio) {
+        dh = h;
+        dw = dh * imgRatio;
+        dx = x - (dw - w) / 2;
+        dy = y;
+      } else {
+        dw = w;
+        dh = dw / imgRatio;
+        dx = x;
+        dy = y - (dh - h) / 2;
+      }
+      ctx.drawImage(img, dx, dy, dw, dh);
+    } else {
+      const ph = ctx.createLinearGradient(x, y, x + w, y + h);
+      ph.addColorStop(0, "#4c276e");
+      ph.addColorStop(1, "#8e3271");
+      ctx.fillStyle = ph;
+      ctx.fillRect(x, y, w, h);
+
+      ctx.fillStyle = "#ffd1e9";
+      ctx.font = `bold ${Math.max(11, Math.round(w * 0.42))}px Arial, sans-serif`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("🌷", x + w / 2, y + h / 2);
+      ctx.textBaseline = "alphabetic";
+    }
+
+    ctx.restore();
+
+    ctx.save();
+    drawRoundRect(ctx, x, y, w, h, radius);
+    ctx.lineWidth = 1.1;
+    ctx.strokeStyle = "rgba(255, 194, 226, 0.45)";
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  async function drawBrandTop(ctx, width, kicker, title, subtitle) {
+    const bgGrad = ctx.createLinearGradient(0, 0, width, ctx.canvas.height);
+    bgGrad.addColorStop(0, "#1d1230");
+    bgGrad.addColorStop(0.5, "#2d1a4c");
+    bgGrad.addColorStop(1, "#170e26");
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0, 0, width, ctx.canvas.height);
+
+    const topBar = ctx.createLinearGradient(0, 0, width, 0);
+    topBar.addColorStop(0, "#f05ba8");
+    topBar.addColorStop(0.5, "#b787ff");
+    topBar.addColorStop(1, "#f05ba8");
+    ctx.fillStyle = topBar;
+    ctx.fillRect(0, 0, width, 12);
+
+    const logoImg = await loadImageCorsSafe(LOGO_PATH);
+    let y = 24;
+
+    if (logoImg && logoImg.width > 0 && logoImg.height > 0) {
+      const h = 48;
+      const w = (logoImg.width / logoImg.height) * h;
+      ctx.drawImage(logoImg, (width - w) / 2, y, w, h);
+      y += h + 10;
+    } else {
+      ctx.textAlign = "center";
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 28px Georgia, 'Times New Roman', serif";
+      ctx.fillText("ThaiGList 🌷", width / 2, y + 28);
+      y += 40;
+    }
+
+    ctx.textAlign = "center";
+    ctx.fillStyle = "#ffc2e2";
+    ctx.font = "bold 16px Arial, sans-serif";
+    ctx.fillText(kicker, width / 2, y + 16);
+    y += 22;
+
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "bold 38px Georgia, 'Times New Roman', serif";
+    ctx.fillText(title, width / 2, y + 36);
+    y += 44;
+
+    ctx.fillStyle = "#e2c8ff";
+    ctx.font = "15.5px Arial, sans-serif";
+    ctx.fillText(subtitle, width / 2, y + 16);
+
+    return y + 34;
+  }
+
+  function drawBrandBottom(ctx, width, height, footerH) {
+    const footY = height - footerH;
+    ctx.textAlign = "center";
+    ctx.fillStyle = "#ffc2e2";
+    ctx.font = "bold 15px Arial, sans-serif";
+    ctx.fillText("Acompanhe todos os horários em thaiglist.pages.dev", width / 2, footY + 28);
+    ctx.fillStyle = "#cbb2eb";
+    ctx.font = "13px Arial, sans-serif";
+    ctx.fillText("ThaiGList • Comunidade & Catálogo de Thai GLs", width / 2, footY + 52);
+  }
+
+  window.updateAdminScheduleLabels = function () {
+    const wk = schedGetWeekDates(0);
+    const el = document.getElementById("admin-sched-range-label");
+    if (el) {
+      el.textContent = `Semana atual: ${schedFormatDM(wk[0])} a ${schedFormatDM(wk[6])} • Gere uma arte pronta para postar`;
+    }
+    const upEl = document.getElementById("admin-upcoming-count-label");
+    if (upEl) {
+      const upCount = (allDramas || []).filter(schedIsUpcomingDrama).length;
+      upEl.textContent = `${upCount} título(s) em breve/teaser • Arte com pôsteres`;
+    }
+  };
+
+  function syncModeControls() {
+    const mode = document.getElementById("sched-generator-mode")?.value || "weekly";
+    const isWeekly = mode === "weekly";
+    const weekWrap = document.getElementById("sched-week-offset-wrap");
+    const upWrap = document.getElementById("sched-upcoming-filter-wrap");
+    const epWrap = document.getElementById("sched-show-ep-wrap");
+    const titleEl = document.getElementById("sched-img-title");
+
+    if (weekWrap) weekWrap.hidden = !isWeekly;
+    if (upWrap) upWrap.hidden = isWeekly;
+    if (epWrap) epWrap.hidden = !isWeekly;
+    if (titleEl) {
+      titleEl.textContent = isWeekly
+        ? "📅 Agenda Semanal de GLs • Imagem"
+        : "⏳ Próximos Lançamentos de GLs • Imagem";
+    }
+  }
+
+  async function renderWeeklyScheduleCanvas(dramas, format) {
+    const offset = Number(document.getElementById("sched-week-offset")?.value || 0);
+    const showEp = Boolean(document.getElementById("sched-show-ep")?.checked);
+    const showPlat = Boolean(document.getElementById("sched-show-platform")?.checked);
+
+    const weekDates = schedGetWeekDates(offset);
+    const weekRangeStr = `${schedFormatDM(weekDates[0])} a ${schedFormatDM(weekDates[6])}`;
+
+    const byDay = Array.from({ length: 7 }, (_, dayIdx) => {
+      const targetDate = weekDates[dayIdx];
+      const items = dramas
+        .filter(d => schedIsScheduledOnDate(d, targetDate))
+        .sort((a, b) => (a.air_time || "99:99").localeCompare(b.air_time || "99:99"));
+      return { dayIdx, targetDate, items };
+    });
+
+    const allItems = byDay.flatMap(g => g.items);
+    const uniquePosters = [...new Set(allItems.map(i => i.poster_url).filter(Boolean))];
+    const loaded = await Promise.all(uniquePosters.map(async u => [u, await loadImageCorsSafe(u)]));
+    const posterMap = new Map(loaded);
+
+    let width = 1080;
+    let height = 1350;
+    if (format === "wide") {
+      width = 1200;
+      height = 900;
+    } else if (format === "story") {
+      width = 1080;
+      height = 1920;
+    }
+
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext("2d");
+
+    const topAreaY = await drawBrandTop(
+      ctx,
+      width,
+      "THAIGLIST • AGENDA SEMANAL DE LANÇAMENTOS",
+      `Semana ${weekRangeStr}`,
+      `${allItems.length} ${allItems.length === 1 ? "GL em exibição" : "GLs em exibição"} nesta semana`
+    );
+
+    const marginX = 36;
+    const footerH = 84;
+    const gridH = height - topAreaY - footerH - 18;
+
+    const cols = format === "wide" ? 4 : 2;
+    const rows = Math.ceil(7 / cols);
+    const gapX = 16;
+    const gapY = 14;
+    const cellW = (width - marginX * 2 - gapX * (cols - 1)) / cols;
+    const cellH = (gridH - gapY * (rows - 1)) / rows;
+
+    byDay.forEach((grp, idx) => {
+      const col = idx % cols;
+      const row = Math.floor(idx / cols);
+      const x = marginX + col * (cellW + gapX);
+      const y = topAreaY + row * (cellH + gapY);
+
+      drawRoundRect(ctx, x, y, cellW, cellH, 14);
+      ctx.fillStyle = "rgba(38, 23, 64, 0.92)";
+      ctx.fill();
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = grp.items.length ? "#b86cff" : "#4a3369";
+      ctx.stroke();
+
+      const hdrH = 34;
+      drawRoundRect(ctx, x, y, cellW, hdrH, 14);
+      ctx.fillStyle = grp.items.length ? "rgba(240, 91, 168, 0.25)" : "rgba(74, 51, 105, 0.4)";
+      ctx.fill();
+
+      ctx.textAlign = "left";
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 14px Arial, sans-serif";
+      ctx.fillText(`${SCHED_SHORT_DAYS[grp.dayIdx]} (${schedFormatDM(grp.targetDate)})`, x + 12, y + 22);
+
+      ctx.textAlign = "right";
+      ctx.fillStyle = "#ffc2e2";
+      ctx.font = "bold 12px Arial, sans-serif";
+      ctx.fillText(`${grp.items.length}`, x + cellW - 12, y + 22);
+
+      const contentY = y + hdrH + 10;
+      const availH = cellH - hdrH - 16;
+
+      if (!grp.items.length) {
+        ctx.textAlign = "left";
+        ctx.fillStyle = "rgba(226, 200, 255, 0.5)";
+        ctx.font = "italic 12.5px Arial, sans-serif";
+        ctx.fillText("Sem estreias agendadas", x + 12, contentY + 18);
+      } else {
+        const lineStep = format === "story" ? 72 : 62;
+        const maxLines = Math.max(1, Math.floor(availH / lineStep));
+        const pH = lineStep - 10;
+        const pW = Math.round(pH * 0.72);
+
+        grp.items.slice(0, maxLines).forEach((it, itemIdx) => {
+          const iy = contentY + itemIdx * lineStep;
+          const posterImg = it.poster_url ? posterMap.get(it.poster_url) : null;
+          drawPosterCover(ctx, posterImg, x + 12, iy, pW, pH, 6);
+
+          const textX = x + 12 + pW + 10;
+          const maxW = Math.max(40, x + cellW - 12 - textX);
+
+          const timeStr = it.air_time ? String(it.air_time).slice(0, 5) : "--:--";
+          const epNum = schedGetEpisodeNumber(it, grp.targetDate);
+          const totalEps = Number(it.episodes) || 0;
+          const epStr = showEp && epNum ? (totalEps ? ` EP ${epNum}/${totalEps}` : ` EP ${epNum}`) : "";
+          const platStr = showPlat && it.platform ? ` • ${it.platform}` : "";
+
+          ctx.textAlign = "left";
+          ctx.fillStyle = "#ff85c2";
+          ctx.font = "bold 12px Arial, sans-serif";
+          ctx.fillText(truncateTxt(ctx, `${timeStr}${epStr}`, maxW), textX, iy + 16);
+
+          ctx.fillStyle = "#ffffff";
+          ctx.font = "bold 13px Arial, sans-serif";
+          ctx.fillText(truncateTxt(ctx, `${it.title || "Sem título"}${platStr}`, maxW), textX, iy + 35);
+        });
+
+        if (grp.items.length > maxLines) {
+          ctx.textAlign = "left";
+          ctx.fillStyle = "#ffc2e2";
+          ctx.font = "bold 11.5px Arial, sans-serif";
+          ctx.fillText(`+${grp.items.length - maxLines} séries neste dia`, x + 12, y + cellH - 8);
+        }
+      }
+    });
+
+    drawBrandBottom(ctx, width, height, footerH);
+
+    const cleanRange = weekRangeStr.replace(/[^0-9a-zA-Z]+/g, "-");
+    schedImgState.fileSlug = `agenda-semanal-${cleanRange}`;
+    schedImgState.shareCaption = `📅 Agenda Semanal de Thai GLs (${weekRangeStr}) no ThaiGList! Confira em: https://thaiglist.pages.dev #ThaiGL #GL #ThaiGList`;
+
+    return canvas;
+  }
+
+  async function renderUpcomingCanvas(dramas, format) {
+    const upFilter = document.getElementById("sched-upcoming-filter")?.value || "all";
+    const showPlat = Boolean(document.getElementById("sched-show-platform")?.checked);
+
+    let list = dramas.filter(schedIsUpcomingDrama);
+    if (upFilter === "dated") {
+      list = list.filter(d => Boolean((d.premiere_date || "").trim()));
+    } else if (upFilter === "2026") {
+      list = list.filter(d => Number(d.year) === 2026 || String(d.premiere_date || "").startsWith("2026"));
+    } else if (upFilter === "2027_plus") {
+      list = list.filter(d => Number(d.year) >= 2027);
+    }
+
+    list.sort((a, b) => {
+      const da = a.premiere_date || "9999-12-31";
+      const db = b.premiere_date || "9999-12-31";
+      if (da !== db) return da.localeCompare(db);
+      const ya = Number(a.year) || 9999;
+      const yb = Number(b.year) || 9999;
+      if (ya !== yb) return ya - yb;
+      return (a.title || "").localeCompare(b.title || "", "pt-BR");
+    });
+
+    let width = 1080;
+    let height = 1350;
+    if (format === "wide") {
+      width = 1200;
+      height = 900;
+    } else if (format === "story") {
+      width = 1080;
+      height = 1920;
+    }
+
+    const cols = format === "wide" ? 4 : 3;
+    const rows = format === "wide" ? 2 : (format === "story" ? 4 : 3);
+    const visible = list.slice(0, cols * rows);
+
+    const uniquePosters = [...new Set(visible.map(i => i.poster_url).filter(Boolean))];
+    const loaded = await Promise.all(uniquePosters.map(async u => [u, await loadImageCorsSafe(u)]));
+    const posterMap = new Map(loaded);
+
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext("2d");
+
+    const topAreaY = await drawBrandTop(
+      ctx,
+      width,
+      "THAIGLIST • PRÓXIMOS LANÇAMENTOS",
+      "Calendário de Estreias GL",
+      `${list.length} ${list.length === 1 ? "lançamento previsto" : "lançamentos previstos"} no catálogo`
+    );
+
+    const marginX = 36;
+    const footerH = 84;
+    const gridH = height - topAreaY - footerH - 18;
+
+    if (!visible.length) {
+      ctx.textAlign = "center";
+      ctx.fillStyle = "#ffc2e2";
+      ctx.font = "bold 18px Arial, sans-serif";
+      ctx.fillText("Nenhum próximo lançamento encontrado para este filtro.", width / 2, topAreaY + 80);
+    } else {
+      const gapX = 16;
+      const gapY = 16;
+      const cardW = (width - marginX * 2 - gapX * (cols - 1)) / cols;
+      const cardH = (gridH - gapY * (rows - 1)) / rows;
+
+      visible.forEach((item, idx) => {
+        const col = idx % cols;
+        const row = Math.floor(idx / cols);
+        const x = marginX + col * (cardW + gapX);
+        const y = topAreaY + row * (cardH + gapY);
+
+        drawRoundRect(ctx, x, y, cardW, cardH, 14);
+        ctx.fillStyle = "rgba(38, 23, 64, 0.94)";
+        ctx.fill();
+        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = "#b86cff";
+        ctx.stroke();
+
+        const pad = 10;
+        const infoSpace = 66;
+        const posterW = cardW - pad * 2;
+        const posterH = Math.max(95, cardH - pad * 2 - infoSpace);
+
+        const posterImg = item.poster_url ? posterMap.get(item.poster_url) : null;
+        drawPosterCover(ctx, posterImg, x + pad, y + pad, posterW, posterH, 10);
+
+        const dateTag = item.premiere_date
+          ? `📅 ${schedFormatDateBR(item.premiere_date)}`
+          : (item.year ? `⏳ ${item.year}` : "⏳ Em breve");
+
+        ctx.font = "bold 11.5px Arial, sans-serif";
+        const tagW = Math.min(posterW - 14, ctx.measureText(dateTag).width + 18);
+        const tagH = 22;
+        const tagX = x + pad + 7;
+        const tagY = y + pad + 7;
+
+        drawRoundRect(ctx, tagX, tagY, tagW, tagH, 999);
+        ctx.fillStyle = "rgba(18, 11, 31, 0.88)";
+        ctx.fill();
+        ctx.strokeStyle = "#f05ba8";
+        ctx.lineWidth = 1.1;
+        ctx.stroke();
+
+        ctx.textAlign = "left";
+        ctx.fillStyle = "#ffc2e2";
+        ctx.fillText(truncateTxt(ctx, dateTag, tagW - 12), tagX + 9, tagY + 15);
+
+        const ty = y + pad + posterH + 20;
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "bold 14px Arial, sans-serif";
+        ctx.fillText(truncateTxt(ctx, item.title || "Sem título", posterW), x + pad, ty);
+
+        const stTxt = item.status || "Em breve";
+        const epsTxt = item.episodes ? ` • ${item.episodes} eps` : "";
+        const platTxt = showPlat && item.platform ? ` • ${item.platform}` : "";
+        ctx.fillStyle = "#ff85c2";
+        ctx.font = "bold 11.5px Arial, sans-serif";
+        ctx.fillText(truncateTxt(ctx, `${stTxt}${epsTxt}${platTxt}`, posterW), x + pad, ty + 19);
+      });
+    }
+
+    drawBrandBottom(ctx, width, height, footerH);
+
+    schedImgState.fileSlug = "proximos-lancamentos-thaiglist";
+    schedImgState.shareCaption = `⏳ Próximos Lançamentos de Thai GLs no ThaiGList! Confira em: https://thaiglist.pages.dev #ThaiGL #GL #ThaiGList`;
+
+    return canvas;
+  }
+
+  async function renderScheduleCanvas() {
+    const preview = document.getElementById("sched-img-preview");
+    const statusEl = document.getElementById("sched-img-status");
+    if (statusEl) statusEl.textContent = "";
+
+    syncModeControls();
+
+    const mode = document.getElementById("sched-generator-mode")?.value || "weekly";
+    const format = document.getElementById("sched-img-format")?.value || "feed";
+    const dramas = await fetchAdminDramas();
+
+    const canvas = mode === "upcoming"
+      ? await renderUpcomingCanvas(dramas, format)
+      : await renderWeeklyScheduleCanvas(dramas, format);
+
+    const dataUrl = canvas.toDataURL("image/png");
+    schedImgState.dataUrl = dataUrl;
+    canvas.toBlob(b => { schedImgState.blob = b; }, "image/png");
+
+    if (preview) {
+      preview.innerHTML = "";
+      const img = document.createElement("img");
+      img.src = dataUrl;
+      img.alt = "Agenda de GLs ThaiGList";
+      preview.appendChild(img);
+    }
+
+    const xLink = document.getElementById("share-sched-x-link");
+    if (xLink) {
+      xLink.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(schedImgState.shareCaption)}`;
+    }
+  }
+
+  function bindScheduleEvents() {
+    window.updateAdminScheduleLabels();
+
+    const backdrop = document.getElementById("sched-img-backdrop");
+    const openWeeklyBtn = document.getElementById("open-schedule-img-modal-btn");
+    const openUpcomingBtn = document.getElementById("open-upcoming-img-modal-btn");
+    const closeBtn = document.getElementById("close-sched-img-btn");
+    const modeSelect = document.getElementById("sched-generator-mode");
+    const dlBtn = document.getElementById("download-sched-img-btn");
+    const shareBtn = document.getElementById("share-sched-img-btn");
+    const igBtn = document.getElementById("share-sched-ig-btn");
+    const statusEl = document.getElementById("sched-img-status");
+
+    [
+      "sched-generator-mode",
+      "sched-week-offset",
+      "sched-upcoming-filter",
+      "sched-img-format",
+      "sched-show-ep",
+      "sched-show-platform"
+    ].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener("change", renderScheduleCanvas);
+    });
+
+    async function openModal(mode) {
+      if (!backdrop) return;
+      if (modeSelect) modeSelect.value = mode;
+      backdrop.hidden = false;
+      backdrop.removeAttribute("hidden");
+      document.body.style.overflow = "hidden";
+      await renderScheduleCanvas();
+    }
+
+    if (openWeeklyBtn) {
+      openWeeklyBtn.addEventListener("click", () => openModal("weekly"));
+    }
+
+    if (openUpcomingBtn) {
+      openUpcomingBtn.addEventListener("click", () => openModal("upcoming"));
+    }
+
+    if (closeBtn) {
+      closeBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        closeScheduleModal();
+      });
+    }
+
+    if (backdrop) {
+      backdrop.addEventListener("click", (e) => {
+        if (e.target === backdrop) closeScheduleModal();
+      });
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && backdrop && !backdrop.hidden) {
+        closeScheduleModal();
+      }
+    });
+
+    if (dlBtn) {
+      dlBtn.addEventListener("click", () => {
+        if (!schedImgState.dataUrl) return;
+        const a = document.createElement("a");
+        a.download = `${schedImgState.fileSlug || "agenda-thaiglist"}.png`;
+        a.href = schedImgState.dataUrl;
+        a.click();
+        if (statusEl) statusEl.textContent = "Imagem PNG baixada com sucesso!";
+      });
+    }
+
+    if (shareBtn) {
+      shareBtn.addEventListener("click", async () => {
+        try {
+          if (navigator.share && schedImgState.blob && typeof File !== "undefined") {
+            const file = new File([schedImgState.blob], `${schedImgState.fileSlug}.png`, { type: "image/png" });
+            if (!navigator.canShare || navigator.canShare({ files: [file] })) {
+              await navigator.share({ title: "ThaiGList", text: schedImgState.shareCaption, files: [file] });
+              if (statusEl) statusEl.textContent = "Agenda compartilhada!";
+              return;
+            }
+          }
+        } catch (err) {
+          if (err && err.name === "AbortError") return;
+        }
+        try {
+          await navigator.clipboard.writeText(schedImgState.shareCaption);
+          if (statusEl) statusEl.textContent = "Link copiado! Baixe o PNG ao lado para anexar.";
+        } catch {
+          if (statusEl) statusEl.textContent = "Use o botão Baixar PNG para salvar a imagem.";
+        }
+      });
+    }
+
+    if (igBtn) {
+      igBtn.addEventListener("click", async () => {
+        try { await navigator.clipboard.writeText(schedImgState.shareCaption); } catch {}
+        if (schedImgState.dataUrl) {
+          const a = document.createElement("a");
+          a.download = `${schedImgState.fileSlug}.png`;
+          a.href = schedImgState.dataUrl;
+          a.click();
+        }
+        window.open("https://www.instagram.com/", "_blank", "noopener,noreferrer");
+        if (statusEl) statusEl.textContent = "Imagem baixada e legenda copiada para o Instagram!";
+      });
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindScheduleEvents);
+  } else {
+    bindScheduleEvents();
+  }
+})();
 </script>
 
 </body>
